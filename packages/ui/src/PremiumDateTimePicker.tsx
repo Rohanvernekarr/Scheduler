@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar as CalendarIcon, Clock, ChevronLeft, ChevronRight, X } from "lucide-react";
-import { Button } from "@repo/ui/button";
+import { Calendar as CalendarIcon, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "./button.js";
 
 interface PremiumDateTimePickerProps {
   expireDate: string;
@@ -54,14 +54,11 @@ export function PremiumDateTimePicker({ expireDate, setExpireDate, expireTime, s
     return days;
   };
 
-  const hours = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'));
-  const minutes = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
-
   const handleDateSelect = (d: Date) => {
     const ds = getLocalDateString(d);
     setExpireDate(ds);
 
-    // Dynamic Time Snapping protection exactly like before
+    // Dynamic Time Snapping protection
     if (ds === localToday && expireTime) {
       const now = new Date();
       const currentHrMin = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
