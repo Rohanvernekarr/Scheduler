@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  domain    String?  @unique
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id             String         @id @default(cuid())
+  email          String         @unique
+  name           String
+  role           Role           @default(MEMBER)
+  companyId      String
+  company        Company        @relation(fields: [companyId], references: [id])
+  availabilities Availability[]
+  meetingsAsHost Meeting[]      @relation("MeetingHost")
+  interviews     Interview[]    @relation("Interviewer")
+  eventsAsHost   Event[]        @relation("EventHost")
+  participants   Participant[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+model Meeting {
+  id           String        @id @default(cuid())
+  title        String
+  description  String?
+  meetingLink  String?
+  startTime    DateTime
+  endTime      DateTime
+  hostId       String
+  host         User          @relation("MeetingHost", fields: [hostId], references: [id])
+  participants Participant[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Participant {
+  id        String         @id @default(cuid())
+  email     String
+  userId    String?        // If internal user
+  user      User?          @relation(fields: [userId], references: [id])
+  meetingId String?
+  meeting   Meeting?       @relation(fields: [meetingId], references: [id])
+  eventId   String?
+  event     Event?         @relation(fields: [eventId], references: [id])
+  status    RSVPStatus     @default(PENDING)
+}
+
+enum RSVPStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model Interview {
+  id             String    @id @default(cuid())
+  candidateEmail String
+  interviewerId  String
+  interviewer    User      @relation("Interviewer", fields: [interviewerId], references: [id])
+  meetingLink    String?
+  scheduledAt    DateTime
+  feedback       String?
+  createdAt      DateTime  @default(now())
+}
+
+model Availability {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  dayOfWeek Int      // 0 = Sunday, 1 = Monday, etc.
+  startTime String   // e.g., "10:00"
+  endTime   String   // e.g., "14:00"
+}
+
+model Booking {
+  id        String   @id @default(cuid())
+  hostId    String
+  guestEmail String
+  startTime DateTime
+  endTime   DateTime
+  status    BookingStatus @default(CONFIRMED)
+  createdAt DateTime @default(now())
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+}
+
+model Event {
+  id           String        @id @default(cuid())
+  title        String
+  description  String?
+  meetingLink  String?
+  startTime    DateTime
+  endTime      DateTime
+  hostId       String
+  host         User          @relation("EventHost", fields: [hostId], references: [id])
+  participants Participant[]
+  createdAt    DateTime      @default(now())
+}
+
+model EmailLog {
+  id        String   @id @default(cuid())
+  recipient String
+  subject   String
+  status    String   // e.g., "SENT", "FAILED"
+  error     String?
+  createdAt DateTime @default(now())
+}
