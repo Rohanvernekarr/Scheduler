@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { meetingRouter } from './routes/v1/meetings.js';
 
 dotenv.config();
 
@@ -14,10 +15,8 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
 
-// Basic structure for API routes
-app.get('/api/meetings', (req: Request, res: Response) => {
-  res.json({ data: [] });
-});
+// Mount modular routers
+app.use('/api/v1/meetings', meetingRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
