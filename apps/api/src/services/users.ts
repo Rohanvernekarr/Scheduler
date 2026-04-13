@@ -25,12 +25,25 @@ export class UserService {
   }
 
   /**
+   * Retrieves a user by their username
+   */
+  async getUserByUsername(username: string) {
+    return prisma.user.findUnique({
+      where: { username },
+      include: {
+        availabilities: true,
+      },
+    });
+  }
+
+  /**
    * Creates a new user in the database
    */
   async createUser(data: CreateUserInput) {
     return prisma.user.create({
       data: {
         email: data.email,
+        username: data.username,
         name: data.name,
         companyId: data.companyId,
       },

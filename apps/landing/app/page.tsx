@@ -1,3 +1,5 @@
+"use client";
+
 import Image, { type ImageProps } from "next/image";
 import { Button } from "@repo/ui/button";
 import styles from "./page.module.css";
@@ -65,8 +67,8 @@ export default function Home(): ReactNode {
             Read our docs
           </a>
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
+        <Button className={styles.secondary} onClick={() => alert("Welcome to the Scheduler!")}>
+          Get Started
         </Button>
       </main>
       <footer className={styles.footer}>

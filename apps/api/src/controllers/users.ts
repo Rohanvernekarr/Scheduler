@@ -4,7 +4,7 @@ import { CreateUserSchema } from '../schemas/users.js';
 import { ZodError } from 'zod';
 
 export class UserController {
-  async getUser(req: Request, res: Response): Promise<void> {
+  async getUserById(req: Request, res: Response): Promise<void> {
     try {
       const id = req.params.id as string;
       const user = await userService.getUserById(id);
@@ -16,7 +16,24 @@ export class UserController {
       
       res.json({ data: user });
     } catch (error) {
-      console.error('[UserController.getUser]', error);
+      console.error('[UserController.getUserById]', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async getUserByUsername(req: Request, res: Response): Promise<void> {
+    try {
+      const username = req.params.username as string;
+      const user = await userService.getUserByUsername(username);
+      
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+      
+      res.json({ data: user });
+    } catch (error) {
+      console.error('[UserController.getUserByUsername]', error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
