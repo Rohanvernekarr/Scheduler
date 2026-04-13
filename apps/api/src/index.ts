@@ -8,6 +8,8 @@ import { availabilityRouter } from './routes/v1/availability.js';
 import { bookingRouter } from './routes/v1/bookings.js';
 import { eventRouter } from './routes/v1/events.js';
 import { interviewRouter } from './routes/v1/interviews.js';
+import { errorHandler } from './middleware/error.js';
+import { authMiddleware } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -21,6 +23,9 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
 
+// Apply auth middleware to all v1 routes
+app.use('/api/v1', authMiddleware);
+
 // Mount modular routers
 app.use('/api/v1/meetings', meetingRouter);
 app.use('/api/v1/users', userRouter);
@@ -29,6 +34,9 @@ app.use('/api/v1/availability', availabilityRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/events', eventRouter);
 app.use('/api/v1/interviews', interviewRouter);
+
+// Global Error Handler (must be last)
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
