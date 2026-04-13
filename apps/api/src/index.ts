@@ -2,6 +2,7 @@ import express, { type Request, type Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { meetingRouter } from './routes/v1/meetings.js';
+import { userRouter } from './routes/v1/users.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get('/health', (req: Request, res: Response) => {
 
 // Mount modular routers
 app.use('/api/v1/meetings', meetingRouter);
+app.use('/api/v1/users', userRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
