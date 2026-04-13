@@ -21,7 +21,7 @@ export default function DashboardView() {
 
   const allEvents = useMemo(() => {
     const combined = [
-      ...meetings.map((m: any) => ({ ...m, type: 'Meeting' })),
+      ...meetings.map((m: any) => ({ ...m, type: m.type || 'Meeting' })),
       ...bookings.map((b: any) => ({ 
         ...b, 
         title: `Booking: ${b.guestEmail}`, 

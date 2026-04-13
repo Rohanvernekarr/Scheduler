@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import express, { type Request, type Response } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { meetingRouter } from './routes/v1/meetings.js';
 import { userRouter } from './routes/v1/users.js';
 import { companyRouter } from './routes/v1/companies.js';
@@ -10,8 +10,6 @@ import { eventRouter } from './routes/v1/events.js';
 import { interviewRouter } from './routes/v1/interviews.js';
 import { errorHandler } from './middleware/error.js';
 import { authMiddleware } from './middleware/auth.js';
-
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;

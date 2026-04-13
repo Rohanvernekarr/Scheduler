@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = 'http://localhost:8000/api/v1';
 
 // We use the dummy x-user-id header we set up in the backend
-const DEFAULT_USER_ID = 'cm9lndj6y0000ux3v8x9r9fzb'; // Placeholder ID
+export const DEFAULT_USER_ID = 'cm9lndj6y0000ux3v8x9r9fzb'; // Placeholder ID
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -31,4 +31,7 @@ export const createBooking = (data: any) =>
 
 export const getHostBookings = (hostId: string) =>
   api.get(`/bookings/host/${hostId}`).then(res => res.data.data);
+
+export const createMeeting = (data: any) =>
+  api.post('/meetings', data).then(res => res.data.data);
 

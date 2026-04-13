@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Company {
@@ -40,6 +41,7 @@ enum Role {
 model Meeting {
   id           String        @id @default(cuid())
   title        String
+  type         String        @default("Meeting")
   description  String?
   meetingLink  String?
   startTime    DateTime

@@ -1,12 +1,13 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, CalendarClock, BookOpen, Settings, User } from 'lucide-react';
+import { LayoutDashboard, CalendarClock, BookOpen, Settings, User, Clock } from 'lucide-react';
 
 export const Sidebar = () => {
   const location = useLocation();
   
   const navItems = [
     { label: 'Overview', path: '/', icon: LayoutDashboard },
-    { label: 'Availability', path: '/availability', icon: CalendarClock },
+    { label: 'Schedule', path: '/schedule', icon: CalendarClock },
+    { label: 'Availability', path: '/availability', icon: Clock },
     { label: 'Bookings', path: '/bookings', icon: BookOpen },
     { label: 'Settings', path: '/settings', icon: Settings },
   ];

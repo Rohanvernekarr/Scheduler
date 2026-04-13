@@ -1,5 +1,6 @@
 import { prisma } from 'db';
 import type { CreateMeetingInput } from '../schemas/meetings.ts';
+import { mailService } from './mail.js';
 
 export class MeetingService {
   /**
@@ -22,18 +23,18 @@ export class MeetingService {
 
   /**
    * Creates a new meeting and adds participants.
-   * Also queues the email job for the participants.
+   * Also sends email notifications to all participants.
    */
   async createMeeting(data: CreateMeetingInput) {
     const meeting = await prisma.meeting.create({
       data: {
         title: data.title,
+        type: data.type,
         description: data.description ?? null,
         startTime: new Date(data.startTime),
         endTime: new Date(data.endTime),
         hostId: data.hostId,
         meetingLink: data.meetingLink ?? null,
-        // Map simple email arrays to Participant models
         participants: {
           create: data.participants?.map((email) => ({
             email,
@@ -46,8 +47,14 @@ export class MeetingService {
       },
     });
 
-    // TODO: Dispatch email queue job to Upstash Redis here
-    // e.g. await queueEmailJob({ meetingId: meeting.id, type: 'MEETING_INVITE' })
+    // Send emails to each participant
+    if (data.participants && data.participants.length > 0) {
+      await Promise.all(
+        data.participants.map(email => 
+          mailService.sendMeetingInvitation(email, meeting)
+        )
+      );
+    }
 
     return meeting;
   }

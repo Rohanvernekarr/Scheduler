@@ -4,6 +4,7 @@ import { Sidebar } from './components/Sidebar';
 import DashboardView from './views/DashboardView';
 import AvailabilityView from './views/AvailabilityView';
 import BookingView from './views/BookingView';
+import ScheduleView from './views/ScheduleView';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ function AppRoutes() {
               <Routes>
                 <Route path="/" element={<DashboardView />} />
                 <Route path="/availability" element={<AvailabilityView />} />
+                <Route path="/schedule" element={<ScheduleView />} />
               </Routes>
             </main>
           </div>
