@@ -22,11 +22,12 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const variants = {
-    primary: "bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg shadow-indigo-600/20",
-    secondary: "bg-slate-800 text-slate-100 hover:bg-slate-700",
-    outline: "border border-slate-700 text-slate-300 hover:bg-slate-800",
-    ghost: "text-slate-400 hover:text-white hover:bg-white/5",
+    primary: "bg-black text-white hover:bg-black/90",
+    secondary: "bg-white text-black border border-black hover:bg-slate-50",
+    outline: "border border-black text-black hover:bg-slate-50",
+    ghost: "text-black/60 hover:text-black hover:bg-black/5",
   };
+
 
   const sizes = {
     sm: "px-3 py-1.5 text-xs",

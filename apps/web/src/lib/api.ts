@@ -19,5 +19,16 @@ export const getAvailability = (userId: string) =>
 export const updateAvailability = (userId: string, data: any) =>
   api.put(`/availability/${userId}`, data).then(res => res.data.data);
 
-export const getMeetings = () =>
-  api.get('/meetings').then(res => res.data.data);
+export const getMeetings = (userId: string = DEFAULT_USER_ID) =>
+  api.get('/meetings', { params: { userId } }).then(res => res.data.data);
+
+
+export const getUserProfile = (username: string) =>
+  api.get(`/users/profile/${username}`).then(res => res.data.data);
+
+export const createBooking = (data: any) =>
+  api.post('/bookings', data).then(res => res.data.data);
+
+export const getHostBookings = (hostId: string) =>
+  api.get(`/bookings/host/${hostId}`).then(res => res.data.data);
+

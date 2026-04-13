@@ -18,7 +18,8 @@ function AppRoutes() {
       <Route
         path="/*"
         element={
-          <div className="flex min-h-screen bg-slate-950 text-slate-50">
+          <div className="flex min-h-screen bg-white text-black">
+
             <Sidebar />
             <main className="ml-64 flex-1 p-12">
               <Routes>

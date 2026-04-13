@@ -20,19 +20,20 @@ export const Card = ({ children, className, title, href }: CardProps) => {
     <Component
       href={href}
       className={cn(
-        "block p-6 bg-slate-900/40 backdrop-blur-xl border border-white/5 rounded-[32px] transition-all duration-300 hover:border-white/10",
-        href && "hover:bg-slate-900/60",
+        "block p-6 bg-white border border-black rounded-[24px] transition-all duration-200",
+        href && "hover:bg-slate-50",
         className
       )}
     >
       {title && (
-        <h3 className="text-xl font-bold text-white mb-4 tracking-tight">
+        <h3 className="text-xl font-bold text-black mb-4 tracking-tight">
           {title}
         </h3>
       )}
-      <div className="text-slate-400">
+      <div className="text-black/70">
         {children}
       </div>
     </Component>
+
   );
 };
