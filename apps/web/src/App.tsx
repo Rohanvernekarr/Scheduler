@@ -19,10 +19,9 @@ function AppRoutes() {
       <Route
         path="/*"
         element={
-          <div className="flex min-h-screen bg-white text-black">
-
+          <div className="flex min-h-screen bg-[#0a0a0a] text-white">
             <Sidebar />
-            <main className="ml-64 flex-1 p-12">
+            <main className="ml-64 flex-1 p-12 min-h-screen">
               <Routes>
                 <Route path="/" element={<DashboardView />} />
                 <Route path="/availability" element={<AvailabilityView />} />
