@@ -45,7 +45,7 @@ export default function DashboardView() {
     <div className="max-w-6xl">
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-6">
         <div>
-          <p className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-2">Overview</p>
+          <p className="text-xs font-semibold text-zinc-100 uppercase tracking-widest mb-2">Overview</p>
           <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
           <p className="text-white/40 text-sm mt-1">Welcome back — here's your current schedule.</p>
         </div>
@@ -67,7 +67,7 @@ export default function DashboardView() {
       <section className="bg-[#111111] rounded-2xl border border-white/[0.06] overflow-hidden">
         <div className="flex justify-between items-center px-6 py-5 border-b border-white/[0.06]">
           <h2 className="text-sm font-semibold text-white/70 uppercase tracking-widest">Upcoming Schedule</h2>
-          <button className="text-indigo-400 font-semibold text-xs uppercase tracking-widest hover:text-indigo-300 transition-colors">
+          <button className="text-zinc-100 font-semibold text-xs uppercase tracking-widest hover:text-zinc-300 transition-colors">
             View All
           </button>
         </div>

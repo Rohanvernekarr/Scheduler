@@ -24,7 +24,7 @@ const MEETING_TYPES = [
 ];
 
 const inputClass =
-  'w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl h-12 pl-11 pr-5 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/60 transition-all font-medium text-sm';
+  'w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl h-12 pl-11 pr-5 text-white placeholder:text-white/20 focus:outline-none focus:border-zinc-500/60 transition-all font-medium text-sm';
 const labelClass = 'text-[11px] font-semibold text-white/35 uppercase tracking-wider px-1 block mb-2';
 
 // Convert "YYYY-MM-DD" + "HH:MM" → ISO datetime string
@@ -151,11 +151,9 @@ export function ScheduleForm({ onSubmit, isPending }: ScheduleFormProps) {
         labelClass={labelClass}
       />
 
-      {/* ── Submit ── */}
       <div className="flex items-center justify-between pt-1">
         <p className="text-white/25 text-xs">All participants will receive an email invite.</p>
-        <Button size="lg" type="submit" disabled={isPending} className="px-10 gap-2">
-          <Sparkles size={15} />
+        <Button size="lg" type="submit" disabled={isPending} className="px-6 gap-2 cursor-pointer">
           {isPending ? 'Scheduling...' : 'Schedule & Notify'}
         </Button>
       </div>

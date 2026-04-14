@@ -12,7 +12,7 @@ interface GuestFormProps {
   onConfirm: () => void;
 }
 
-const inputClass = "w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl h-12 px-5 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/60 transition-all font-medium text-sm";
+const inputClass = "w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl h-12 px-5 text-white placeholder:text-white/20 focus:outline-none focus:border-zinc-500/60 transition-all font-medium text-sm";
 
 export function GuestForm({
   guestName,
@@ -27,7 +27,7 @@ export function GuestForm({
   return (
     <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest flex items-center gap-2 mb-6">
-        <User size={14} className="text-indigo-400" />
+        <User size={14} className="text-zinc-100" />
         Your Details
       </h2>
 

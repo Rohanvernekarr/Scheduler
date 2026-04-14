@@ -40,7 +40,7 @@ export function DateTimeSection({
         {/* Start */}
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-[9px] font-bold">S</span>
+            <span className="w-4 h-4 rounded-full bg-zinc-500/20 flex items-center justify-center text-zinc-100 text-[9px] font-bold">S</span>
             Start
           </p>
           <PremiumDateTimePicker
@@ -51,13 +51,12 @@ export function DateTimeSection({
           />
         </div>
 
-        {/* Vertical separator */}
         <div className="hidden sm:block w-px bg-white/[0.06] self-stretch mt-6" />
 
         {/* End */}
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded-full bg-violet-500/20 flex items-center justify-center text-violet-400 text-[9px] font-bold">E</span>
+            <span className="w-4 h-4 rounded-full bg-zinc-500/20 flex items-center justify-center text-zinc-400 text-[9px] font-bold">E</span>
             End
           </p>
           <PremiumDateTimePicker
@@ -76,12 +75,12 @@ export function DateTimeSection({
           animate={{ opacity: 1, scale: 1 }}
           className={`mt-6 flex items-center gap-3 p-3 rounded-xl border ${
             currentDuration > 0 
-              ? 'bg-indigo-500/5 border-indigo-500/10 text-indigo-400' 
+              ? 'bg-zinc-500/5 border-zinc-500/10 text-zinc-100' 
               : 'bg-red-500/5 border-red-500/10 text-red-400'
           }`}
         >
           <div className={`w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden ${
-            currentDuration > 0 ? 'bg-indigo-500/10' : 'bg-red-500/10'
+            currentDuration > 0 ? 'bg-zinc-500/10' : 'bg-red-500/10'
           }`}>
              <Sparkles size={16} />
           </div>

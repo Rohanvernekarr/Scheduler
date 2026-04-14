@@ -56,7 +56,7 @@ export default function AvailabilityView() {
     <div className="max-w-4xl">
       <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-          <p className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-2">Configuration</p>
+          <p className="text-xs font-semibold text-zinc-100 uppercase tracking-widest mb-2">Configuration</p>
           <h1 className="text-3xl font-bold tracking-tight text-white">Availability</h1>
           <p className="text-white/40 text-sm mt-1">Define when you're reachable for bookings.</p>
         </div>

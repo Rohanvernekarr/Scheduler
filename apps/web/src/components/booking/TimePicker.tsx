@@ -10,7 +10,7 @@ export function TimePicker({ availableSlots, selectedTime, onSelectTime }: TimeP
   return (
     <div className="space-y-4">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest flex items-center gap-2">
-        <Clock size={14} className="text-indigo-400" />
+        <Clock size={14} className="text-zinc-100" />
         Select Time
       </h2>
 
@@ -22,7 +22,7 @@ export function TimePicker({ availableSlots, selectedTime, onSelectTime }: TimeP
               onClick={() => onSelectTime(time)}
               className={`w-full p-3.5 rounded-xl border transition-all flex items-center justify-between group text-sm font-medium ${
                 selectedTime === time
-                  ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20'
+                  ? 'bg-zinc-600 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
                   : 'bg-white/[0.04] border-white/[0.06] text-white/60 hover:bg-white/[0.07] hover:text-white hover:border-white/10'
               }`}
             >

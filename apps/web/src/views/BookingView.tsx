@@ -77,7 +77,7 @@ export default function BookingView() {
   });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-6 md:p-12 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-6 md:p-12 selection:bg-zinc-500 selection:text-white">
       <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6">
         <BookingProfile user={user} />
         <div className="flex-1 space-y-5">
@@ -122,7 +122,7 @@ function LoadingSpinner() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-10 h-10 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-zinc-500/30 border-t-zinc-500 rounded-full animate-spin" />
         <p className="text-white/30 text-xs font-semibold uppercase tracking-widest">Loading Profile...</p>
       </div>
     </div>

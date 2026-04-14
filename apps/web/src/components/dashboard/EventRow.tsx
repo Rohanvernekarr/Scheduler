@@ -13,7 +13,7 @@ export function EventRow({ event }: EventRowProps) {
       <div className="flex items-center gap-4">
         <div className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center font-bold shrink-0 ${
           isBooking
-            ? 'bg-indigo-500/15 border border-indigo-500/20 text-indigo-300'
+            ? 'bg-zinc-500/15 border border-zinc-500/20 text-zinc-300'
             : 'bg-white/5 border border-white/10 text-white/60'
         }`}>
           <span className="text-[9px] uppercase opacity-70 leading-none mb-0.5">
@@ -26,7 +26,7 @@ export function EventRow({ event }: EventRowProps) {
             <h4 className="font-semibold text-sm text-white">{event.title}</h4>
             <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
               isBooking
-                ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/20'
+                ? 'bg-zinc-500/15 text-zinc-100 border border-zinc-500/20'
                 : 'bg-white/5 text-white/40 border border-white/10'
             }`}>
               {event.type}

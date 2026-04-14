@@ -72,7 +72,7 @@ export function MeetingDetailsSection({
                 onClick={() => setType(value)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-semibold transition-all ${
                   active
-                    ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20'
+                    ? 'bg-zinc-600 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
                     : 'bg-white/[0.04] border-white/[0.06] text-white/45 hover:text-white hover:border-white/15'
                 }`}
               >
@@ -123,7 +123,7 @@ export function MeetingDetailsSection({
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl py-3 pl-11 pr-5 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/60 transition-all font-medium text-sm min-h-[90px] resize-none"
+            className="w-full bg-[#0d0d0d] border border-white/[0.08] rounded-xl py-3 pl-11 pr-5 text-white placeholder:text-white/20 focus:outline-none focus:border-zinc-500/60 transition-all font-medium text-sm min-h-[90px] resize-none"
             placeholder="Brief agenda or context..."
           />
         </div>
