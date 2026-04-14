@@ -128,9 +128,9 @@ export function PremiumDateTimePicker({
   };
   const cellActive: React.CSSProperties = {
     ...cellBase,
-    background: "#4f46e5",
+    background: "#a3a2b1ff",
     color: "#fff",
-    boxShadow: "0 2px 10px rgba(79,70,229,0.4)",
+    boxShadow: "0 2px 10px rgba(97, 96, 113, 0.4)",
   };
   const cellIdle: React.CSSProperties = {
     ...cellBase,
@@ -296,7 +296,7 @@ export function PremiumDateTimePicker({
                       height: "32px",
                       borderRadius: "8px",
                       fontSize: "11px",
-                      ...(selected ? { background: "#6366f1", color: "#fff" }
+                      ...(selected ? { background: "#a2a2b5ff", color: "#fff" }
                         : past ? { background: "transparent", color: "rgba(255,255,255,0.1)", cursor: "not-allowed" }
                         : { background: "transparent", color: "rgba(255,255,255,0.8)" }),
                     }}
@@ -375,7 +375,7 @@ export function PremiumDateTimePicker({
                     cursor: "pointer",
                     transition: "all 0.15s",
                     ...(period === p
-                      ? { background: "#6366f1", color: "#fff" }
+                      ? { background: "#747589ff", color: "#fff" }
                       : { background: "transparent", color: "rgba(255,255,255,0.4)" }),
                   }}
                 >
@@ -393,7 +393,7 @@ export function PremiumDateTimePicker({
                   type="button"
                   onClick={() => setTime(h, min, period)}
                   style={{
-                    ...hr12 === h ? { ...cellActive, background: "#6366f1" } : cellIdle,
+                    ...hr12 === h ? { ...cellActive, background: "#7e7e90ff" } : cellIdle,
                     height: "30px",
                     fontSize: "11px"
                   }}
@@ -412,7 +412,7 @@ export function PremiumDateTimePicker({
                   type="button"
                   onClick={() => setTime(hr12, m, period)}
                   style={{
-                    ...min === m ? { ...cellActive, background: "#6366f1" } : cellIdle,
+                    ...min === m ? { ...cellActive, background: "#8b8ca4ff" } : cellIdle,
                     height: "30px",
                     fontSize: "11px"
                   }}
@@ -430,7 +430,7 @@ export function PremiumDateTimePicker({
                 width: "100%",
                 padding: "10px 0",
                 borderRadius: "10px",
-                background: "#6366f1",
+                background: "#696980ff",
                 color: "#fff",
                 fontSize: "12px",
                 fontWeight: 700,
