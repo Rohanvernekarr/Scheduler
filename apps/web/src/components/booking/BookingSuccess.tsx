@@ -1,5 +1,5 @@
 import { CheckCircle2, Calendar, Clock } from 'lucide-react';
-import { Card, Button } from '@repo/ui';
+import { Button } from '@repo/ui';
 
 interface BookingSuccessProps {
   userName: string;
@@ -10,29 +10,35 @@ interface BookingSuccessProps {
 
 export function BookingSuccess({ userName, selectedDate, selectedTime, onDone }: BookingSuccessProps) {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 flex items-center justify-center p-6">
-      <Card className="max-w-md w-full p-12 border-white/5 bg-slate-900/40 text-center space-y-6">
-        <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={40} />
+    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-6">
+      <div className="max-w-md w-full bg-[#111111] border border-white/[0.06] rounded-2xl p-10 text-center space-y-6">
+        <div className="w-16 h-16 bg-emerald-500/15 border border-emerald-500/25 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto">
+          <CheckCircle2 size={32} />
         </div>
-        <h1 className="text-3xl font-black">Booking Confirmed!</h1>
-        <p className="text-slate-400">
-          You've successfully scheduled a meeting with <span className="text-white font-bold">{userName}</span>.
-        </p>
-        <div className="bg-white/5 p-4 rounded-2xl text-left space-y-2">
-          <div className="flex items-center gap-3 text-sm">
-            <Calendar size={16} className="text-indigo-400" />
+
+        <div>
+          <h1 className="text-2xl font-bold text-white mb-2">Booking Confirmed!</h1>
+          <p className="text-white/40 text-sm">
+            You've scheduled a meeting with{' '}
+            <span className="text-white font-semibold">{userName}</span>.
+          </p>
+        </div>
+
+        <div className="bg-white/[0.04] border border-white/[0.06] p-4 rounded-xl text-left space-y-3">
+          <div className="flex items-center gap-3 text-sm text-white/70">
+            <Calendar size={14} className="text-indigo-400" />
             <span>{selectedDate.toLocaleDateString(undefined, { dateStyle: 'full' })}</span>
           </div>
-          <div className="flex items-center gap-3 text-sm">
-            <Clock size={16} className="text-indigo-400" />
+          <div className="flex items-center gap-3 text-sm text-white/70">
+            <Clock size={14} className="text-indigo-400" />
             <span>{selectedTime} (30 mins)</span>
           </div>
         </div>
-        <Button onClick={onDone} className="w-full h-14 rounded-2xl">
+
+        <Button onClick={onDone} className="w-full h-12 rounded-xl">
           Done
         </Button>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { CalendarDays, Plus } from 'lucide-react';
-import { Card, Button } from '@repo/ui';
+import { Button } from '@repo/ui';
 import { TimeSlot } from './TimeSlot';
 
 interface DayRowProps {
@@ -11,23 +11,25 @@ interface DayRowProps {
 }
 
 export function DayRow({ day, slots, onAddSlot, onUpdateSlot, onRemoveSlot }: DayRowProps) {
+  const isActive = slots.length > 0;
+
   return (
-    <Card className="p-0 overflow-hidden border-black bg-white hover:bg-black/5 transition-colors">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-6 gap-4">
-        <div className="flex items-center gap-4 w-48">
-          <div
-            className={`w-10 h-10 rounded-xl flex items-center justify-center border-2 border-black ${
-              slots.length > 0 ? 'bg-black text-white' : 'bg-white text-black/20 border-black/10'
-            }`}
-          >
-            <CalendarDays size={20} />
+    <div className="bg-[#111111] border border-white/[0.06] rounded-xl overflow-hidden hover:border-white/10 transition-all">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 gap-4">
+        <div className="flex items-center gap-3 w-44 shrink-0">
+          <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${
+            isActive
+              ? 'bg-indigo-500/15 border-indigo-500/25 text-indigo-400'
+              : 'bg-white/[0.03] border-white/[0.06] text-white/20'
+          }`}>
+            <CalendarDays size={16} />
           </div>
-          <span className={`font-bold text-lg ${slots.length > 0 ? 'text-black' : 'text-black/20'}`}>{day}</span>
+          <span className={`font-semibold text-sm ${isActive ? 'text-white' : 'text-white/25'}`}>{day}</span>
         </div>
 
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 space-y-2">
           {slots.length === 0 ? (
-            <p className="text-black/20 italic text-sm py-2">Unavailable</p>
+            <p className="text-white/20 text-sm italic py-1">Unavailable</p>
           ) : (
             slots.map((slot, idx) => (
               <TimeSlot
@@ -41,18 +43,18 @@ export function DayRow({ day, slots, onAddSlot, onUpdateSlot, onRemoveSlot }: Da
           )}
         </div>
 
-        <div className="sm:ml-6">
+        <div className="sm:ml-4 shrink-0">
           <Button
             variant="ghost"
             size="sm"
             onClick={onAddSlot}
-            className="gap-2 text-black border-2 border-black hover:bg-black hover:text-white transition-all rounded-xl"
+            className="gap-1.5 text-white/40 hover:text-white border border-white/[0.08] hover:border-white/20 hover:bg-white/[0.05] rounded-xl text-xs"
           >
-            <Plus size={16} />
+            <Plus size={14} />
             Add Slot
           </Button>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

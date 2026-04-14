@@ -6,45 +6,52 @@ interface EventRowProps {
 
 export function EventRow({ event }: EventRowProps) {
   const date = new Date(event.startTime);
-  
+  const isBooking = event.type === 'Booking';
+
   return (
-    <div className="flex items-center justify-between p-6 bg-white rounded-xl border border-black hover:bg-black hover:text-white transition-all group">
-      <div className="flex items-center gap-6">
-        <div className={`w-14 h-14 rounded-xl flex flex-col items-center justify-center font-black border-2 border-black group-hover:border-white ${
-          event.type === 'Booking' 
-            ? 'bg-black text-white' 
-            : 'bg-white text-black group-hover:bg-white group-hover:text-black'
+    <div className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.03] transition-all group cursor-pointer">
+      <div className="flex items-center gap-4">
+        <div className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center font-bold shrink-0 ${
+          isBooking
+            ? 'bg-indigo-500/15 border border-indigo-500/20 text-indigo-300'
+            : 'bg-white/5 border border-white/10 text-white/60'
         }`}>
-          <span className="text-[10px] uppercase opacity-60 leading-none mb-1">
+          <span className="text-[9px] uppercase opacity-70 leading-none mb-0.5">
             {date.toLocaleString('default', { month: 'short' })}
           </span>
-          <span className="text-xl leading-none">{date.getDate()}</span>
+          <span className="text-base leading-none">{date.getDate()}</span>
         </div>
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-black text-lg uppercase tracking-tight">{event.title}</h4>
-            <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md border group-hover:border-white ${
-              event.type === 'Booking' 
-                ? 'bg-black text-white' 
-                : 'bg-white text-black group-hover:bg-white group-hover:text-black'
+          <div className="flex items-center gap-2 mb-0.5">
+            <h4 className="font-semibold text-sm text-white">{event.title}</h4>
+            <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+              isBooking
+                ? 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/20'
+                : 'bg-white/5 text-white/40 border border-white/10'
             }`}>
               {event.type}
             </span>
           </div>
-          <p className="text-black/50 group-hover:text-white/60 text-sm flex items-center gap-3 font-medium">
+          <p className="text-white/35 text-xs flex items-center gap-2">
             <span className="flex items-center gap-1">
-              <Clock size={14} /> {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              <Clock size={11} />
+              {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
-            <span>•</span>
-            <span>30 min duration</span>
+            <span className="text-white/15">•</span>
+            <span>30 min</span>
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-4">
-        <button className="opacity-0 group-hover:opacity-100 transition-all p-2 hover:bg-white/20 rounded-lg text-white">
-          <ExternalLink size={18} />
+
+      <div className="flex items-center gap-3">
+        <button className="opacity-0 group-hover:opacity-100 transition-all p-1.5 hover:bg-white/10 rounded-lg text-white/40 hover:text-white">
+          <ExternalLink size={14} />
         </button>
-        <span className="px-4 py-1 bg-black text-white group-hover:bg-white group-hover:text-black text-[11px] font-black rounded-full uppercase tracking-widest border border-black group-hover:border-white transition-colors">
+        <span className={`px-3 py-1 text-[11px] font-semibold rounded-full uppercase tracking-wider ${
+          event.status === 'CANCELLED'
+            ? 'bg-red-500/10 text-red-400 border border-red-500/20'
+            : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+        }`}>
           {event.status || 'Confirmed'}
         </span>
       </div>

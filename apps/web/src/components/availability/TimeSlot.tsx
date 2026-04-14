@@ -9,26 +9,28 @@ interface TimeSlotProps {
 
 export function TimeSlot({ startTime, endTime, onUpdate, onRemove }: TimeSlotProps) {
   return (
-    <div className="flex items-center gap-3 bg-white p-3 rounded-xl border border-black group transition-all hover:shadow-md">
-      <Clock size={16} className="text-black" />
+    <div className="flex items-center gap-3 bg-white/[0.04] px-3 py-2.5 rounded-lg border border-white/[0.06] group hover:border-white/10 transition-all">
+      <Clock size={13} className="text-indigo-400 shrink-0" />
       <input
         type="time"
         value={startTime}
         onChange={(e) => onUpdate('startTime', e.target.value)}
-        className="bg-transparent border-none text-black font-bold focus:ring-0 cursor-pointer"
+        className="bg-transparent border-none text-white text-sm font-medium focus:ring-0 cursor-pointer outline-none"
+        style={{ colorScheme: 'dark' }}
       />
-      <span className="text-black/30 font-black tracking-tighter">—</span>
+      <span className="text-white/20 font-medium">—</span>
       <input
         type="time"
         value={endTime}
         onChange={(e) => onUpdate('endTime', e.target.value)}
-        className="bg-transparent border-none text-black font-bold focus:ring-0 cursor-pointer"
+        className="bg-transparent border-none text-white text-sm font-medium focus:ring-0 cursor-pointer outline-none"
+        style={{ colorScheme: 'dark' }}
       />
       <button
         onClick={onRemove}
-        className="ml-auto p-2 text-black/20 hover:text-black transition-colors"
+        className="ml-auto p-1.5 text-white/20 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-all"
       >
-        <Trash2 size={18} />
+        <Trash2 size={13} />
       </button>
     </div>
   );
