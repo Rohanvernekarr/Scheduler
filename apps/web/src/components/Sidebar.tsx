@@ -1,9 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, CalendarClock, BookOpen, Settings, User, Clock } from 'lucide-react';
+import { LayoutDashboard, CalendarClock, Clock, BookOpen, Settings, User } from 'lucide-react';
 
 export const Sidebar = () => {
   const location = useLocation();
-  
+
   const navItems = [
     { label: 'Overview', path: '/', icon: LayoutDashboard },
     { label: 'Schedule', path: '/schedule', icon: CalendarClock },
@@ -13,44 +13,54 @@ export const Sidebar = () => {
   ];
 
   return (
-    <div className="fixed h-screen w-64 flex flex-col p-6 bg-white border-r border-black z-50">
-      <div className="flex items-center gap-3 mb-10 px-2">
-        <div className="w-8 h-8 rounded-md bg-black flex items-center justify-center font-black text-white italic">S</div>
-        <span className="font-black text-xl tracking-tighter text-black uppercase">Scheduler</span>
+    <div className="fixed h-screen w-64 flex flex-col p-5 bg-[#0d0d0d] border-r border-white/[0.06] z-50">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mb-8 px-2 py-1">
+        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-indigo-500/30">
+          S
+        </div>
+        <span className="font-bold text-[15px] tracking-tight text-white">Scheduler</span>
       </div>
-      
-      <nav className="flex-1 space-y-1">
+
+      {/* Nav */}
+      <nav className="flex-1 space-y-0.5">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               key={item.label}
               to={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                isActive 
-                  ? 'bg-black text-white font-black' 
-                  : 'text-black/60 hover:bg-black/5 hover:text-black font-bold'
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 group ${
+                isActive
+                  ? 'bg-white/[0.08] text-white font-semibold'
+                  : 'text-white/45 hover:bg-white/[0.05] hover:text-white/80 font-medium'
               }`}
             >
-              <item.icon size={20} className={isActive ? 'text-white' : 'text-black/40 group-hover:text-black'} />
-              <span className="text-sm tracking-tight">{item.label}</span>
+              <item.icon
+                size={18}
+                className={isActive ? 'text-indigo-400' : 'text-white/30 group-hover:text-white/60'}
+              />
+              <span className="text-sm">{item.label}</span>
+              {isActive && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400" />
+              )}
             </Link>
           );
         })}
       </nav>
-      
-      <div className="mt-auto p-4 bg-transparent rounded-2xl border-2 border-black">
+
+      {/* User footer */}
+      <div className="mt-auto p-3 bg-white/[0.04] rounded-xl border border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white">
-            <User size={20} />
+          <div className="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+            <User size={15} />
           </div>
           <div>
-            <p className="text-[10px] text-black/40 font-black uppercase tracking-widest leading-none">Account</p>
-            <p className="text-sm font-black text-black mt-1">John Doe</p>
+            <p className="text-[11px] text-white/30 font-medium uppercase tracking-wider leading-none">Account</p>
+            <p className="text-sm font-semibold text-white mt-0.5">John Doe</p>
           </div>
         </div>
       </div>
     </div>
-
   );
 };
