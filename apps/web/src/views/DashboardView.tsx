@@ -47,13 +47,12 @@ export default function DashboardView() {
         <div>
           <p className="text-xs font-semibold text-zinc-100 uppercase tracking-widest mb-2">Overview</p>
           <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
-          <p className="text-white/40 text-sm mt-1">Welcome back — here's your current schedule.</p>
+          <p className="text-white/40 text-sm mt-1">Welcome back - here's your current schedule.</p>
         </div>
         <div className="flex gap-3">
           <Button variant="secondary" size="md">Settings</Button>
           <Link to="/schedule">
             <Button size="md" className="gap-2">
-              <Plus size={16} />
               New Meeting
             </Button>
           </Link>
