@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Card } from '@repo/ui';
 import { getUserProfile, createBooking } from '../lib/api';
 
 import { BookingProfile } from '../components/booking/BookingProfile';
@@ -78,20 +77,38 @@ export default function BookingView() {
   });
 
   return (
-    <div className="min-h-screen bg-white text-black p-6 md:p-12 selection:bg-black selection:text-white">
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-8">
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-6 md:p-12 selection:bg-indigo-500 selection:text-white">
+      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-6">
         <BookingProfile user={user} />
-        <div className="flex-1 space-y-8">
-          <Card className="p-8 border-black bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <CalendarPicker days={days} selectedDate={selectedDate} onSelectDate={(d) => { setSelectedDate(d); setSelectedTime(null); }} availabilities={user.availabilities} />
-              <TimePicker availableSlots={availableSlots} selectedTime={selectedTime} onSelectTime={setSelectedTime} />
+        <div className="flex-1 space-y-5">
+          <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <CalendarPicker
+                days={days}
+                selectedDate={selectedDate}
+                onSelectDate={(d) => { setSelectedDate(d); setSelectedTime(null); }}
+                availabilities={user.availabilities}
+              />
+              <TimePicker
+                availableSlots={availableSlots}
+                selectedTime={selectedTime}
+                onSelectTime={setSelectedTime}
+              />
             </div>
-          </Card>
+          </div>
           <AnimatePresence>
             {selectedTime && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}>
-                <GuestForm guestName={guestName} setGuestName={setGuestName} guestEmail={guestEmail} setGuestEmail={setGuestEmail} selectedDate={selectedDate} selectedTime={selectedTime} isPending={bookingMutation.isPending} onConfirm={handleBooking} />
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}>
+                <GuestForm
+                  guestName={guestName}
+                  setGuestName={setGuestName}
+                  guestEmail={guestEmail}
+                  setGuestEmail={setGuestEmail}
+                  selectedDate={selectedDate}
+                  selectedTime={selectedTime}
+                  isPending={bookingMutation.isPending}
+                  onConfirm={handleBooking}
+                />
               </motion.div>
             )}
           </AnimatePresence>
@@ -103,16 +120,19 @@ export default function BookingView() {
 
 function LoadingSpinner() {
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading Profile...</p>
+        <div className="w-10 h-10 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+        <p className="text-white/30 text-xs font-semibold uppercase tracking-widest">Loading Profile...</p>
       </div>
     </div>
   );
 }
 
 function ErrorState() {
-  return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-red-500 font-bold">User Not Found</div>;
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+      <p className="text-white/30 font-semibold">User not found.</p>
+    </div>
+  );
 }
-

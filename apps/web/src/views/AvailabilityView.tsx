@@ -53,16 +53,17 @@ export default function AvailabilityView() {
   if (isLoading) return <LoadingSkeleton />;
 
   return (
-    <div className="max-w-5xl">
-      <header className="mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+    <div className="max-w-4xl">
+      <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black tracking-tight mb-2 text-black">Availability</h1>
-          <p className="text-black/50 text-lg font-medium">Define when you are reachable for bookings.</p>
+          <p className="text-xs font-semibold text-indigo-400 uppercase tracking-widest mb-2">Configuration</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Availability</h1>
+          <p className="text-white/40 text-sm mt-1">Define when you're reachable for bookings.</p>
         </div>
         {showSuccess && <SuccessToast />}
       </header>
 
-      <div className="space-y-6">
+      <div className="space-y-2">
         {DAYS.map((day, dayIdx) => (
           <DayRow
             key={day}
@@ -77,14 +78,12 @@ export default function AvailabilityView() {
         ))}
       </div>
 
-      <div className="mt-12 flex justify-end sticky bottom-8">
+      <div className="mt-8 flex justify-end sticky bottom-6">
         <Button
           size="lg"
           disabled={!hasChanges || mutation.isPending}
           onClick={() => mutation.mutate(localSchedule)}
-          className={`px-12 rounded-xl border-4 border-black font-black uppercase tracking-widest transition-all ${
-            hasChanges ? 'bg-black text-white' : 'bg-white text-black/20 border-black/10 opacity-50'
-          }`}
+          className="px-10"
         >
           {mutation.isPending ? 'Saving...' : 'Save Schedule'}
         </Button>
@@ -95,9 +94,9 @@ export default function AvailabilityView() {
 
 function SuccessToast() {
   return (
-    <div className="flex items-center gap-2 text-black bg-white border-2 border-black px-4 py-2 rounded-xl animate-in fade-in slide-in-from-right-4">
-      <CheckCircle2 size={18} />
-      <span className="text-sm font-bold uppercase tracking-widest">Saved Successfully</span>
+    <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2.5 rounded-xl animate-in fade-in slide-in-from-right-4">
+      <CheckCircle2 size={16} />
+      <span className="text-sm font-semibold">Saved successfully</span>
     </div>
   );
 }
@@ -105,8 +104,8 @@ function SuccessToast() {
 function LoadingSkeleton() {
   return (
     <div className="animate-pulse space-y-4">
-      <div className="h-12 bg-white/5 rounded-2xl w-1/4" />
-      <div className="h-64 bg-white/5 rounded-3xl w-full" />
+      <div className="h-8 bg-white/5 rounded-xl w-1/4" />
+      <div className="h-64 bg-white/5 rounded-2xl w-full" />
     </div>
   );
 }
