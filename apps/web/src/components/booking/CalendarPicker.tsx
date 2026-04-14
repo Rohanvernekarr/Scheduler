@@ -11,7 +11,7 @@ export function CalendarPicker({ days, selectedDate, onSelectDate, availabilitie
   return (
     <div className="space-y-4">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest flex items-center gap-2">
-        <Calendar size={14} className="text-zinc-100" />
+        <Calendar size={14} className="text-zinc-50" />
         Select Date
       </h2>
 
@@ -33,7 +33,7 @@ export function CalendarPicker({ days, selectedDate, onSelectDate, availabilitie
               onClick={() => onSelectDate(date)}
               className={`p-3 rounded-xl flex flex-col items-center justify-center transition-all border text-sm ${
                 isSelected
-                  ? 'bg-zinc-600 border-zinc-500 text-white shadow-lg shadow-zinc-500/25'
+                  ? 'bg-zinx-300 border-zinc-500 text-white shadow-lg shadow-zinc-500/25'
                   : hasSlots
                     ? 'bg-white/[0.04] border-white/[0.06] text-white hover:bg-white/[0.08] hover:border-white/10'
                     : 'opacity-20 cursor-not-allowed border-transparent'

@@ -19,7 +19,7 @@ export function DayRow({ day, slots, onAddSlot, onUpdateSlot, onRemoveSlot }: Da
         <div className="flex items-center gap-3 w-44 shrink-0">
           <div className={`w-9 h-9 rounded-xl flex items-center justify-center border ${
             isActive
-              ? 'bg-zinc-500/15 border-zinc-500/25 text-zinc-100'
+              ? 'bg-zinc-500/15 border-zinc-500/25 text-zinc-50'
               : 'bg-white/[0.03] border-white/[0.06] text-white/20'
           }`}>
             <CalendarDays size={16} />

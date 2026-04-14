@@ -34,11 +34,11 @@ export const Sidebar = () => {
             >
               <item.icon
                 size={18}
-                className={isActive ? 'text-zinc-100' : 'text-white/30 group-hover:text-white/60'}
+                className={isActive ? 'text-zinc-50' : 'text-white/30 group-hover:text-white/60'}
               />
               <span className="text-sm">{item.label}</span>
               {isActive && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-zinc-100" />
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-zinc-50" />
               )}
             </Link>
           );
@@ -47,7 +47,7 @@ export const Sidebar = () => {
 
       <div className="mt-auto p-3 bg-white/[0.04] rounded-xl border border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-zinc-600/20 border border-zinc-500/30 flex items-center justify-center text-zinc-100">
+          <div className="w-8 h-8 rounded-full bg-zinx-300/20 border border-zinc-500/30 flex items-center justify-center text-zinc-50">
             <User size={15} />
           </div>
           <div>

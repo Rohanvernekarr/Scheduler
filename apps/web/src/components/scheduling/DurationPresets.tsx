@@ -29,7 +29,7 @@ export function DurationPresets({ selected, onSelect }: DurationPresetsProps) {
           onClick={() => onSelect(dur.value)}
           className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${
             selected === dur.value 
-              ? 'bg-zinc-600 text-white shadow-sm' 
+              ? 'bg-zinx-300 text-white shadow-sm' 
               : 'text-white/30 hover:text-white/60 hover:bg-white/5'
           }`}
         >
@@ -41,7 +41,7 @@ export function DurationPresets({ selected, onSelect }: DurationPresetsProps) {
         onClick={() => onSelect('custom')}
         className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${
           selected === 'custom' 
-            ? 'bg-zinc-600 text-white shadow-sm' 
+            ? 'bg-zinx-300 text-white shadow-sm' 
             : 'text-white/30 hover:text-white/60 hover:bg-white/5'
         }`}
       >

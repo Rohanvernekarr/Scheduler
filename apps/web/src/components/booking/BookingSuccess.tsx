@@ -26,11 +26,11 @@ export function BookingSuccess({ userName, selectedDate, selectedTime, onDone }:
 
         <div className="bg-white/[0.04] border border-white/[0.06] p-4 rounded-xl text-left space-y-3">
           <div className="flex items-center gap-3 text-sm text-white/70">
-            <Calendar size={14} className="text-zinc-100" />
+            <Calendar size={14} className="text-zinc-50" />
             <span>{selectedDate.toLocaleDateString(undefined, { dateStyle: 'full' })}</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-white/70">
-            <Clock size={14} className="text-zinc-100" />
+            <Clock size={14} className="text-zinc-50" />
             <span>{selectedTime} (30 mins)</span>
           </div>
         </div>

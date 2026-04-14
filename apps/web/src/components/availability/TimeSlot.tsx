@@ -10,7 +10,7 @@ interface TimeSlotProps {
 export function TimeSlot({ startTime, endTime, onUpdate, onRemove }: TimeSlotProps) {
   return (
     <div className="flex items-center gap-3 bg-white/[0.04] px-3 py-2.5 rounded-lg border border-white/[0.06] group hover:border-white/10 transition-all">
-      <Clock size={13} className="text-zinc-100 shrink-0" />
+      <Clock size={13} className="text-zinc-50 shrink-0" />
       <input
         type="time"
         value={startTime}

@@ -40,7 +40,7 @@ export function DateTimeSection({
         {/* Start */}
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded-full bg-zinc-500/20 flex items-center justify-center text-zinc-100 text-[9px] font-bold">S</span>
+            <span className="w-4 h-4 rounded-full bg-zinc-500/20 flex items-center justify-center text-zinc-50 text-[9px] font-bold">S</span>
             Start
           </p>
           <PremiumDateTimePicker
@@ -75,7 +75,7 @@ export function DateTimeSection({
           animate={{ opacity: 1, scale: 1 }}
           className={`mt-6 flex items-center gap-3 p-3 rounded-xl border ${
             currentDuration > 0 
-              ? 'bg-zinc-500/5 border-zinc-500/10 text-zinc-100' 
+              ? 'bg-zinc-500/5 border-zinc-500/10 text-zinc-50' 
               : 'bg-red-500/5 border-red-500/10 text-red-400'
           }`}
         >

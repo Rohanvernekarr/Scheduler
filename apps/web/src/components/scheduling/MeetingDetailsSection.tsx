@@ -39,8 +39,8 @@ export function MeetingDetailsSection({
   labelClass,
 }: MeetingDetailsSectionProps) {
   return (
-    <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6 space-y-5">
-      <p className="text-[11px] font-semibold text-white/30 uppercase tracking-widest">
+    <div className="bg-[#111111] border border-white/[0.06] text-white rounded-2xl p-6 space-y-5">
+      <p className="text-[11px] font-semibold uppercase tracking-widest">
         Event Details
       </p>
 
@@ -48,7 +48,7 @@ export function MeetingDetailsSection({
       <label className="block">
         <span className={labelClass}>Meeting Name</span>
         <div className="relative">
-          <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/25" size={15} />
+          <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2" size={15} />
           <input
             required
             value={title}
@@ -72,7 +72,7 @@ export function MeetingDetailsSection({
                 onClick={() => setType(value)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-semibold transition-all ${
                   active
-                    ? 'bg-zinc-600 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
+                    ? 'bg-zinx-300 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
                     : 'bg-white/[0.04] border-white/[0.06] text-white/45 hover:text-white hover:border-white/15'
                 }`}
               >
@@ -88,7 +88,7 @@ export function MeetingDetailsSection({
       <label className="block">
         <span className={labelClass}>Meeting Link</span>
         <div className="relative">
-          <LinkIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/25" size={15} />
+          <LinkIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 " size={15} />
           <input
             type="url"
             value={meetingLink}
@@ -103,7 +103,7 @@ export function MeetingDetailsSection({
       <label className="block">
         <span className={labelClass}>Participants (comma-separated emails)</span>
         <div className="relative">
-          <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/25" size={15} />
+          <Users className="absolute left-3.5 top-1/2 -translate-y-1/2" size={15} />
           <input
             required
             type="text"
@@ -119,7 +119,7 @@ export function MeetingDetailsSection({
       <label className="block">
         <span className={labelClass}>Description</span>
         <div className="relative">
-          <AlignLeft className="absolute left-3.5 top-3.5 text-white/25" size={15} />
+          <AlignLeft className="absolute left-3.5 top-3.5" size={15} />
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}

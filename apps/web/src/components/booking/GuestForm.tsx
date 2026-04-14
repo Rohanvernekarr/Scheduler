@@ -27,7 +27,7 @@ export function GuestForm({
   return (
     <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest flex items-center gap-2 mb-6">
-        <User size={14} className="text-zinc-100" />
+        <User size={14} className="text-zinc-50" />
         Your Details
       </h2>
 

@@ -26,7 +26,7 @@ export function EventRow({ event }: EventRowProps) {
             <h4 className="font-semibold text-sm text-white">{event.title}</h4>
             <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
               isBooking
-                ? 'bg-zinc-500/15 text-zinc-100 border border-zinc-500/20'
+                ? 'bg-zinc-500/15 text-zinc-50 border border-zinc-500/20'
                 : 'bg-white/5 text-white/40 border border-white/10'
             }`}>
               {event.type}
