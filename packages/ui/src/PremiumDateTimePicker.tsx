@@ -225,37 +225,37 @@ export function PremiumDateTimePicker({
       <AnimatePresence>
         {showDatePicker && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ type: "spring", damping: 25, stiffness: 350 }}
             style={{
               position: "fixed",
-              top: "50%",
+              top: "30%",
               left: "50%",
               x: "-50%",
               y: "-50%",
               zIndex: 9999,
-              width: "320px",
+              width: "380px",
               background: "#121212",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "24px",
-              padding: "24px",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "20px",
+              padding: "16px 20px 20px 20px",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.6)",
             }}
           >
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-               <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em" }}>Select Date</span>
+            <div style={{ textAlign: "center", marginBottom: "14px" }}>
+               <span style={{ fontSize: "12px", fontWeight: 800, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Date</span>
             </div>
 
             {/* Month nav */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
               <button
                 type="button"
                 onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1))}
-                style={{ ...cellBase, width: "32px", height: "32px", background: "rgba(255,255,255,0.05)", color: "#fff" }}
+                style={{ ...cellBase, width: "30px", height: "30px", background: "rgba(255,255,255,0.06)", color: "#fff" }}
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft size={14} />
               </button>
               <span style={{ fontSize: "12px", fontWeight: 700, color: "#fff" }}>
                 {viewDate.toLocaleString("default", { month: "long" })} {viewDate.getFullYear()}
@@ -263,23 +263,23 @@ export function PremiumDateTimePicker({
               <button
                 type="button"
                 onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 1))}
-                style={{ ...cellBase, width: "32px", height: "32px", background: "rgba(255,255,255,0.05)", color: "#fff" }}
+                style={{ ...cellBase, width: "30px", height: "30px", background: "rgba(255,255,255,0.06)", color: "#fff" }}
               >
-                <ChevronRight size={16} />
+                <ChevronRight size={14} />
               </button>
             </div>
 
             {/* Day headers */}
             <div style={grid7}>
               {["Su","Mo","Tu","We","Th","Fr","Sa"].map(d => (
-                <div key={d} style={{ textAlign: "center", fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase" }}>
+                <div key={d} style={{ textAlign: "center", fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.25)", textTransform: "uppercase" }}>
                   {d}
                 </div>
               ))}
             </div>
 
             {/* Days */}
-            <div style={{ ...grid7, marginTop: "8px" }}>
+            <div style={{ ...grid7, marginTop: "6px" }}>
               {generateDays().map((d, i) => {
                 if (!d) return <div key={i} />;
                 const ds = getLocalDateString(d);
@@ -293,9 +293,9 @@ export function PremiumDateTimePicker({
                     onClick={() => handleDateSelect(d)}
                     style={{
                       ...cellBase,
-                      height: "36px",
-                      borderRadius: "10px",
-                      fontSize: "12px",
+                      height: "32px",
+                      borderRadius: "8px",
+                      fontSize: "11px",
                       ...(selected ? { background: "#6366f1", color: "#fff" }
                         : past ? { background: "transparent", color: "rgba(255,255,255,0.1)", cursor: "not-allowed" }
                         : { background: "transparent", color: "rgba(255,255,255,0.8)" }),
@@ -312,15 +312,17 @@ export function PremiumDateTimePicker({
                onClick={() => setShowDatePicker(false)}
                style={{
                  width: "100%",
-                 marginTop: "20px",
-                 padding: "12px 0",
-                 borderRadius: "12px",
+                 marginTop: "16px",
+                 padding: "10px 0",
+                 borderRadius: "10px",
                  background: "rgba(255,255,255,0.05)",
-                 color: "#fff",
-                 fontSize: "12px",
+                 color: "rgba(255,255,255,0.5)",
+                 fontSize: "11px",
                  fontWeight: 700,
                  border: "none",
                  cursor: "pointer",
+                 textTransform: "uppercase",
+                 letterSpacing: "0.05em"
                }}
             >
               Close
@@ -333,31 +335,31 @@ export function PremiumDateTimePicker({
       <AnimatePresence>
         {showTimePicker && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ type: "spring", damping: 25, stiffness: 350 }}
             style={{
               position: "fixed",
-              top: "50%",
+              top: "30%",
               left: "50%",
               x: "-50%",
               y: "-50%",
               zIndex: 9999,
-              width: "280px",
+              width: "360px",
               background: "#121212",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: "24px",
-              padding: "24px",
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "20px",
+              padding: "16px 20px 20px 20px",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.6)",
             }}
           >
-            <div style={{ textAlign: "center", marginBottom: "20px" }}>
-               <span style={{ fontSize: "14px", fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em" }}>Select Time</span>
+            <div style={{ textAlign: "center", marginBottom: "14px" }}>
+               <span style={{ fontSize: "12px", fontWeight: 800, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em" }}>Time</span>
             </div>
 
             {/* AM / PM toggle */}
-            <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", padding: "4px", borderRadius: "12px", marginBottom: "20px" }}>
+            <div style={{ display: "flex", background: "rgba(255,255,255,0.05)", padding: "4px", borderRadius: "10px", marginBottom: "14px" }}>
               {["AM", "PM"].map(p => (
                 <button
                   key={p}
@@ -365,10 +367,10 @@ export function PremiumDateTimePicker({
                   onClick={() => setTime(hr12, min, p)}
                   style={{
                     flex: 1,
-                    padding: "8px 0",
-                    fontSize: "12px",
+                    padding: "6px 0",
+                    fontSize: "11px",
                     fontWeight: 700,
-                    borderRadius: "10px",
+                    borderRadius: "8px",
                     border: "none",
                     cursor: "pointer",
                     transition: "all 0.15s",
@@ -383,14 +385,18 @@ export function PremiumDateTimePicker({
             </div>
 
             {/* Hours */}
-            <div style={{ fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "8px", textAlign: "left" }}>Hour</div>
-            <div style={{ ...grid4, marginBottom: "16px" }}>
+            <div style={{ fontSize: "9px", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", marginBottom: "6px", textAlign: "left", letterSpacing: "0.05em" }}>Hour</div>
+            <div style={{ ...grid4, marginBottom: "12px", gap: "4px" }}>
               {HOURS.map(h => (
                 <button
                   key={h}
                   type="button"
                   onClick={() => setTime(h, min, period)}
-                  style={hr12 === h ? { ...cellActive, background: "#6366f1" } : cellIdle}
+                  style={{
+                    ...hr12 === h ? { ...cellActive, background: "#6366f1" } : cellIdle,
+                    height: "30px",
+                    fontSize: "11px"
+                  }}
                 >
                   {h}
                 </button>
@@ -398,14 +404,18 @@ export function PremiumDateTimePicker({
             </div>
 
             {/* Minutes */}
-            <div style={{ fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: "8px", textAlign: "left" }}>Minute</div>
-            <div style={{ ...grid4, marginBottom: "20px" }}>
+            <div style={{ fontSize: "9px", fontWeight: 700, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", marginBottom: "6px", textAlign: "left", letterSpacing: "0.05em" }}>Minute</div>
+            <div style={{ ...grid4, marginBottom: "16px", gap: "4px" }}>
               {MINUTES.map(m => (
                 <button
                   key={m}
                   type="button"
                   onClick={() => setTime(hr12, m, period)}
-                  style={min === m ? { ...cellActive, background: "#6366f1" } : cellIdle}
+                  style={{
+                    ...min === m ? { ...cellActive, background: "#6366f1" } : cellIdle,
+                    height: "30px",
+                    fontSize: "11px"
+                  }}
                 >
                   {m.toString().padStart(2, "0")}
                 </button>
@@ -418,15 +428,16 @@ export function PremiumDateTimePicker({
               onClick={() => setShowTimePicker(false)}
               style={{
                 width: "100%",
-                padding: "12px 0",
-                borderRadius: "12px",
+                padding: "10px 0",
+                borderRadius: "10px",
                 background: "#6366f1",
                 color: "#fff",
-                fontSize: "13px",
+                fontSize: "12px",
                 fontWeight: 700,
                 textTransform: "uppercase",
                 border: "none",
                 cursor: "pointer",
+                letterSpacing: "0.05em"
               }}
             >
               Done
