@@ -16,10 +16,7 @@ export const Sidebar = () => {
     <div className="fixed h-screen w-64 flex flex-col p-5 bg-[#0d0d0d] border-r border-white/[0.06] z-50">
      
       <div className="flex items-center gap-3 mb-8 px-2 py-1">
-        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-indigo-500/30">
-          S
-        </div>
-        <span className="font-bold text-[15px] tracking-tight text-white">Scheduler</span>
+        <span className="font-bold text-[25px] tracking-tight text-white">Scheduler</span>
       </div>
 
       <nav className="flex-1 space-y-0.5">
@@ -37,11 +34,11 @@ export const Sidebar = () => {
             >
               <item.icon
                 size={18}
-                className={isActive ? 'text-indigo-400' : 'text-white/30 group-hover:text-white/60'}
+                className={isActive ? 'text-zinc-100' : 'text-white/30 group-hover:text-white/60'}
               />
               <span className="text-sm">{item.label}</span>
               {isActive && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-zinc-100" />
               )}
             </Link>
           );
@@ -50,7 +47,7 @@ export const Sidebar = () => {
 
       <div className="mt-auto p-3 bg-white/[0.04] rounded-xl border border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+          <div className="w-8 h-8 rounded-full bg-zinc-600/20 border border-zinc-500/30 flex items-center justify-center text-zinc-100">
             <User size={15} />
           </div>
           <div>
