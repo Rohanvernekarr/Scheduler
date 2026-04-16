@@ -3,79 +3,63 @@ import type { ReactNode } from "react";
 const STEPS = [
   {
     num: "01",
-    title: "You schedule a meeting",
-    desc: "Pick a type - interview, sync, check-in. Add the participants, time, and agenda. Hit send. Done.",
+    title: "INITIATE",
+    desc: "Pick a type, add participants, and set your agenda in seconds.",
   },
   {
     num: "02",
-    title: "Or share your availability",
-    desc: "Set your open hours. Share your personal booking link. Let people pick a time that works for them.",
+    title: "DISTRIBUTE",
+    desc: "Share your availability link. No login, no friction - just booking.",
   },
   {
     num: "03",
-    title: "Invites go out instantly",
-    desc: "Everyone gets a professional email with the meeting link, date, time, and agenda. No manual follow-up.",
+    title: "SYNC",
+    desc: "Automated invites fly out to everyone instantly. Zero ping-pong.",
   },
   {
     num: "04",
-    title: "Track it all in one place",
-    desc: "Your dashboard shows every meeting - upcoming, past, who's attending. Always know what's next.",
+    title: "TRACK",
+    desc: "Your monolithic dashboard keeps everything in one unified view.",
   },
 ];
 
 
 export function HowItWorks(): ReactNode {
   return (
-    <section id="how" style={{
-      padding: "100px 0",
-      borderTop: "1px solid rgba(255,255,255,0.06)",
-    }}>
+    <section id="how" className="py-24 bg-foreground/[0.02]">
       <div className="container">
-        <p style={{
-          fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-          textTransform: "uppercase", color: "rgba(255,255,255,0.3)",
-          marginBottom: "64px",
-        }}>
-          How it works
-        </p>
+        <div className="max-w-xl mb-24">
+          <span className="tech-label mb-4 block">03 / Operation Manual</span>
+          <h2 className="tech-heading text-4xl md:text-5xl leading-tight">
+            The systematic <br />flow of scheduling.
+          </h2>
+        </div>
 
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-          gap: "48px 40px",
-        }}>
+        <div className="flex flex-col gap-px bg-border border border-border">
           {STEPS.map(({ num, title, desc }) => (
-            <div key={num}>
-              <p style={{
-                fontSize: "48px", fontWeight: 900, color: "#353535ac",
-                letterSpacing: "-0.05em", lineHeight: 1, marginBottom: "16px",
-              }}>
-                {num}
-              </p>
-              <h3 style={{
-                fontSize: "18px", fontWeight: 800, color: "#f4f4f5",
-                letterSpacing: "-0.025em", marginBottom: "10px",
-              }}>
-                {title}
-              </h3>
-              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.36)", lineHeight: 1.7 }}>
-                {desc}
-              </p>
+            <div key={num} className="bg-background flex flex-col md:flex-row items-center group transition-colors hover:bg-foreground/[0.01]">
+              <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-border min-w-[120px] flex justify-center">
+                 <span className="tech-heading text-3xl text-foreground/10 group-hover:text-foreground transition-colors">{num}</span>
+              </div>
+              <div className="flex-1 p-8 md:p-12">
+                 <h3 className="tech-heading text-2xl mb-2">{title}</h3>
+                 <p className="text-foreground/40 font-medium max-w-lg">{desc}</p>
+              </div>
+              <div className="p-8 md:p-12 text-foreground/5 hidden lg:block">
+                 <span className="tech-heading">ACTIVE_PROTOCOL</span>
+              </div>
             </div>
           ))}
         </div>
 
-        <div style={{ marginTop: "80px", display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap" }}>
-          <a href="/schedule" style={{
-            background: "#f4f4f5", color: "#0a0a0a",
-            fontWeight: 800, fontSize: "14px",
-            padding: "13px 30px", borderRadius: "11px",
-          }}>
-            Get your free link →
+        <div className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-10 bg-foreground text-background p-10">
+          <div>
+            <h3 className="tech-heading text-3xl mb-2">Ready to deploy?</h3>
+            <p className="font-bold opacity-60">No setup fees. No friction. Start now.</p>
+          </div>
+          <a href="/schedule" className="bg-background text-foreground tech-heading px-10 py-5 border border-background hover:bg-background/90 transition-all text-center w-full sm:w-auto">
+            Get Your Link →
           </a>
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.22)" }}>
-            No credit card. No setup fee. Yours in 60 seconds.
-          </p>
         </div>
       </div>
     </section>
@@ -84,25 +68,39 @@ export function HowItWorks(): ReactNode {
 
 export function Footer(): ReactNode {
   return (
-    <footer style={{
-      borderTop: "1px solid rgba(255,255,255,0.06)",
-      padding: "36px 0",
-    }}>
-      <div className="container" style={{
-        display: "flex", flexWrap: "wrap",
-        alignItems: "center", justifyContent: "space-between", gap: "16px",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ width: "22px", height: "22px", background: "#f4f4f5", borderRadius: "6px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 900, color: "#0a0a0a" }}>S</span>
-          <span style={{ fontWeight: 800, fontSize: "23px", letterSpacing: "-0.02em" }}>Scheduler</span>
+    <footer className="border-t border-border py-20">
+      <div className="container">
+        <div className="flex flex-col lg:flex-row justify-between gap-20">
+          <div className="max-w-xs">
+            <span className="tech-heading text-3xl mb-6 block">Scheduler</span>
+            <p className="tech-label text-foreground/30 leading-relaxed uppercase">
+              A systematic approach to meeting booking. Built for clarity and speed. All rights reserved.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-16 xl:gap-24">
+            {["SYSTEM", "NETWORK", "SOCIAL"].map(group => (
+              <div key={group} className="flex flex-col gap-6">
+                <span className="tech-label">{group}</span>
+                <div className="flex flex-col gap-3">
+                   {["Status", "Docs", "Twitter", "GitHub"].map((item, i) => (
+                     <a key={i} href="#" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">{item}</a>
+                   ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.22)" }}>
-          © {new Date().getFullYear()} Scheduler - made for people who hate email ping-pong.
-        </p>
-        <div style={{ display: "flex", gap: "20px" }}>
-          {["Privacy", "Terms", "Contact"].map(l => (
-            <a key={l} href="#" style={{ fontSize: "12px", color: "rgba(255,255,255,0.28)", transition: "color .15s" }}>{l}</a>
-          ))}
+
+        <div className="mt-24 pt-10 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="tech-label">
+            © {new Date().getFullYear()} — SCHEDULER_CORE_V1
+          </p>
+          <div className="flex gap-8">
+            {["PRIVACY", "TERMS"].map(l => (
+              <a key={l} href="#" className="tech-label hover:text-foreground transition-colors">{l}</a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

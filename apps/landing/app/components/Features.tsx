@@ -2,81 +2,60 @@ import type { ReactNode } from "react";
 
 const FEATURES = [
   {
-    title: "Schedule any meeting",
-    desc: "Create interviews, syncs, check-ins, or workshops in seconds. Add participants, a meeting link, and agenda - invites fly out automatically.",
+    num: "01",
+    title: "Global Scheduling",
+    desc: "Create interviews, syncs, or check-ins in seconds with automated invites.",
   },
   {
-    title: "Let people book your time",
-    desc: "Share your availability link. Visitors pick a slot from your open hours. No login, no friction - just a time picked and confirmed.",
+    num: "02",
+    title: "One-Click Booking",
+    desc: "Share your availability link and let others book without back-and-forth emails.",
   },
   {
-    title: "Instant email confirmations",
-    desc: "The moment a meeting is booked, everyone gets a professional email with the date, time, meeting link, and agenda attached.",
+    num: "03",
+    title: "Instant Integration",
+    desc: "Everyone gets a professional calendar invite with zero manual configuration.",
   },
   {
-    title: "Full dashboard overview",
-    desc: "See every upcoming meeting in one place - who's attending, what type it is, when it starts. Know your day at a glance.",
+    num: "04",
+    title: "Real-time Dashboard",
+    desc: "Track every upcoming and past meeting in one unified monolithic view.",
   },
 ];
 
 export function Features(): ReactNode {
   return (
-    <section id="features" style={{
-      padding: "100px 0",
-      borderTop: "1px solid rgba(255,255,255,0.06)",
-    }}>
+    <section id="features" className="py-24 border-b border-border">
       <div className="container">
-        <p style={{
-          fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-          textTransform: "uppercase", color: "rgba(255,255,255,0.3)",
-          marginBottom: "16px",
-        }}>
-          What you get
-        </p>
+        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <div className="max-w-xl">
+            <span className="tech-label mb-4 block">02 / System Capabilities</span>
+            <h2 className="tech-heading text-4xl md:text-5xl leading-tight text-foreground">
+              A robust architecture <br />for your time.
+            </h2>
+          </div>
+          <p className="text-foreground/40 max-w-xs text-sm font-medium">
+            Designed for high-density information and zero-friction scheduling.
+          </p>
+        </div>
 
-        <h2 style={{
-          fontSize: "clamp(28px, 5vw, 44px)",
-          fontWeight: 900, letterSpacing: "-0.035em",
-          color: "#f4f4f5", lineHeight: 1.1,
-          marginBottom: "64px",
-          maxWidth: "500px",
-        }}>
-          Two ways to run your schedule.
-        </h2>
-
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 420px), 1fr))",
-          gap: "0",
-        }}>
-          {FEATURES.map(({ title, desc }, i) => {
-            const isLeft = i % 2 === 0;
-            return (
-              <div
-                key={title}
-                style={{
-                  padding: "40px 0",
-                  borderBottom: "1px solid rgba(255,255,255,0.06)",
-                  borderRight: isLeft ? "1px solid rgba(255,255,255,0.06)" : "none",
-                  paddingRight: isLeft ? "56px" : "0",
-                  paddingLeft: !isLeft ? "56px" : "0",
-                }}
-              >
-                <h3 style={{
-                  fontSize: "20px", fontWeight: 800, color: "#f4f4f5",
-                  letterSpacing: "-0.025em", marginBottom: "12px", lineHeight: 1.2,
-                }}>
-                  {title}
-                </h3>
-                <p style={{
-                  fontSize: "14px", color: "rgba(255,255,255,0.38)",
-                  lineHeight: 1.75, maxWidth: "380px",
-                }}>
-                  {desc}
-                </p>
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-border">
+          {FEATURES.map(({ num, title, desc }) => (
+            <div
+              key={title}
+              className="p-10 border-b md:border-b-0 md:border-r border-border hover:bg-foreground/5 transition-all group"
+            >
+              <p className="tech-label text-foreground/20 mb-10 group-hover:text-foreground transition-colors">
+                {num} —
+              </p>
+              <h3 className="tech-heading text-lg text-foreground mb-4">
+                {title}
+              </h3>
+              <p className="text-sm text-foreground/40 leading-relaxed font-medium">
+                {desc}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

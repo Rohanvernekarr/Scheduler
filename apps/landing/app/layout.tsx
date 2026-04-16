@@ -20,10 +20,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>): ReactNode {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>): Readonly<ReactNode> {
   return (
-    <html lang="en" style={{ colorScheme: "dark" }}>
-      <body className={geist.variable}>
+    <html lang="en" className="dark scroll-smooth">
+      <body className={`${geist.variable} font-sans`}>
         {children}
       </body>
     </html>

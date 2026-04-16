@@ -3,84 +3,49 @@ import { CalendarDemo } from "./CalendarDemo";
 
 export function Hero(): ReactNode {
   return (
-    <section style={{ paddingTop: "130px", paddingBottom: "100px" }}>
+    <section className="pt-32 pb-24 border-b border-border">
       <div className="container">
-        <p style={{
-          fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-          textTransform: "uppercase", color: "rgba(255,255,255,0.3)",
-          marginBottom: "28px",
-        }}>
-          Modern scheduling
-        </p>
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16">
+          <div className="flex-1 max-w-2xl">
+            <span className="tech-label mb-6 block">01 / Modern Scheduling</span>
 
-        <div style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: "60px",
-        }}>
-          <div style={{ flex: "1 1 380px", maxWidth: "520px" }}>
-            <h1 style={{
-              fontSize: "clamp(38px, 6.5vw, 72px)",
-              fontWeight: 900,
-              lineHeight: 1.04,
-              letterSpacing: "-0.04em",
-              color: "#f4f4f5",
-              marginBottom: "24px",
-            }}>
-              Book meetings<br />
-              <span style={{ color: "rgba(255,255,255,0.28)" }}>without the chaos.</span>
+            <h1 className="tech-heading text-6xl md:text-7xl lg:text-8xl leading-none mb-10 text-foreground">
+              Meetings.<br />
+              <span className="text-foreground/20">Simplified.</span>
             </h1>
 
-            <p style={{
-              fontSize: "clamp(15px, 1.8vw, 18px)",
-              color: "rgba(255,255,255,0.42)",
-              lineHeight: 1.75,
-              marginBottom: "40px",
-              maxWidth: "440px",
-            }}>
-              Schedule interviews, syncs, and check-ins in seconds.
-              Or share your availability link - let people pick their own time.
-              Either way, everyone gets instant email invites.
+            <p className="text-lg text-foreground/50 leading-relaxed mb-12 max-w-xl font-medium">
+              Schedule interviews, syncs, and check-ins in seconds. 
+              Share your link and let people pick their own time. 
+              Monolithic speed for modern workflows.
             </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", alignItems: "center" }}>
-              <a href="/schedule" style={{
-                background: "#f4f4f5", color: "#0a0a0a",
-                fontWeight: 800, fontSize: "14px",
-                padding: "13px 30px", borderRadius: "11px",
-                letterSpacing: "-0.01em",
-              }}>
-                Start scheduling
+            <div className="flex flex-wrap gap-4 items-center">
+              <a href="/schedule" className="bg-foreground text-background tech-heading text-lg px-10 py-5 hover:bg-foreground/90 transition-all border border-foreground">
+                Get Your Link →
               </a>
-              <a href="#how" style={{
-                color: "rgba(255,255,255,0.4)", fontSize: "14px",
-                fontWeight: 600, padding: "13px 4px",
-              }}>
-                See how it works
+              <a href="#how" className="tech-label px-6 py-5 hover:text-foreground transition-all border border-border">
+                Learn More
               </a>
             </div>
 
-            <p style={{
-              marginTop: "40px",
-              fontSize: "12px",
-              color: "rgba(255,255,255,0.22)",
-            }}>
-              2,400+ meetings scheduled this month · zero spam
-            </p>
+            <div className="mt-20 pt-10 border-t border-border flex items-center gap-12">
+               <div>
+                 <p className="tech-label mb-1">Total Meetings</p>
+                 <p className="tech-heading text-2xl">2.4k+</p>
+               </div>
+               <div>
+                 <p className="tech-label mb-1">Status</p>
+                 <p className="tech-heading text-2xl text-green-500">Live</p>
+               </div>
+            </div>
           </div>
 
-          <div style={{ flex: "1 1 340px", maxWidth: "400px" }}>
-            <p style={{
-              fontSize: "11px", fontWeight: 700, color: "rgba(255,255,255,0.22)",
-              textTransform: "uppercase", letterSpacing: "0.08em",
-              marginBottom: "20px",
-            }}>
-              Live preview - try it
-            </p>
-            <CalendarDemo />
+          <div className="hidden lg:block w-full max-w-md relative group">
+            <div className="absolute -inset-4 bg-foreground/5 -z-10 group-hover:bg-foreground/10 transition-colors" />
+            <div className="glass p-2">
+               <CalendarDemo />
+            </div>
           </div>
         </div>
       </div>
