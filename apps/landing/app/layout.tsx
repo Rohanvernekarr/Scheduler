@@ -10,7 +10,7 @@ const geist = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Scheduler — Effortless Meeting Booking",
+  title: "Scheduler - Effortless Meeting Booking",
   description:
     "Share one link. Let people book. Get instant email invites. No back-and-forth ever again.",
   openGraph: {

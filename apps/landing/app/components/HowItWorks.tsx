@@ -37,15 +37,15 @@ export function HowItWorks(): ReactNode {
 
         <div className="flex flex-col gap-px bg-border border border-border">
           {STEPS.map(({ num, title, desc }) => (
-            <div key={num} className="bg-background flex flex-col md:flex-row items-center group transition-colors hover:bg-foreground/[0.01]">
+            <div key={num} className="bg-background flex flex-col md:flex-row items-center group transition-colors hover:bg-foreground/[0.1]">
               <div className="p-8 md:p-12 border-b md:border-b-0 md:border-r border-border min-w-[120px] flex justify-center">
-                 <span className="tech-heading text-3xl text-foreground/10 group-hover:text-foreground transition-colors">{num}</span>
+                 <span className="tech-heading text-3xl text-white opacity-60 group-hover:text-foreground transition-colors">{num}</span>
               </div>
               <div className="flex-1 p-8 md:p-12">
                  <h3 className="tech-heading text-2xl mb-2">{title}</h3>
                  <p className="text-foreground/40 font-medium max-w-lg">{desc}</p>
               </div>
-              <div className="p-8 md:p-12 text-foreground/5 hidden lg:block">
+              <div className="p-8 md:p-12 text-white opacity-60 hidden lg:block">
                  <span className="tech-heading">ACTIVE_PROTOCOL</span>
               </div>
             </div>
