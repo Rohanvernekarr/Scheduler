@@ -1,188 +1,340 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar as CalendarIcon, Clock, Mail, ArrowRight, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  Trash2, 
+  CheckCircle2, 
+  Mail,
+  ChevronRight,
+  Loader2
+} from 'lucide-react';
+import { PremiumDateTimePicker } from '@repo/ui';
+import { sendTargetedInvite } from '../../lib/api';
+
+interface AvailabilitySlot {
+  id: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  duration: number;
+}
 
 const DURATIONS = [15, 30, 45, 60];
+const INTERVALS = [0, 15, 30, 45];
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
 export function TargetedBooking() {
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [duration, setDuration] = useState<number>(30);
-  const [startTime, setStartTime] = useState<string>('09:00');
-  const [endTime, setEndTime] = useState<string>('17:00');
+  const [activeTime, setActiveTime] = useState<string>('09:00');
+  const [slots, setSlots] = useState<AvailabilitySlot[]>([]);
   const [guestEmail, setGuestEmail] = useState<string>('');
+  const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [inviteLink, setInviteLink] = useState('');
+  
+  const [pendingTime, setPendingTime] = useState<string | null>(null);
 
-  const handleSendInvite = () => {
-    if (!selectedDate || !guestEmail) return;
+  const handleAddSlot = (time: string, dur: number) => {
+    const [h, m] = time.split(':').map(Number);
+    const startObj = new Date(selectedDate);
+    startObj.setHours(h, m, 0, 0);
+    const startMs = startObj.getTime();
+    
+    const endObj = new Date(startObj);
+    endObj.setMinutes(m + dur);
+    const endMs = endObj.getTime();
 
-    const inviteId = Math.random().toString(36).substring(2, 9);
-    const inviteData = {
-      id: inviteId,
-      hostName: 'John Doe',
+    // Overlap check
+    const isOverlapping = slotsForDate.some(s => {
+      const [sh, sm] = s.startTime.split(':').map(Number);
+      const sStart = new Date(selectedDate);
+      sStart.setHours(sh, sm, 0, 0);
+      const sStartMs = sStart.getTime();
+      const sEndMs = sStartMs + (s.duration * 60000);
+      
+      return (startMs < sEndMs && endMs > sStartMs);
+    });
+
+    if (isOverlapping) return;
+
+    const endTimeStr = endObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+    const newSlot: AvailabilitySlot = {
+      id: Math.random().toString(36).substring(2, 9),
       date: selectedDate,
-      duration,
-      startTime,
-      endTime,
-      guestEmail
+      startTime: time,
+      endTime: endTimeStr,
+      duration: dur
     };
-
-    const existing = JSON.parse(localStorage.getItem('custom_invites') || '{}');
-    existing[inviteId] = inviteData;
-    localStorage.setItem('custom_invites', JSON.stringify(existing));
-
-    setInviteLink(`${window.location.origin}/invite/${inviteId}`);
-    setIsSent(true);
-
-    setTimeout(() => {
-      setIsSent(false);
-      setGuestEmail('');
-    }, 10000);
+    setSlots([...slots, newSlot]);
+    setPendingTime(null);
   };
 
+  const removeSlot = (id: string) => {
+    setSlots(slots.filter(s => s.id !== id));
+  };
+
+  const handleSendInvite = async () => {
+    if (slots.length === 0 || !guestEmail) return;
+    setIsSending(true);
+    
+    try {
+      const inviteId = Math.random().toString(36).substring(2, 9);
+      const generatedLink = `${window.location.origin}/invite/${inviteId}`;
+      
+      // 1. Perspective: Save for guest view (Mock DB)
+      const existing = JSON.parse(localStorage.getItem('custom_invites') || '{}');
+      existing[inviteId] = { id: inviteId, hostName: 'John Doe', slots, guestEmail };
+      localStorage.setItem('custom_invites', JSON.stringify(existing));
+
+      // 2. Perspective: Call API to send real email
+      await sendTargetedInvite({
+        hostName: 'John Doe',
+        guestEmail,
+        inviteLink: generatedLink,
+        slots
+      });
+
+      setInviteLink(generatedLink);
+      setIsSent(true);
+      setSlots([]);
+      setGuestEmail('');
+      
+      setTimeout(() => setIsSent(false), 15000);
+    } catch (error) {
+      console.error('Failed to send invite:', error);
+      alert('Failed to send invite. Check server console.');
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const slotsForDate = useMemo(() => slots.filter(s => s.date === selectedDate), [slots, selectedDate]);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      {/* Left: Configuration */}
-      <div className="lg:col-span-7 space-y-6">
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <CalendarIcon size={16} className="text-zinc-500" /> 1. Select Date
-            </h2>
-            <div className="flex items-center gap-2">
-               <button className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"><ChevronLeft size={16} /></button>
-               <span className="text-xs font-bold text-white/60">April 2026</span>
-               <button className="p-1.5 hover:bg-white/5 rounded-lg transition-colors"><ChevronRight size={16} /></button>
-            </div>
-          </div>
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start relative z-10">
+      
+      {/* LEFT: Calendar & Configuration */}
+      <div className="xl:col-span-4 space-y-6">
+        <div className="bg-[#111111] border border-white/[0.06] rounded-3xl p-6 shadow-2xl">
+           <div className="mb-6">
+              <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
+                {new Date(selectedDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </h2>
+              <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mt-1 italic leading-none">Global Synchronization Mode</p>
+           </div>
 
-          <div className="grid grid-cols-7 gap-1 mb-8">
-            {['S','M','T','W','T','F','S'].map(d => <div key={d} className="text-center text-[10px] font-black text-white/20 mb-2">{d}</div>)}
-            {Array.from({ length: 30 }, (_, i) => {
-               const d = `2026-04-${(i+1).toString().padStart(2, '0')}`;
-               const isSelected = selectedDate === d;
-               return (
-                 <button 
-                  key={i}
-                  onClick={() => setSelectedDate(d)}
-                  className={`aspect-square rounded-xl text-xs font-bold flex items-center justify-center transition-all ${
-                    isSelected ? 'bg-white text-black scale-110 shadow-xl' : 'text-white/40 hover:bg-white/5 hover:text-white'
-                  }`}
-                 >
-                   {i + 1}
-                 </button>
-               );
-            })}
-          </div>
-
-          <div className="border-t border-white/[0.04] pt-8 space-y-8">
-             <div>
-                <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2 mb-6">
-                  <Clock size={16} className="text-zinc-500" /> 2. Set Time Window
-                </h2>
-                <div className="flex items-center gap-4">
-                   <div className="flex-1">
-                      <label className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2 block">Available From</label>
-                      <input 
-                        type="time" 
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                        className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-zinc-500"
-                      />
-                   </div>
-                   <div className="h-px w-4 bg-white/10 mt-6" />
-                   <div className="flex-1">
-                      <label className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2 block">Available Until</label>
-                      <input 
-                        type="time" 
-                        value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                        className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-zinc-500"
-                      />
-                   </div>
-                </div>
-             </div>
-
-             <div>
-                <label className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-4 block">Meeting Duration</label>
-                <div className="grid grid-cols-4 gap-3">
-                  {DURATIONS.map(mins => (
-                    <button
-                      key={mins}
-                      onClick={() => setDuration(mins)}
-                      className={`py-3 rounded-xl text-xs font-bold transition-all border ${
-                        duration === mins 
-                          ? 'bg-white text-black border-white' 
-                          : 'bg-black border-white/10 text-white/50 hover:text-white hover:border-white/20'
-                      }`}
-                    >
-                      {mins}m
-                    </button>
-                  ))}
-                </div>
-             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Right: Mailer */}
-      <div className="lg:col-span-5 space-y-6">
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6 h-full flex flex-col">
-          <div className="flex-1 space-y-6">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Mail size={16} className="text-zinc-500" /> 3. Dispatch Invite
-            </h2>
-            
-            <div>
-              <label className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-2 block">Guest Recipient</label>
-              <input
-                type="email"
-                placeholder="guest@domain.com"
-                value={guestEmail}
-                onChange={(e) => setGuestEmail(e.target.value)}
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:outline-none focus:border-zinc-500"
+           <div className="relative z-50">
+              <PremiumDateTimePicker
+                expireDate={selectedDate}
+                setExpireDate={(d) => { setSelectedDate(d); setPendingTime(null); }}
+                expireTime={activeTime}
+                setExpireTime={setActiveTime}
               />
-            </div>
-
-            <div className="p-4 bg-white/[0.02] border border-white/[0.04] rounded-xl space-y-3">
-               <p className="text-xs text-white/40 leading-relaxed font-medium">
-                The guest will receive a secure link to book a {duration}-minute slot between {startTime} and {endTime} on {new Date(selectedDate).toLocaleDateString('default', { month: 'long', day: 'numeric' })}.
-               </p>
-            </div>
-          </div>
-
-          <div className="pt-6">
-            <button
-              onClick={handleSendInvite}
-              disabled={!guestEmail || !selectedDate}
-              className="w-full bg-zinc-100 hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed text-black py-4 rounded-xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 transition-all"
-            >
-              Confirm & Send Mail <ArrowRight size={16} />
-            </button>
-          </div>
-
-          <AnimatePresence>
-            {isSent && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="mt-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <CheckCircle2 size={16} />
-                  <span className="font-bold text-xs uppercase tracking-wider">Mail Dispatched</span>
+           </div>
+           
+           <div className="mt-8 pt-8 border-t border-white/[0.04] space-y-6">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">Recipient Credentials</label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    placeholder="name@organization.com"
+                    value={guestEmail}
+                    onChange={(e) => setGuestEmail(e.target.value)}
+                    className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
+                  />
+                  <Mail size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800" />
                 </div>
-                <p className="text-[10px] opacity-80 mb-3">Single-use booking gateway active:</p>
-                <code className="text-[9px] block bg-black/40 p-2 rounded border border-white/5 break-all font-mono">
-                  {inviteLink}
-                </code>
+              </div>
+
+              <button
+                onClick={handleSendInvite}
+                disabled={slots.length === 0 || !guestEmail || isSending}
+                className="w-full bg-white text-black py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-zinc-200 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 group shadow-xl shadow-white/5"
+              >
+                {isSending ? (
+                  <>Dispatching... <Loader2 size={14} className="animate-spin" /></>
+                ) : (
+                  <>Distribute Invite <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
+           </div>
+        </div>
+
+        {/* Marked Slots Queue */}
+        <div className="space-y-3">
+          {slots.length > 0 && <p className="text-[10px] font-black text-zinc-500 uppercase px-2 mb-2 tracking-[0.2em]">Deployment Queue</p>}
+          <AnimatePresence initial={false}>
+            {slots.map(s => (
+              <motion.div 
+                key={s.id} 
+                initial={{ opacity: 0, x: -10 }} 
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-[#111111] border border-white/[0.04] rounded-2xl p-4 flex items-center justify-between group hover:border-white/10 transition-all"
+              >
+                 <div>
+                    <p className="text-xs font-black text-white italic uppercase tracking-tight">{new Date(s.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</p>
+                    <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 opacity-50">{s.startTime} — {s.endTime} // {s.duration}m Cluster</p>
+                 </div>
+                 <button onClick={() => removeSlot(s.id)} className="p-2 text-zinc-800 hover:text-red-400 transition-colors">
+                    <Trash2 size={14} />
+                 </button>
               </motion.div>
-            )}
+            ))}
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Main Timeline: 24h Interactive Grid */}
+      <div className="xl:col-span-8 bg-[#111111] border border-white/[0.06] rounded-[2.5rem] overflow-hidden flex flex-col h-[850px] shadow-2xl relative z-0">
+         <div className="p-10 border-b border-white/[0.04] bg-black/40 flex items-center justify-between">
+            <div>
+               <h2 className="text-xl font-black text-white italic uppercase leading-none tracking-tighter">Timeline Analysis</h2>
+               <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.15em] mt-3">Active // {new Date(selectedDate).toLocaleDateString('en-GB', { weekday: 'long' })} Protocol</p>
+            </div>
+            <div className="flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full">
+               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
+               <span className="text-[10px] font-black text-white uppercase tracking-widest">Clock Sync Active</span>
+            </div>
+         </div>
+
+         <div className="flex-1 overflow-y-auto custom-scrollbar">
+            <div className="relative min-h-[1440px] px-10 pt-6 pb-20">
+               {/* 24 Hour Blocks (12 AM to 12 PM) */}
+               {HOURS.map(hour => {
+                  const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
+                  
+                  return (
+                    <div key={hour} className="flex border-t border-white/[0.02] last:border-b transition-colors hover:bg-white/[0.01]">
+                       {/* Labels */}
+                       <div className="w-24 pr-8 -mt-2.5 text-[10px] font-black text-zinc-800 uppercase tabular-nums sticky left-0 bg-[#111111] z-10 py-1 transition-colors group-hover:text-zinc-600">
+                          {hourLabel}
+                       </div>
+
+                       {/* The 4 intervals per hour (15 mins each) */}
+                       <div className="flex-1 space-y-1.5 py-2">
+                          {INTERVALS.map(min => {
+                             const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+                             const isPending = pendingTime === time;
+                             
+                             const startMs = new Date(selectedDate).setHours(hour, min, 0, 0);
+                             
+                             // Detect if this specific 15-min block is covered by ANY slot
+                             const coveringSlot = slotsForDate.find(s => {
+                               const [sh, sm] = s.startTime.split(':').map(Number);
+                               const sStart = new Date(selectedDate).setHours(sh, sm, 0, 0);
+                               const sEnd = sStart + (s.duration * 60000);
+                               return startMs >= sStart && startMs < sEnd;
+                             });
+
+                             // Only show the visual block on the STARTING segment of a slot
+                             const isStartingSegment = coveringSlot && coveringSlot.startTime === time;
+
+                             return (
+                               <div key={min} className="h-10 relative group/row">
+                                  {/* Interaction Layer (Disabled if occupied) */}
+                                  {!coveringSlot && (
+                                    <button 
+                                      onClick={() => setPendingTime(time)}
+                                      className="absolute inset-x-0 inset-y-0 rounded-xl transition-all hover:bg-white/[0.03] active:scale-[0.99]"
+                                    />
+                                  )}
+                                  
+                                  {/* Quarters indicators */}
+                                  <div className="absolute top-1/2 left-0 right-0 h-px bg-white/[0.005] pointer-events-none" />
+
+                                  {/* Occupied Slot (Rendered only on the first segment, but spans others) */}
+                                  {isStartingSegment && (
+                                    <motion.div 
+                                      initial={{ opacity: 0, scale: 0.95 }} 
+                                      animate={{ opacity: 1, scale: 1 }}
+                                      style={{ height: `calc(${(coveringSlot.duration / 15) * 100}% + ${((coveringSlot.duration / 15) - 1) * 6}px)` }}
+                                      className="absolute inset-x-0 top-0 bg-white text-black px-5 rounded-xl flex items-center justify-between shadow-2xl z-10"
+                                    >
+                                       <div className="flex items-center gap-4">
+                                          <div className="px-2 py-0.5 bg-black text-white text-[9px] font-black uppercase italic rounded-md">
+                                             {coveringSlot.duration}M
+                                          </div>
+                                          <span className="text-sm font-black tracking-tighter uppercase italic">{coveringSlot.startTime} — {coveringSlot.endTime}</span>
+                                       </div>
+                                       <button onClick={() => removeSlot(coveringSlot.id)} className="p-1.5 hover:bg-black/10 rounded-lg active:scale-90 transition-all">
+                                          <Trash2 size={14} className="opacity-50 hover:opacity-100 transition-opacity" />
+                                       </button>
+                                    </motion.div>
+                                  )}
+
+                                  {/* Duration Picker Dropdown */}
+                                  <AnimatePresence>
+                                     {isPending && (
+                                       <motion.div 
+                                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                         animate={{ opacity: 1, y: 0, scale: 1 }}
+                                         exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                         className="absolute inset-x-0 inset-y-0 bg-[#1a1a1a] border-2 border-white/20 rounded-xl flex items-center z-20 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+                                       >
+                                          <div className="px-5 border-r border-white/10 h-full flex flex-col justify-center bg-black/40">
+                                             <span className="text-[9px] font-black text-white/20 uppercase tracking-widest whitespace-nowrap mb-0.5">Allocation</span>
+                                             <span className="text-[11px] font-black text-emerald-400 tracking-tighter">@{time}</span>
+                                          </div>
+                                          <div className="flex-1 flex h-full">
+                                             {DURATIONS.map(dur => {
+                                               // Optional: Disable durations that would overlap next slot
+                                               return (
+                                                 <button 
+                                                   key={dur}
+                                                   onClick={() => handleAddSlot(time, dur)}
+                                                   className="flex-1 hover:bg-white hover:text-black text-white text-[11px] font-black uppercase tracking-widest transition-all p-1"
+                                                 >
+                                                   {dur}m
+                                                 </button>
+                                               );
+                                             })}
+                                          </div>
+                                          <button onClick={() => setPendingTime(null)} className="px-5 text-white/20 hover:text-white transition-colors text-lg">✕</button>
+                                       </motion.div>
+                                     )}
+                                  </AnimatePresence>
+                               </div>
+                             );
+                          })}
+                       </div>
+                    </div>
+                  );
+               })}
+            </div>
+         </div>
+         
+         <div className="p-8 bg-black/60 border-t border-white/[0.04] backdrop-blur-md">
+            <p className="text-[10px] text-zinc-700 font-bold uppercase tracking-[0.3em] italic text-center leading-relaxed">System Synchronized // Select any 15-minute operational block to initiate cluster allocation</p>
+         </div>
+      </div>
+
+      <AnimatePresence>
+        {isSent && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="fixed bottom-12 right-12 max-w-sm bg-white p-8 rounded-[2rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] z-[100] text-black"
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white">
+                <CheckCircle2 size={24} />
+              </div>
+              <h3 className="font-black uppercase italic tracking-tighter text-xl">Protocol Active</h3>
+            </div>
+            <p className="text-xs font-bold text-black/50 mb-6 leading-relaxed">System sync successful. Distributions dispatched to guest emails.</p>
+            <div className="bg-black/5 p-4 rounded-2xl border border-black/5 flex items-center justify-between gap-3">
+               <code className="text-[10px] truncate font-mono font-bold opacity-30">{inviteLink}</code>
+               <button onClick={() => navigator.clipboard.writeText(inviteLink)} className="bg-black text-white p-2 rounded-lg hover:scale-105 transition-transform">
+                  <ChevronRight size={14} />
+               </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }

@@ -5,21 +5,18 @@ const inviteRouter: Router = Router();
 
 inviteRouter.post('/send', async (req, res) => {
   try {
-    const { hostName, date, startTime, endTime, duration, guestEmail, inviteLink } = req.body;
+    const { hostName, guestEmail, inviteLink, slots } = req.body;
     
-    if (!guestEmail || !inviteLink) {
-       res.status(400).json({ error: 'Missing required fields' });
+    if (!guestEmail || !inviteLink || !slots || !Array.isArray(slots)) {
+       res.status(400).json({ error: 'Missing required fields or invalid slots array' });
        return;
     }
 
     await mailService.sendTargetedInvite({
       hostName: hostName || 'A Host',
-      date,
-      startTime,
-      endTime,
-      duration,
       guestEmail,
-      inviteLink
+      inviteLink,
+      slots
     });
 
     res.json({ success: true, message: 'Email sent successfully' });

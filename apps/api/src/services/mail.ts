@@ -159,59 +159,64 @@ Sent via Scheduler · One-click booking
 
   async sendTargetedInvite(data: {
     hostName: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-    duration: number;
     guestEmail: string;
     inviteLink: string;
+    slots: Array<{
+      date: string;
+      startTime: string;
+      endTime: string;
+      duration: number;
+    }>;
   }) {
-    const subject = `Invitation to book a session with ${data.hostName}`;
-    const dateObj = new Date(data.date);
-    const dateStr = dateObj.toLocaleDateString('en-GB', { 
-      weekday: 'long', 
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+    const subject = `Priority Invitation: Book your session with ${data.hostName}`;
+    
+    const slotsHtml = data.slots.map(slot => {
+      const d = new Date(slot.date).toLocaleDateString('en-GB', { 
+        weekday: 'short', day: 'numeric', month: 'short' 
+      });
+      return `
+        <div style="padding:12px 16px;background:#f8f9fa;border-radius:10px;border:1px solid #dee2e6;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:14px;font-weight:700;">${d}</div>
+          <div style="font-size:13px;color:#495057;">${slot.startTime} &mdash; ${slot.endTime} (${slot.duration}m)</div>
+        </div>
+      `;
+    }).join('');
 
     const body = `
 <!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#f8f9fa;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#212529;">
-  <div style="max-width:600px;margin:20px auto;background:#ffffff;border:1px solid #dee2e6;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+<body style="margin:0;padding:0;background:#fcfcfc;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;">
+  <div style="max-width:540px;margin:30px auto;background:#ffffff;border:1px solid #e0e0e0;border-radius:20px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.04);">
     <div style="padding:40px;text-align:center;background:#000000;color:#ffffff;">
-      <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.5px;text-transform:uppercase;">Scheduler</h1>
-      <p style="margin:10px 0 0 0;font-size:14px;opacity:0.6;letter-spacing:1px;font-weight:700;">SYSTEM_INVITE_V1</p>
+      <h1 style="margin:0;font-size:22px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;font-style:italic;">Scheduler</h1>
+      <div style="margin-top:12px;display:inline-block;padding:4px 12px;background:rgba(255,255,255,0.1);border-radius:100px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Protocol Alpha_01</div>
     </div>
     
     <div style="padding:40px;">
-      <p style="margin:0 0 24px 0;font-size:16px;line-height:1.6;">
+      <p style="margin:0 0 24px 0;font-size:16px;line-height:1.6;font-weight:500;">
         Hello, <br><br>
-        <strong>${data.hostName}</strong> has invited you to book a session on <strong>${dateStr}</strong>.
+        <strong>${data.hostName}</strong> has prepared a targeted scheduling session for you. They have prioritized the following windows:
       </p>
       
-      <div style="background:#f1f3f5;border-radius:8px;padding:24px;margin-bottom:32px;border-left:4px solid #000000;">
-        <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#868e96;text-transform:uppercase;letter-spacing:1px;">Session Parameters</p>
-        <p style="margin:0 0 4px 0;font-size:15px;"><strong>Duration:</strong> ${data.duration} minutes</p>
-        <p style="margin:0 0 4px 0;font-size:15px;"><strong>Window:</strong> ${data.startTime} — ${data.endTime}</p>
-        <p style="margin:0;font-size:15px;"><strong>Date:</strong> ${dateStr}</p>
+      <div style="margin-bottom:32px;">
+        ${slotsHtml}
       </div>
 
       <div style="text-align:center;">
-        <a href="${data.inviteLink}" style="display:inline-block;background:#000000;color:#ffffff;padding:16px 32px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s;">
-          Pick a Time Slot
+        <a href="${data.inviteLink}" style="display:inline-block;background:#000000;color:#ffffff;padding:18px 40px;border-radius:14px;font-size:14px;font-weight:900;text-decoration:none;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 20px rgba(0,0,0,0.1);">
+          Secure Time Slot &rarr;
         </a>
       </div>
 
-      <p style="margin:32px 0 0 0;font-size:13px;color:#868e96;text-align:center;line-height:1.6;">
-        This is a unique, one-time booking link. If you have questions, please contact the host directly at ${data.guestEmail}.
+      <p style="margin:35px 0 0 0;font-size:12px;color:#868e96;text-align:center;line-height:1.8;font-weight:500;">
+        This invitation is encrypted and limited to your email. <br>
+        If you have questions, please contact the host directly.
       </p>
     </div>
     
-    <div style="padding:24px;background:#f8f9fa;border-top:1px solid #dee2e6;text-align:center;">
-      <p style="margin:0;font-size:11px;color:#adb5bd;text-transform:uppercase;letter-spacing:2px;font-weight:700;">
-        Powered by Antigravity Scheduler
+    <div style="padding:24px;background:#f8f9fa;border-top:1px solid #eeeeee;text-align:center;">
+      <p style="margin:0;font-size:10px;color:#adb5bd;text-transform:uppercase;letter-spacing:2px;font-weight:800;">
+        Propagated by Antigravity Infrastructure
       </p>
     </div>
   </div>
