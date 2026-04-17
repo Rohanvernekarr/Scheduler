@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 
@@ -28,6 +28,7 @@ export function CalendarDemo(): ReactNode {
   const todayKey = toKey(today);
 
   const [viewDate, setViewDate] = useState(new Date());
+  const [direction, setDirection] = useState(0);
   const [selectedDay, setSelectedDay] = useState<string | null>(todayKey);
 
   const year = viewDate.getFullYear();
@@ -40,35 +41,58 @@ export function CalendarDemo(): ReactNode {
   for (let i = 0; i < firstDay; i++) days.push(null);
   for (let i = 1; i <= total; i++) days.push(new Date(year, month, i));
 
+  const changeMonth = (offset: number) => {
+    setDirection(offset);
+    setViewDate(new Date(year, month + offset, 1));
+  };
+
   return (
     <div className="relative">
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 30 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-xs bg-background border border-border p-6 shadow-2xl relative overflow-visible group"
+        transition={{ duration: 1, type: "spring", stiffness: 100, damping: 20 }}
+        className="w-full max-w-xs bg-background border border-border p-6 shadow-2xl relative group overflow-visible"
       >
         <div className="absolute -inset-px bg-gradient-to-br from-foreground/5 via-transparent to-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
 
-        <div className="absolute top-0 right-0 w-10 h-10 border-t border-r border-foreground/10" />
-        <div className="absolute bottom-0 left-0 w-10 h-10 border-b border-l border-foreground/10" />
+        {/* Corner Decals */}
+        <div className="absolute top-0 right-0 w-10 h-10 border-t border-r border-foreground/10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-10 h-10 border-b border-l border-foreground/10 pointer-events-none" />
 
         <div className="flex items-center justify-between mb-6 relative">
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.1, x: -2 }}
+            whileTap={{ scale: 0.9 }}
             className="calendar-nav-btn"
-            onClick={() => setViewDate(new Date(year, month-1, 1))}
+            onClick={() => changeMonth(-1)}
           >
             ‹
-          </button>
-          <span className="tech-heading text-md">
-            {monthName} {year}
-          </span>
-          <button 
+          </motion.button>
+          
+          <div className="relative flex-1 flex justify-center h-6 overflow-hidden">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span 
+                key={`${month}-${year}`}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: 20, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="tech-heading text-md absolute"
+              >
+                {monthName} {year}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+
+          <motion.button 
+            whileHover={{ scale: 1.1, x: 2 }}
+            whileTap={{ scale: 0.9 }}
             className="calendar-nav-btn"
-            onClick={() => setViewDate(new Date(year, month+1, 1))}
+            onClick={() => changeMonth(1)}
           >
             ›
-          </button>
+          </motion.button>
         </div>
 
         <div className="grid grid-cols-7 gap-1 mb-2 relative">
@@ -79,30 +103,62 @@ export function CalendarDemo(): ReactNode {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1 relative">
-          {days.map((d, i) => {
-            if (!d) return <div key={i} />;
-            const key = toKey(d);
-            const past = key < todayKey;
-            const isSelected = key === selectedDay;
-            const isToday = key === todayKey;
+        <div className="relative h-[256px] overflow-hidden">
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.div
+              key={`${year}-${month}`}
+              custom={direction}
+              variants={{
+                enter: (dir: number) => ({ x: dir > 0 ? 100 : -100, opacity: 0 }),
+                center: { x: 0, opacity: 1, transition: { staggerChildren: 0.01, delayChildren: 0.1 } },
+                exit: (dir: number) => ({ x: dir < 0 ? 150 : -150, opacity: 0, transition: { duration: 0.2 } }),
+              }}
+              initial="enter" animate="center" exit="exit"
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="grid grid-cols-7 gap-1 absolute top-0 left-0 right-0 w-full"
+            >
+              {days.map((d, i) => {
+                if (!d) return <div key={i} className="h-10" />;
+                const key = toKey(d);
+                const past = key < todayKey;
+                const isSelected = key === selectedDay;
+                const isToday = key === todayKey;
 
-            return (
-              <motion.button 
-                key={i} 
-                whileHover={!past ? { scale: 1.1, y: -2 } : {}}
-                whileTap={!past ? { scale: 0.95 } : {}}
-                disabled={past} 
-                onClick={() => setSelectedDay(key)} 
-                className={`calendar-cell ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}`}
-              >
-                {d.getDate()}
-              </motion.button>
-            );
-          })}
+                return (
+                  <motion.button 
+                    key={key} 
+                    variants={{
+                      enter: { scale: 0.8, opacity: 0 },
+                      center: { scale: 1, opacity: 1 }
+                    }}
+                    whileHover={!past ? { scale: 1.15, y: -2, zIndex: 10 } : {}}
+                    whileTap={!past ? { scale: 0.95 } : {}}
+                    disabled={past} 
+                    onClick={() => setSelectedDay(key)} 
+                    // Base styles + conditionally avoiding the external CSS interference
+                    className={`relative h-10 w-full rounded-lg text-sm flex items-center justify-center transition-colors duration-200 ${
+                      past ? 'opacity-10 cursor-not-allowed text-foreground/40' : 'cursor-pointer text-foreground/40 hover:text-foreground'
+                    } ${isToday && !isSelected ? 'border border-foreground/20' : 'border border-transparent'}`}
+                    style={{ WebkitTapHighlightColor: "transparent" }}
+                  >
+                    {isSelected && (
+                      <motion.div
+                        layoutId="calendar-selection"
+                        className="absolute inset-0 bg-foreground rounded-lg shadow-2xl z-0"
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
+                    )}
+                    <span className={`relative z-10 transition-colors duration-200 ${isSelected ? 'text-background font-black' : 'font-bold'}`}>
+                      {d.getDate()}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-border flex flex-col gap-3 relative">
+        <div className="pt-6 border-t border-border flex flex-col gap-3 relative z-10">
           <div>
             <p className="tech-label mb-1">Status</p>
             <p className="tech-heading text-lg">
@@ -127,7 +183,7 @@ export function CalendarDemo(): ReactNode {
               key={i}
               initial={{ opacity: 0, scale: 0.8, x: 10 }}
               animate={activeLog === i ? { opacity: 1, scale: 1, x: 0 } : { opacity: 0, scale: 0.8, x: 10 }}
-              transition={{ duration: 0.4, ease: "anticipate" }}
+              transition={{ duration: 0.5, type: "spring" }}
               className={`absolute bottom-0 right-0 flex items-center gap-2 bg-background/95 border border-foreground/10 glass rounded-lg px-3 py-1.5 whitespace-nowrap shadow-2xl ${activeLog === i ? 'pointer-events-auto' : 'pointer-events-none'}`}
             >
               <span className="text-xs">{log.emoji}</span>

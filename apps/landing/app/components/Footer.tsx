@@ -14,17 +14,22 @@ export function Footer(): ReactNode {
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-16 xl:gap-24">
-            {["SYSTEM", "NETWORK", "SOCIAL"].map(group => (
-              <div key={group} className="flex flex-col gap-6">
-                <span className="tech-label">{group}</span>
-                <div className="flex flex-col gap-3">
-                   {["Status", "Docs", "Twitter", "GitHub"].map((item, i) => (
-                     <a key={i} href="#" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">{item}</a>
-                   ))}
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 xl:gap-24">
+            <div className="flex flex-col gap-6">
+              <span className="tech-label">SYSTEM</span>
+              <div className="flex flex-col gap-3">
+                 <Link href="/status" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">Status</Link>
+                 <Link href="/docs" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">Docs</Link>
               </div>
-            ))}
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              <span className="tech-label">SOCIAL</span>
+              <div className="flex flex-col gap-3">
+                 <a href="https://x.com/Rohanvrnkr" target="_blank" rel="noopener noreferrer" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">X</a>
+                 <a href="https://github.com/rohanvernekarr" target="_blank" rel="noopener noreferrer" className="tech-heading text-[12px] text-foreground/30 hover:text-foreground transition-colors">GitHub</a>
+              </div>
+            </div>
           </div>
         </div>
 
