@@ -93,7 +93,7 @@ export function Hero(): ReactNode {
                {STATS.map((s) => (
                  <div key={s.label}>
                    <div className="flex items-center gap-2 mb-1">
-                      <CountUp to={s.value} suffix={s.suffix} className="tech-heading text-2xl tabular-nums" />
+                      <CountUp to={s.value} suffix={s.suffix} className="tech-heading text-xl tabular-nums" />
                    </div>
                    <p className="tech-label">{s.label}</p>
                  </div>

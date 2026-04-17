@@ -1,12 +1,20 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
-
+import { motion } from "framer-motion";
 
 export function Footer(): ReactNode {
   return (
-    <footer className="border-t border-border py-20">
+    <footer className="border-t border-border py-20 overflow-hidden">
       <div className="container">
-        <div className="flex flex-col lg:flex-row justify-between gap-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col lg:flex-row justify-between gap-20"
+        >
           <div className="max-w-xs">
             <span className="tech-heading text-3xl mb-6 block">Scheduler</span>
             <p className="tech-label text-foreground/30 leading-relaxed uppercase">
@@ -31,9 +39,15 @@ export function Footer(): ReactNode {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="mt-24 pt-10 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="mt-24 pt-10 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6"
+        >
           <p className="tech-label">
             © {new Date().getFullYear()} SCHEDULER_CORE_V1
           </p>
@@ -41,7 +55,7 @@ export function Footer(): ReactNode {
             <Link href="/privacy-policy" className="tech-label hover:text-foreground transition-colors">PRIVACY</Link>
             <Link href="/terms-of-service" className="tech-label hover:text-foreground transition-colors">TERMS</Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

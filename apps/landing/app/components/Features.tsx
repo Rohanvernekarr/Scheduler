@@ -1,4 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 const FEATURES = [
   {
@@ -25,9 +28,15 @@ const FEATURES = [
 
 export function Features(): ReactNode {
   return (
-    <section id="features" className="py-24 border-b border-border">
+    <section id="features" className="py-24 border-b border-border overflow-hidden">
       <div className="container">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
+        >
           <div className="max-w-xl">
             <span className="tech-label mb-4 block">02 / System Capabilities</span>
             <h2 className="tech-heading text-4xl md:text-5xl leading-tight text-foreground">
@@ -37,12 +46,25 @@ export function Features(): ReactNode {
           <p className="text-foreground/40 max-w-xs text-md font-medium">
             Designed for high-density information and zero-friction scheduling.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-border">
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+             hidden: { opacity: 0 },
+             show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-border"
+        >
           {FEATURES.map(({ num, title, desc }) => (
-            <div
+            <motion.div
               key={title}
+              variants={{
+                 hidden: { opacity: 0, y: 20 },
+                 show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+              }}
               className="p-10 border-b md:border-b-0 md:border-r border-border hover:bg-foreground/5 transition-all group"
             >
               <p className="tech-label text-foreground/20 mb-10 group-hover:text-foreground transition-colors">
@@ -54,9 +76,9 @@ export function Features(): ReactNode {
               <p className="text-sm text-foreground/40 leading-relaxed font-medium">
                 {desc}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
