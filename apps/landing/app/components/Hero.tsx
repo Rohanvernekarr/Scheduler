@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { CalendarDemo } from "./CalendarDemo";
 
-const WORDS = ["MEETINGS", "TEAMS", "INTERVIEWS", "SYNC-UPS"];
+const WORDS = ["TEAM MEET", "INTERVIEWS", "SYNC-UPS" , "CLIENT CALLS"];
 
 function CountUp({ to, suffix = "", className }: { to: number; suffix?: string; className?: string }) {
   const [value, setValue] = useState(0);
@@ -46,9 +46,9 @@ export function Hero(): ReactNode {
           <div className="flex-1 max-w-2xl">
             <span className="tech-label mb-8 block">01 / System Entry</span>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] text-foreground uppercase tracking-tighter">
-              The simplest <br />
-              <span className="text-foreground/25">way to schedule</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] text-foreground uppercase">
+              zero Friction <br />
+              <span className="text-foreground/25">to schedule</span>
               <br />
               <span className="inline-block relative">
                 <span className="relative inline-block overflow-hidden h-[1.1em] align-bottom">

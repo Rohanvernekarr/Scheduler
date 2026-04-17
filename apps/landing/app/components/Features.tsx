@@ -34,7 +34,7 @@ export function Features(): ReactNode {
               A robust architecture <br />for your time.
             </h2>
           </div>
-          <p className="text-foreground/40 max-w-xs text-sm font-medium">
+          <p className="text-foreground/40 max-w-xs text-md font-medium">
             Designed for high-density information and zero-friction scheduling.
           </p>
         </div>

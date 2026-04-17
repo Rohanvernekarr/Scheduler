@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Features } from "./components/Features";
-import { HowItWorks, Footer } from "./components/HowItWorks";
+import { HowItWorks } from "./components/HowItWorks";
+import { Footer } from "./components/Footer";
 
 export default function Home(): ReactNode {
   return (
