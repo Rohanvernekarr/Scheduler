@@ -40,13 +40,29 @@ export function Hero(): ReactNode {
   ];
 
   return (
-    <section className="pt-32 pb-24 border-b border-border">
+    <section className="pt-32 pb-24 border-b border-border overflow-hidden">
       <div className="container">
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16">
-          <div className="flex-1 max-w-2xl">
-            <span className="tech-label mb-8 block">01 / System Entry</span>
+          <motion.div 
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: { opacity: 0 },
+              show: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
+            }}
+            className="flex-1 max-w-2xl"
+          >
+            <motion.span 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+              className="tech-label mb-8 block"
+            >
+              01 / System Entry
+            </motion.span>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] text-foreground uppercase">
+            <motion.h1 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
+              className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] text-foreground uppercase"
+            >
               zero Friction <br />
               <span className="text-foreground/25">to schedule</span>
               <br />
@@ -72,24 +88,33 @@ export function Hero(): ReactNode {
                   <span className="invisible">{WORDS.reduce((a, b) => (a.length > b.length ? a : b))}</span>
                 </span>
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-md text-foreground/40 leading-relaxed mb-12 max-w-xl font-medium">
+            <motion.p 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+              className="text-md text-foreground/40 leading-relaxed mb-12 max-w-xl font-medium"
+            >
               Schedule interviews, syncs, and check-ins in seconds. 
               Share your link and let people pick their own time. 
               Monolithic speed for modern workflows.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4 items-center mb-20">
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+              className="flex flex-wrap gap-4 items-center mb-20"
+            >
               <a href="/schedule" className="bg-foreground text-background tech-heading text-md px-10 py-4 hover:opacity-90 transition-all border border-foreground shadow-2xl shadow-foreground/10">
                 Get Your Link
               </a>
               <a href="#how" className="tech-label px-8 py-4 hover:text-foreground transition-all border border-border">
                 Learn More
               </a>
-            </div>
+            </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-10 border-t border-border">
+            <motion.div 
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-10 border-t border-border"
+            >
                {STATS.map((s) => (
                  <div key={s.label}>
                    <div className="flex items-center gap-2 mb-1">
@@ -98,15 +123,20 @@ export function Hero(): ReactNode {
                    <p className="tech-label">{s.label}</p>
                  </div>
                ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="hidden lg:block w-full max-w-sm relative group">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+            className="hidden lg:block w-full max-w-sm relative group"
+          >
             <div className="absolute -inset-4 bg-foreground/5 -z-10 group-hover:bg-foreground/10 transition-colors" />
             <div className="glass p-2">
                <CalendarDemo />
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
