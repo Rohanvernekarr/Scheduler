@@ -21,8 +21,8 @@ model User {
   username       String?        @unique
   name           String
   role           Role           @default(MEMBER)
-  companyId      String
-  company        Company        @relation(fields: [companyId], references: [id])
+  companyId      String?
+  company        Company?       @relation(fields: [companyId], references: [id])
   availabilities Availability[]
   meetingsAsHost Meeting[]      @relation("MeetingHost")
   interviews     Interview[]    @relation("Interviewer")
