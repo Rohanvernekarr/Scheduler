@@ -161,27 +161,10 @@ Sent via Scheduler · One-click booking
     hostName: string;
     guestEmail: string;
     inviteLink: string;
-    slots: Array<{
-      date: string;
-      startTime: string;
-      endTime: string;
-      duration: number;
-    }>;
+    slots: any[]; // Keep in data but don't show all in mail
   }) {
     const subject = `Priority Invitation: Book your session with ${data.hostName}`;
     
-    const slotsHtml = data.slots.map(slot => {
-      const d = new Date(slot.date).toLocaleDateString('en-GB', { 
-        weekday: 'short', day: 'numeric', month: 'short' 
-      });
-      return `
-        <div style="padding:12px 16px;background:#f8f9fa;border-radius:10px;border:1px solid #dee2e6;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-size:14px;font-weight:700;">${d}</div>
-          <div style="font-size:13px;color:#495057;">${slot.startTime} &mdash; ${slot.endTime} (${slot.duration}m)</div>
-        </div>
-      `;
-    }).join('');
-
     const body = `
 <!DOCTYPE html>
 <html>
@@ -192,25 +175,23 @@ Sent via Scheduler · One-click booking
       <div style="margin-top:12px;display:inline-block;padding:4px 12px;background:rgba(255,255,255,0.1);border-radius:100px;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">Protocol Alpha_01</div>
     </div>
     
-    <div style="padding:40px;">
-      <p style="margin:0 0 24px 0;font-size:16px;line-height:1.6;font-weight:500;">
-        Hello, <br><br>
-        <strong>${data.hostName}</strong> has prepared a targeted scheduling session for you. They have prioritized the following windows:
+    <div style="padding:40px;text-align:center;">
+      <p style="margin:0 0 24px 0;font-size:18px;line-height:1.6;font-weight:600;">
+        Hello! 👋
+      </p>
+      <p style="margin:0 0 32px 0;font-size:16px;line-height:1.6;color:#495057;">
+        <strong>${data.hostName}</strong> has invited you to pick a time for your next session. They have provided several prioritized windows for you to choose from.
       </p>
       
-      <div style="margin-bottom:32px;">
-        ${slotsHtml}
-      </div>
-
       <div style="text-align:center;">
-        <a href="${data.inviteLink}" style="display:inline-block;background:#000000;color:#ffffff;padding:18px 40px;border-radius:14px;font-size:14px;font-weight:900;text-decoration:none;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 20px rgba(0,0,0,0.1);">
-          Secure Time Slot &rarr;
+        <a href="${data.inviteLink}" style="display:inline-block;background:#000000;color:#ffffff;padding:20px 48px;border-radius:16px;font-size:14px;font-weight:900;text-decoration:none;text-transform:uppercase;letter-spacing:1px;box-shadow:0 10px 20px rgba(0,0,0,0.1);">
+          Pick a Time Slot &rarr;
         </a>
       </div>
 
-      <p style="margin:35px 0 0 0;font-size:12px;color:#868e96;text-align:center;line-height:1.8;font-weight:500;">
-        This invitation is encrypted and limited to your email. <br>
-        If you have questions, please contact the host directly.
+      <p style="margin:40px 0 0 0;font-size:12px;color:#adb5bd;text-align:center;line-height:1.8;font-weight:500;">
+        This invitation is unique to your email address: <strong>${data.guestEmail}</strong>. <br>
+        Please use the link above to view the host's real-time availability.
       </p>
     </div>
     

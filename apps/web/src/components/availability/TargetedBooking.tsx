@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Trash2, 
@@ -25,13 +25,27 @@ const HOURS = Array.from({ length: 24 }, (_, i) => i);
 export function TargetedBooking() {
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [activeTime, setActiveTime] = useState<string>('09:00');
+  
   const [slots, setSlots] = useState<AvailabilitySlot[]>([]);
+  const [dispatchedSlots, setDispatchedSlots] = useState<AvailabilitySlot[]>([]);
+  
   const [guestEmail, setGuestEmail] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [inviteLink, setInviteLink] = useState('');
-  
   const [pendingTime, setPendingTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedPending = localStorage.getItem('pending_slots');
+    const savedDispatched = localStorage.getItem('dispatched_slots');
+    if (savedPending) setSlots(JSON.parse(savedPending));
+    if (savedDispatched) setDispatchedSlots(JSON.parse(savedDispatched));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('pending_slots', JSON.stringify(slots));
+    localStorage.setItem('dispatched_slots', JSON.stringify(dispatchedSlots));
+  }, [slots, dispatchedSlots]);
 
   const handleAddSlot = (time: string, dur: number) => {
     const [h, m] = time.split(':').map(Number);
@@ -43,14 +57,13 @@ export function TargetedBooking() {
     endObj.setMinutes(m + dur);
     const endMs = endObj.getTime();
 
-    // Overlap check
-    const isOverlapping = slotsForDate.some(s => {
+    const allCurrent = [...slots, ...dispatchedSlots].filter(s => s.date === selectedDate);
+    const isOverlapping = allCurrent.some(s => {
       const [sh, sm] = s.startTime.split(':').map(Number);
       const sStart = new Date(selectedDate);
       sStart.setHours(sh, sm, 0, 0);
       const sStartMs = sStart.getTime();
       const sEndMs = sStartMs + (s.duration * 60000);
-      
       return (startMs < sEndMs && endMs > sStartMs);
     });
 
@@ -69,8 +82,12 @@ export function TargetedBooking() {
     setPendingTime(null);
   };
 
-  const removeSlot = (id: string) => {
-    setSlots(slots.filter(s => s.id !== id));
+  const removeSlot = (id: string, isDispatched = false) => {
+    if (isDispatched) {
+      setDispatchedSlots(dispatchedSlots.filter(s => s.id !== id));
+    } else {
+      setSlots(slots.filter(s => s.id !== id));
+    }
   };
 
   const handleSendInvite = async () => {
@@ -81,12 +98,10 @@ export function TargetedBooking() {
       const inviteId = Math.random().toString(36).substring(2, 9);
       const generatedLink = `${window.location.origin}/invite/${inviteId}`;
       
-      // 1. Perspective: Save for guest view (Mock DB)
-      const existing = JSON.parse(localStorage.getItem('custom_invites') || '{}');
-      existing[inviteId] = { id: inviteId, hostName: 'John Doe', slots, guestEmail };
-      localStorage.setItem('custom_invites', JSON.stringify(existing));
+      const existingInvites = JSON.parse(localStorage.getItem('custom_invites') || '{}');
+      existingInvites[inviteId] = { id: inviteId, hostName: 'John Doe', slots, guestEmail };
+      localStorage.setItem('custom_invites', JSON.stringify(existingInvites));
 
-      // 2. Perspective: Call API to send real email
       await sendTargetedInvite({
         hostName: 'John Doe',
         guestEmail,
@@ -96,19 +111,22 @@ export function TargetedBooking() {
 
       setInviteLink(generatedLink);
       setIsSent(true);
+      
+      setDispatchedSlots([...dispatchedSlots, ...slots]);
       setSlots([]);
       setGuestEmail('');
       
-      setTimeout(() => setIsSent(false), 15000);
+      setTimeout(() => setIsSent(false), 8000);
     } catch (error) {
       console.error('Failed to send invite:', error);
-      alert('Failed to send invite. Check server console.');
     } finally {
       setIsSending(false);
     }
   };
 
   const slotsForDate = useMemo(() => slots.filter(s => s.date === selectedDate), [slots, selectedDate]);
+  const dispForDate = useMemo(() => dispatchedSlots.filter(s => s.date === selectedDate), [dispatchedSlots, selectedDate]);
+  const allSlotsForDate = useMemo(() => [...slotsForDate, ...dispForDate], [slotsForDate, dispForDate]);
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start relative z-10">
@@ -129,6 +147,7 @@ export function TargetedBooking() {
                 setExpireDate={(d) => { setSelectedDate(d); setPendingTime(null); }}
                 expireTime={activeTime}
                 setExpireTime={setActiveTime}
+                showTime={false}
               />
            </div>
            
@@ -187,7 +206,7 @@ export function TargetedBooking() {
         </div>
       </div>
 
-      {/* Main Timeline: 24h Interactive Grid */}
+      {/* Main Timeline */}
       <div className="xl:col-span-8 bg-[#111111] border border-white/[0.06] rounded-[2.5rem] overflow-hidden flex flex-col h-[850px] shadow-2xl relative z-0">
          <div className="p-10 border-b border-white/[0.04] bg-black/40 flex items-center justify-between">
             <div>
@@ -202,18 +221,16 @@ export function TargetedBooking() {
 
          <div className="flex-1 overflow-y-auto custom-scrollbar">
             <div className="relative min-h-[1440px] px-10 pt-6 pb-20">
-               {/* 24 Hour Blocks (12 AM to 12 PM) */}
                {HOURS.map(hour => {
                   const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
                   
                   return (
                     <div key={hour} className="flex border-t border-white/[0.02] last:border-b transition-colors hover:bg-white/[0.01]">
                        {/* Labels */}
-                       <div className="w-24 pr-8 -mt-2.5 text-[10px] font-black text-zinc-800 uppercase tabular-nums sticky left-0 bg-[#111111] z-10 py-1 transition-colors group-hover:text-zinc-600">
+                       <div className="w-24 pr-8 -mt-2.5 text-[10px] font-black text-zinc-400 uppercase tabular-nums sticky left-0 bg-[#111111] z-10 py-1 transition-colors group-hover:text-zinc-600">
                           {hourLabel}
                        </div>
 
-                       {/* The 4 intervals per hour (15 mins each) */}
                        <div className="flex-1 space-y-1.5 py-2">
                           {INTERVALS.map(min => {
                              const time = `${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
@@ -221,20 +238,18 @@ export function TargetedBooking() {
                              
                              const startMs = new Date(selectedDate).setHours(hour, min, 0, 0);
                              
-                             // Detect if this specific 15-min block is covered by ANY slot
-                             const coveringSlot = slotsForDate.find(s => {
+                             const coveringSlot = allSlotsForDate.find(s => {
                                const [sh, sm] = s.startTime.split(':').map(Number);
                                const sStart = new Date(selectedDate).setHours(sh, sm, 0, 0);
                                const sEnd = sStart + (s.duration * 60000);
                                return startMs >= sStart && startMs < sEnd;
                              });
 
-                             // Only show the visual block on the STARTING segment of a slot
+                             // Only show  visual block on the STARTING segment of a slot
                              const isStartingSegment = coveringSlot && coveringSlot.startTime === time;
 
                              return (
                                <div key={min} className="h-10 relative group/row">
-                                  {/* Interaction Layer (Disabled if occupied) */}
                                   {!coveringSlot && (
                                     <button 
                                       onClick={() => setPendingTime(time)}
@@ -242,30 +257,50 @@ export function TargetedBooking() {
                                     />
                                   )}
                                   
-                                  {/* Quarters indicators */}
                                   <div className="absolute top-1/2 left-0 right-0 h-px bg-white/[0.005] pointer-events-none" />
 
-                                  {/* Occupied Slot (Rendered only on the first segment, but spans others) */}
                                   {isStartingSegment && (
                                     <motion.div 
                                       initial={{ opacity: 0, scale: 0.95 }} 
                                       animate={{ opacity: 1, scale: 1 }}
                                       style={{ height: `calc(${(coveringSlot.duration / 15) * 100}% + ${((coveringSlot.duration / 15) - 1) * 6}px)` }}
-                                      className="absolute inset-x-0 top-0 bg-white text-black px-5 rounded-xl flex items-center justify-between shadow-2xl z-10"
+                                      className={`absolute inset-x-0 top-0 px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 ${
+                                        dispatchedSlots.some(ds => ds.id === coveringSlot.id)
+                                          ? 'bg-zinc-950 border-zinc-800 text-zinc-500' 
+                                          : 'bg-white text-black border-white'
+                                      }`}
                                     >
                                        <div className="flex items-center gap-4">
-                                          <div className="px-2 py-0.5 bg-black text-white text-[9px] font-black uppercase italic rounded-md">
+                                          <div className={`px-2 py-0.5 text-[9px] font-black uppercase italic rounded-md ${
+                                            dispatchedSlots.some(ds => ds.id === coveringSlot.id) 
+                                              ? 'bg-zinc-900 text-zinc-600' 
+                                              : 'bg-black text-white'
+                                          }`}>
                                              {coveringSlot.duration}M
                                           </div>
-                                          <span className="text-sm font-black tracking-tighter uppercase italic">{coveringSlot.startTime} — {coveringSlot.endTime}</span>
+                                          <div className="flex flex-col">
+                                             <span className="text-sm font-black tracking-tighter uppercase italic">{coveringSlot.startTime} — {coveringSlot.endTime}</span>
+                                             {dispatchedSlots.some(ds => ds.id === coveringSlot.id) && (
+                                                <span className="text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500/50">Dispatched Protocol</span>
+                                             )}
+                                          </div>
                                        </div>
-                                       <button onClick={() => removeSlot(coveringSlot.id)} className="p-1.5 hover:bg-black/10 rounded-lg active:scale-90 transition-all">
-                                          <Trash2 size={14} className="opacity-50 hover:opacity-100 transition-opacity" />
+                                       <button 
+                                         onClick={(e) => {
+                                           e.stopPropagation();
+                                           removeSlot(coveringSlot.id, dispatchedSlots.some(ds => ds.id === coveringSlot.id));
+                                         }} 
+                                         className={`p-1.5 rounded-lg active:scale-90 transition-all ${
+                                           dispatchedSlots.some(ds => ds.id === coveringSlot.id)
+                                             ? 'hover:bg-white/5 text-zinc-800 hover:text-white'
+                                             : 'hover:bg-black/10'
+                                         }`}
+                                       >
+                                          <Trash2 size={14} className={dispatchedSlots.some(ds => ds.id === coveringSlot.id) ? "" : "opacity-50 hover:opacity-100 transition-opacity"} />
                                        </button>
                                     </motion.div>
                                   )}
 
-                                  {/* Duration Picker Dropdown */}
                                   <AnimatePresence>
                                      {isPending && (
                                        <motion.div 
@@ -280,7 +315,6 @@ export function TargetedBooking() {
                                           </div>
                                           <div className="flex-1 flex h-full">
                                              {DURATIONS.map(dur => {
-                                               // Optional: Disable durations that would overlap next slot
                                                return (
                                                  <button 
                                                    key={dur}

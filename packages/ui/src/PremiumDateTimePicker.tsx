@@ -9,6 +9,7 @@ interface PremiumDateTimePickerProps {
   setExpireDate: (date: string) => void;
   expireTime: string;
   setExpireTime: (time: string) => void;
+  showTime?: boolean;
 }
 
 export function PremiumDateTimePicker({
@@ -16,6 +17,7 @@ export function PremiumDateTimePicker({
   setExpireDate,
   expireTime,
   setExpireTime,
+  showTime = true,
 }: PremiumDateTimePickerProps) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -58,7 +60,7 @@ export function PremiumDateTimePicker({
       if (expireTime < cur) setExpireTime(cur);
     }
     setShowDatePicker(false);
-    if (!expireTime) setTimeout(() => setShowTimePicker(true), 100);
+    if (showTime && !expireTime) setTimeout(() => setShowTimePicker(true), 100);
   };
 
   const parseTime = () => {
@@ -112,7 +114,7 @@ export function PremiumDateTimePicker({
     gap: "2px",
   };
 
-  // ── Cell base styles ────────────────────────────────────────────────────
+  //  Cell base styles 
   const cellBase: React.CSSProperties = {
     height: "34px",
     display: "flex",
@@ -171,32 +173,34 @@ export function PremiumDateTimePicker({
         </button>
 
         {/* Time trigger */}
-        <button
-          type="button"
-          onClick={() => { setShowTimePicker(true); setShowDatePicker(false); }}
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "10px 12px",
-            borderRadius: "10px",
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            color: expireTime ? "#fff" : "rgba(255,255,255,0.3)",
-            cursor: "pointer",
-            fontSize: "13px",
-            fontWeight: 500,
-            transition: "all 0.15s",
-            minWidth: 0,
-          }}
-        >
-          <Clock size={14} color="rgba(255,255,255,0.3)" style={{ flexShrink: 0 }} />
-          <span style={{ flex: 1, textAlign: "left" }}>
-            {getDisplayTime() ?? "Pick time"}
-          </span>
-          {expireTime && <Check size={12} color="#818cf8" style={{ flexShrink: 0 }} />}
-        </button>
+        {showTime && (
+          <button
+            type="button"
+            onClick={() => { setShowTimePicker(true); setShowDatePicker(false); }}
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "10px 12px",
+              borderRadius: "10px",
+              border: "1px solid rgba(255,255,255,0.08)",
+              background: "rgba(255,255,255,0.04)",
+              color: expireTime ? "#fff" : "rgba(255,255,255,0.3)",
+              cursor: "pointer",
+              fontSize: "13px",
+              fontWeight: 500,
+              transition: "all 0.15s",
+              minWidth: 0,
+            }}
+          >
+            <Clock size={14} color="rgba(255,255,255,0.3)" style={{ flexShrink: 0 }} />
+            <span style={{ flex: 1, textAlign: "left" }}>
+              {getDisplayTime() ?? "Pick time"}
+            </span>
+            {expireTime && <Check size={12} color="#818cf8" style={{ flexShrink: 0 }} />}
+          </button>
+        )}
       </div>
 
       {/* ── Modal Backdrop ── */}
@@ -333,7 +337,7 @@ export function PremiumDateTimePicker({
 
       {/* ── Time Modal ── */}
       <AnimatePresence>
-        {showTimePicker && (
+        {showTime && showTimePicker && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
