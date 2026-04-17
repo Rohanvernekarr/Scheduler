@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 
 export function Footer(): ReactNode {
@@ -32,9 +33,8 @@ export function Footer(): ReactNode {
             © {new Date().getFullYear()} SCHEDULER_CORE_V1
           </p>
           <div className="flex gap-8">
-            {["PRIVACY", "TERMS"].map(l => (
-              <a key={l} href="#" className="tech-label hover:text-foreground transition-colors">{l}</a>
-            ))}
+            <Link href="/privacy-policy" className="tech-label hover:text-foreground transition-colors">PRIVACY</Link>
+            <Link href="/terms-of-service" className="tech-label hover:text-foreground transition-colors">TERMS</Link>
           </div>
         </div>
       </div>
