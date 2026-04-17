@@ -87,7 +87,7 @@ export function HowItWorks(): ReactNode {
             <h3 className="tech-heading text-3xl mb-2">Ready to deploy?</h3>
             <p className="font-bold opacity-60">No setup fees. No friction. Start now.</p>
           </div>
-          <a href="/schedule" className="bg-background text-foreground tech-heading px-10 py-5 border border-background hover:bg-background/90 transition-all text-center w-full sm:w-auto">
+          <a href="http://localhost:5174/" className="bg-background text-foreground tech-heading px-10 py-5 border border-background hover:bg-background/90 transition-all text-center w-full sm:w-auto">
             Get Your Link →
           </a>
         </motion.div>

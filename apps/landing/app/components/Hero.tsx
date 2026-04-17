@@ -103,7 +103,7 @@ export function Hero(): ReactNode {
               variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
               className="flex flex-wrap gap-4 items-center mb-20"
             >
-              <a href="/schedule" className="bg-foreground text-background tech-heading text-md px-10 py-4 hover:opacity-90 transition-all border border-foreground shadow-2xl shadow-foreground/10">
+              <a href="http://localhost:5174/" className="bg-foreground text-background tech-heading text-md px-10 py-4 hover:opacity-90 transition-all border border-foreground shadow-2xl shadow-foreground/10">
                 Get Your Link
               </a>
               <a href="#how" className="tech-label px-8 py-4 hover:text-foreground transition-all border border-border">

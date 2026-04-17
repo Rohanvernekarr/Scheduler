@@ -156,7 +156,71 @@ Sent via Scheduler · One-click booking
     return this.sendEmail(participantEmail, subject, body);
   }
 
-  
+
+  async sendTargetedInvite(data: {
+    hostName: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    duration: number;
+    guestEmail: string;
+    inviteLink: string;
+  }) {
+    const subject = `Invitation to book a session with ${data.hostName}`;
+    const dateObj = new Date(data.date);
+    const dateStr = dateObj.toLocaleDateString('en-GB', { 
+      weekday: 'long', 
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const body = `
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#f8f9fa;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#212529;">
+  <div style="max-width:600px;margin:20px auto;background:#ffffff;border:1px solid #dee2e6;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+    <div style="padding:40px;text-align:center;background:#000000;color:#ffffff;">
+      <h1 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.5px;text-transform:uppercase;">Scheduler</h1>
+      <p style="margin:10px 0 0 0;font-size:14px;opacity:0.6;letter-spacing:1px;font-weight:700;">SYSTEM_INVITE_V1</p>
+    </div>
+    
+    <div style="padding:40px;">
+      <p style="margin:0 0 24px 0;font-size:16px;line-height:1.6;">
+        Hello, <br><br>
+        <strong>${data.hostName}</strong> has invited you to book a session on <strong>${dateStr}</strong>.
+      </p>
+      
+      <div style="background:#f1f3f5;border-radius:8px;padding:24px;margin-bottom:32px;border-left:4px solid #000000;">
+        <p style="margin:0 0 8px 0;font-size:12px;font-weight:700;color:#868e96;text-transform:uppercase;letter-spacing:1px;">Session Parameters</p>
+        <p style="margin:0 0 4px 0;font-size:15px;"><strong>Duration:</strong> ${data.duration} minutes</p>
+        <p style="margin:0 0 4px 0;font-size:15px;"><strong>Window:</strong> ${data.startTime} — ${data.endTime}</p>
+        <p style="margin:0;font-size:15px;"><strong>Date:</strong> ${dateStr}</p>
+      </div>
+
+      <div style="text-align:center;">
+        <a href="${data.inviteLink}" style="display:inline-block;background:#000000;color:#ffffff;padding:16px 32px;border-radius:8px;font-size:15px;font-weight:700;text-decoration:none;transition:all 0.2s;">
+          Pick a Time Slot
+        </a>
+      </div>
+
+      <p style="margin:32px 0 0 0;font-size:13px;color:#868e96;text-align:center;line-height:1.6;">
+        This is a unique, one-time booking link. If you have questions, please contact the host directly at ${data.guestEmail}.
+      </p>
+    </div>
+    
+    <div style="padding:24px;background:#f8f9fa;border-top:1px solid #dee2e6;text-align:center;">
+      <p style="margin:0;font-size:11px;color:#adb5bd;text-transform:uppercase;letter-spacing:2px;font-weight:700;">
+        Powered by Antigravity Scheduler
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    return this.sendEmail(data.guestEmail, subject, body);
+  }
 }
 
 export const mailService = new MailService();

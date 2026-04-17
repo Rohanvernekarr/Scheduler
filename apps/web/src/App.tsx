@@ -5,6 +5,8 @@ import DashboardView from './views/DashboardView';
 import AvailabilityView from './views/AvailabilityView';
 import BookingView from './views/BookingView';
 import ScheduleView from './views/ScheduleView';
+import InviteCreationView from './views/InviteCreationView';
+import GuestInviteView from './views/GuestInviteView';
 import './index.css';
 
 const queryClient = new QueryClient();
@@ -14,6 +16,7 @@ function AppRoutes() {
     <Routes>
       {/* Public Routes (No Sidebar) */}
       <Route path="/book/:username" element={<BookingView />} />
+      <Route path="/invite/:inviteId" element={<GuestInviteView />} />
 
       {/* Private Routes (With Sidebar) */}
       <Route

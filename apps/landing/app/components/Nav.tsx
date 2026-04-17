@@ -18,7 +18,7 @@ export function Nav(): ReactNode {
           </Link>
           <div className="w-px h-4 bg-border mx-2" />
           <Link
-            href="/schedule"
+            href="http://localhost:5174/"
             className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
           >
             Get started
