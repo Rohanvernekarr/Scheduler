@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Company {
@@ -29,6 +28,7 @@ model User {
   interviews     Interview[]    @relation("Interviewer")
   eventsAsHost   Event[]        @relation("EventHost")
   participants   Participant[]
+  targetedInvites TargetedInvite[] @relation("InviteHost")
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 }
@@ -126,4 +126,28 @@ model EmailLog {
   status    String   // e.g., "SENT", "FAILED"
   error     String?
   createdAt DateTime @default(now())
+}
+
+model TargetedInvite {
+  id           String         @id @default(cuid())
+  hostId       String
+  host         User           @relation("InviteHost", fields: [hostId], references: [id])
+  guestEmail   String
+  inviteLink   String         @unique
+  meetingLink  String?        // For Google Meet / Zoom etc.
+  slots        TargetedSlot[]
+  createdAt    DateTime       @default(now())
+}
+
+model TargetedSlot {
+  id               String         @id @default(cuid())
+  inviteId         String
+  invite           TargetedInvite @relation(fields: [inviteId], references: [id])
+  startTime        DateTime
+  endTime          DateTime
+  duration         Int
+  isBooked         Boolean        @default(false)
+  bookedAt         DateTime?
+  bookedByEmail    String?
+  bookedByName     String?
 }

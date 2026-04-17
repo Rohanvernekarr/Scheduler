@@ -2,23 +2,13 @@ import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Calendar as CalendarIcon, CheckCircle2, User, ChevronRight, Mail, ChevronLeft } from 'lucide-react';
-import { createBooking } from '../lib/api';
-import { useMutation } from '@tanstack/react-query';
+import { getInvite, bookInviteSlot } from '../lib/api';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { BookingSuccess } from '../components/booking/BookingSuccess';
-
-interface SlotData {
-  id: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  duration: number;
-}
-
 export default function GuestInviteView() {
   const { inviteId } = useParams();
   const navigate = useNavigate();
   
-  const [invite, setInvite] = useState<any>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [guestName, setGuestName] = useState('');
@@ -26,56 +16,62 @@ export default function GuestInviteView() {
   
   const [viewDate, setViewDate] = useState(new Date());
 
+  const { data: invite, isLoading, error } = useQuery({
+    queryKey: ['invite', inviteId],
+    queryFn: () => getInvite(inviteId!),
+    enabled: !!inviteId
+  });
+
   useEffect(() => {
-    const existing = JSON.parse(localStorage.getItem('custom_invites') || '{}');
-    const data = existing[inviteId || ''];
-    if (data) {
-      setInvite(data);
-      // Auto-select first available date
-      if (data.slots?.length > 0) {
-        setSelectedDate(data.slots[0].date);
+    if (invite?.slots?.length > 0) {
+      // Find first unbooked slot date
+      const firstAvailable = invite.slots.find((s: any) => !s.isBooked);
+      if (firstAvailable) {
+        const dateStr = new Date(firstAvailable.startTime).toISOString().split('T')[0];
+        setSelectedDate(dateStr);
       }
     }
-  }, [inviteId]);
+  }, [invite]);
 
   const bookingMutation = useMutation({
-    mutationFn: (data: any) => createBooking(data),
+    mutationFn: (data: any) => bookInviteSlot(data),
     onSuccess: () => setIsBooked(true),
   });
 
   const slotsByDate = useMemo(() => {
     if (!invite?.slots) return {};
-    const grouped: Record<string, SlotData[]> = {};
-    invite.slots.forEach((s: SlotData) => {
-      if (!grouped[s.date]) grouped[s.date] = [];
-      grouped[s.date].push(s);
+    const grouped: Record<string, any[]> = {};
+    
+    invite.slots.forEach((s: any) => {
+      const d = new Date(s.startTime);
+      const dateStr = d.toISOString().split('T')[0];
+      
+      if (!grouped[dateStr]) grouped[dateStr] = [];
+      
+      grouped[dateStr].push({
+        ...s,
+        date: dateStr,
+        startTime: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }),
+        endTime: new Date(s.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+      });
     });
     return grouped;
   }, [invite]);
 
   const activeDates = useMemo(() => Object.keys(slotsByDate), [slotsByDate]);
 
-  const selectedSlot = useMemo(() => 
-    invite?.slots?.find((s: SlotData) => s.id === selectedSlotId), 
-    [invite, selectedSlotId]
-  );
+  const selectedSlot = useMemo(() => {
+    if (!selectedSlotId) return null;
+    return Object.values(slotsByDate).flat().find(s => s.id === selectedSlotId);
+  }, [slotsByDate, selectedSlotId]);
 
   const handleBooking = () => {
-    if (!selectedSlot || !guestName || !invite) return;
+    if (!selectedSlotId || !guestName || !invite) return;
     
-    const [startH, startM] = selectedSlot.startTime.split(':').map(Number);
-    const startTime = new Date(selectedSlot.date);
-    startTime.setHours(startH, startM, 0, 0);
-    
-    const endTime = new Date(startTime);
-    endTime.setMinutes(endTime.getMinutes() + selectedSlot.duration);
-
     bookingMutation.mutate({
-      hostId: "cm9lndj6y0000ux3v8x9r9fzb", 
-      guestEmail: invite.guestEmail,
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-      title: `Private Meeting: ${invite.hostName} × ${guestName}`
+      slotId: selectedSlotId,
+      guestName,
+      guestEmail: invite.guestEmail
     });
   };
 
@@ -100,12 +96,12 @@ export default function GuestInviteView() {
     </div>
   );
 
-  if (isBooked) {
+  if (isBooked && selectedSlot) {
     return (
       <BookingSuccess 
-        userName={invite.hostName} 
-        selectedDate={new Date(selectedSlot!.date)} 
-        selectedTime={`${selectedSlot!.startTime} - ${selectedSlot!.endTime}`} 
+        userName={invite.host?.name || "Host"} 
+        selectedDate={new Date(selectedSlot.date)} 
+        selectedTime={`${selectedSlot.startTime} - ${selectedSlot.endTime}`} 
         onDone={() => navigate('/')} 
       />
     );
@@ -215,18 +211,25 @@ export default function GuestInviteView() {
                     {currentSlots.map(slot => (
                        <button
                          key={slot.id}
+                         disabled={slot.isBooked}
                          onClick={() => setSelectedSlotId(slot.id)}
                          className={`w-full p-5 rounded-2xl flex items-center justify-between border transition-all ${
-                            selectedSlotId === slot.id ? 'bg-white text-black border-white shadow-xl' : 'bg-black/40 border-white/5 text-zinc-400 hover:border-white/10 hover:text-white'
+                            slot.isBooked ? 'bg-white/5 border-white/5 text-zinc-700 cursor-not-allowed opacity-50' :
+                            selectedSlotId === slot.id ? 'bg-white text-black border-white shadow-xl' : 
+                            'bg-black/40 border-white/5 text-zinc-400 hover:border-white/10 hover:text-white'
                          }`}
                        >
                           <div className="flex items-center gap-4">
-                             <div className={`px-2 py-0.5 rounded text-[9px] font-black uppercase ${selectedSlotId === slot.id ? 'bg-black text-white' : 'bg-white/5 text-zinc-500'}`}>
+                             <div className={`px-2 py-0.5 rounded text-[9px] font-black uppercase ${slot.isBooked ? 'bg-zinc-800 text-zinc-600' : selectedSlotId === slot.id ? 'bg-black text-white' : 'bg-white/5 text-zinc-500'}`}>
                                 {slot.duration}M
                              </div>
                              <span className="text-base font-black italic tracking-tight uppercase leading-none">{slot.startTime} &mdash; {slot.endTime}</span>
                           </div>
-                          {selectedSlotId === slot.id && <CheckCircle2 size={16} />}
+                          {slot.isBooked ? (
+                             <span className="text-[10px] font-black uppercase tracking-widest opacity-50 italic">Booked</span>
+                          ) : (
+                             selectedSlotId === slot.id && <CheckCircle2 size={16} />
+                          )}
                        </button>
                     ))}
                  </div>

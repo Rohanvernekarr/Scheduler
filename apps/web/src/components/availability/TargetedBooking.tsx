@@ -14,6 +14,7 @@ export function TargetedBooking() {
   const [dispatchedSlots, setDispatchedSlots] = useState<AvailabilitySlot[]>([]);
   
   const [guestEmail, setGuestEmail] = useState<string>('');
+  const [meetingLink, setMeetingLink] = useState<string>('');
   const [isSending, setIsSending] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [inviteLink, setInviteLink] = useState('');
@@ -87,8 +88,10 @@ export function TargetedBooking() {
       localStorage.setItem('custom_invites', JSON.stringify(existingInvites));
 
       await sendTargetedInvite({
+        hostId: 'cm9lndj6y0000ux3v8x9r9fzb', // Placeholder ID
         hostName: 'John Doe',
         guestEmail,
+        meetingLink,
         inviteLink: generatedLink,
         slots
       });
@@ -99,6 +102,7 @@ export function TargetedBooking() {
       setDispatchedSlots([...dispatchedSlots, ...slots]);
       setSlots([]);
       setGuestEmail('');
+      setMeetingLink('');
       
       setTimeout(() => setIsSent(false), 8000);
     } catch (error) {
@@ -118,6 +122,8 @@ export function TargetedBooking() {
         setActiveTime={setActiveTime}
         guestEmail={guestEmail}
         setGuestEmail={setGuestEmail}
+        meetingLink={meetingLink}
+        setMeetingLink={setMeetingLink}
         isSending={isSending}
         slots={slots}
         onSendInvite={handleSendInvite}

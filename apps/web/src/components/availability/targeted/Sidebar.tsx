@@ -15,6 +15,8 @@ interface SidebarProps {
   onSendInvite: () => void;
   onRemoveSlot: (id: string) => void;
   setPendingTime: (time: string | null) => void;
+  meetingLink: string;
+  setMeetingLink: (link: string) => void;
 }
 
 export function Sidebar({
@@ -29,6 +31,8 @@ export function Sidebar({
   onSendInvite,
   onRemoveSlot,
   setPendingTime,
+  meetingLink,
+  setMeetingLink,
 }: SidebarProps) {
   return (
     <div className="xl:col-span-4 space-y-6">
@@ -73,6 +77,22 @@ export function Sidebar({
                 className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
               />
               <Mail size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800" />
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">
+              Meeting Location (URL)
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="meet.google.com/abc-defg-hij"
+                value={meetingLink}
+                onChange={(e) => setMeetingLink(e.target.value)}
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
+              />
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800 text-[10px] font-bold">LINK</div>
             </div>
           </div>
 
