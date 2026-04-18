@@ -256,6 +256,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/node':
+        specifier: ^25.6.0
+        version: 25.6.0
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -4497,21 +4500,21 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
 
   '@types/estree@1.0.8': {}
 
   '@types/express-serve-static-core@5.1.1':
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
       '@types/qs': 6.15.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -4558,12 +4561,12 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 24.12.2
+      '@types/node': 25.6.0
 
   '@typescript-eslint/eslint-plugin@8.50.0(@typescript-eslint/parser@8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2))(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)':
     dependencies:
