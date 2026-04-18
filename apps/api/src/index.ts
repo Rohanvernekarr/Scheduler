@@ -11,16 +11,28 @@ import { interviewRouter } from './routes/v1/interviews.js';
 import { inviteRouter } from './routes/v1/invites.js';
 import { errorHandler } from './middleware/error.js';
 import { authMiddleware } from './middleware/auth.js';
+import { auth } from '@repo/auth';
+import { toNodeHandler } from "better-auth/node";
 
 const app = express();
 const port = process.env.PORT || 8000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000', // Landing
+    'http://localhost:5173', // Web
+    'http://localhost:5174'  // Admin (likely)
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
+
+// Better Auth handler
+app.all(/^\/api\/auth\/.*/, toNodeHandler(auth));
 
 // Apply auth middleware to all v1 routes
 app.use('/api/v1', authMiddleware);
