@@ -1,23 +1,25 @@
 import { useMemo } from 'react';
-import { Button } from '@repo/ui';
 import { getMeetings, getHostBookings } from '../lib/api';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar, Users, Clock, Plus } from 'lucide-react';
-import { StatsCard } from '../components/dashboard/StatsCard';
+import { Info, MoreHorizontal, CheckCircle2, Plus } from 'lucide-react';
 import { EventRow } from '../components/dashboard/EventRow';
 import { Link } from 'react-router-dom';
-
-const USER_ID = 'cm9lndj6y0000ux3v8x9r9fzb';
+import { useSession } from '@repo/auth/client';
 
 export default function DashboardView() {
-  const { data: meetings = [], isLoading: isLoadingMeetings } = useQuery({
-    queryKey: ['meetings', USER_ID],
-    queryFn: () => getMeetings(USER_ID),
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  const { data: meetings = [], status: meetingsStatus } = useQuery({
+    queryKey: ['meetings', userId],
+    queryFn: () => getMeetings(userId!),
+    enabled: !!userId,
   });
 
-  const { data: bookings = [], isLoading: isLoadingBookings } = useQuery({
-    queryKey: ['bookings', USER_ID],
-    queryFn: () => getHostBookings(USER_ID),
+  const { data: bookings = [], status: bookingsStatus } = useQuery({
+    queryKey: ['bookings', userId],
+    queryFn: () => getHostBookings(userId!),
+    enabled: !!userId,
   });
 
   const allEvents = useMemo(() => {
@@ -33,54 +35,101 @@ export default function DashboardView() {
     return combined.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
   }, [meetings, bookings]);
 
-  if (isLoadingMeetings || isLoadingBookings) return <DashboardSkeleton />;
-
-  const stats = [
-    { label: 'Total Events', value: allEvents.length, icon: Calendar },
-    { label: 'External Bookings', value: bookings.length, icon: Clock },
-    { label: 'Internal Meetings', value: meetings.length, icon: Users },
-  ];
+  const isPending = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
 
   return (
-    <div className="max-w-6xl">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-6">
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Header  */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <p className="text-xs font-semibold text-zinc-50 uppercase tracking-widest mb-2">Overview</p>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
-          <p className="text-white/40 text-sm mt-1">Welcome back - here's your current schedule.</p>
+          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            Dashboard
+          </h1>
+          <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-1.5 text-xs text-white/60">
+              <CheckCircle2 size={14} className="text-emerald-500" />
+              <span>active_session</span>
+            </div>
+            <span className="bg-white/5 text-white/40 text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded border border-white/10 font-bold">
+              Default
+            </span>
+          </div>
         </div>
-        <div className="flex gap-3">
-          <Button variant="secondary" size="md">Settings</Button>
+        
+        <div className="flex items-center gap-2">
           <Link to="/schedule">
-            <Button size="md" className="gap-2">
-              New Meeting
-            </Button>
+            <button className="bg-white text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
+              <Plus size={14} />
+              Schedule
+            </button>
           </Link>
-        </div>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {stats.map((stat) => <StatsCard key={stat.label} {...stat} />)}
-      </div>
-
-      <section className="bg-[#111111] rounded-2xl border border-white/[0.06] overflow-hidden">
-        <div className="flex justify-between items-center px-6 py-5 border-b border-white/[0.06]">
-          <h2 className="text-sm font-semibold text-white/70 uppercase tracking-widest">Upcoming Schedule</h2>
-          <button className="text-zinc-50 font-semibold text-xs uppercase tracking-widest hover:text-zinc-300 transition-colors">
-            View All
+          <button className="bg-transparent border border-white/10 text-white px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
+            <MoreHorizontal size={14} />
           </button>
         </div>
-        <div className="divide-y divide-white/[0.04]">
-          {allEvents.length === 0 ? (
-            <div className="p-20 text-center">
-              <Calendar size={32} className="text-white/10 mx-auto mb-4" />
-              <p className="text-white/20 font-medium text-sm">No events scheduled yet.</p>
+      </div>
+
+      {/* Metrics Bar */}
+      <div className="bg-[#111111] border border-white/5 rounded-xl p-6 shadow-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <MetricItem 
+            label="Events" 
+            value={`${allEvents.length} scheduled`} 
+            isLoading={!!isPending && allEvents.length === 0} 
+          />
+          <MetricItem 
+            label="External Bookings" 
+            value={bookings.length} 
+            isLoading={!!isPending && bookings.length === 0} 
+          />
+          <MetricItem 
+            label="Internal Syncs" 
+            value={meetings.length} 
+            isLoading={!!isPending && meetings.length === 0} 
+          />
+          <MetricItem 
+            label="Network usage" 
+            value="857.1 kB" 
+          />
+        </div>
+      </div>
+
+
+
+      {/* Recent Activity */}
+      <section className="bg-[#111111] rounded-xl border border-white/5 overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/5">
+          <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Recent Activity</h2>
+        </div>
+        <div className="divide-y divide-white/[0.03]">
+          {isPending && allEvents.length === 0 ? (
+            <div className="p-8 space-y-4">
+              <div className="h-12 bg-white/5 rounded-xl animate-pulse" />
+              <div className="h-12 bg-white/5 rounded-xl animate-pulse w-3/4" />
             </div>
+          ) : allEvents.length === 0 ? (
+            <div className="p-12 text-center text-white/20 text-sm">No recent activity detected.</div>
           ) : (
-            allEvents.map((event: any) => <EventRow key={event.id} event={event} />)
+            allEvents.slice(0, 5).map((event: any) => <EventRow key={event.id} event={event} />)
           )}
         </div>
       </section>
+    </div>
+  );
+}
+
+function MetricItem({ label, value, isLoading }: { label: string; value: string | number; isLoading?: boolean }) {
+  return (
+    <div className="space-y-1">
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">{label}</span>
+        <Info size={10} className="text-white/20" />
+      </div>
+      {isLoading ? (
+        <div className="h-7 w-20 bg-white/5 animate-pulse rounded" />
+      ) : (
+        <p className="text-lg font-bold text-white tracking-tight">{value}</p>
+      )}
     </div>
   );
 }

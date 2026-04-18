@@ -1,7 +1,17 @@
+"use client"
+
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "@repo/auth/client";
 
 export function Nav(): ReactNode {
+  const { data: session } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut();
+    window.location.href = "/";
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center border-b border-border glass bg-background/50">
       <div className="container flex items-center justify-between">
@@ -17,12 +27,28 @@ export function Nav(): ReactNode {
             How it works
           </Link>
           <div className="w-px h-4 bg-border mx-2" />
-          <Link
-            href="http://localhost:5174/"
-            className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
-          >
-            Get started
-          </Link>
+          
+          {session ? (
+            <>
+             
+              <a
+                href="http://localhost:5174/"
+                className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
+              >
+                Dashboard
+              </a>
+            </>
+          ) : (
+            <>
+             
+              <Link
+                href="/login"
+                className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
+              >
+                Get started
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
