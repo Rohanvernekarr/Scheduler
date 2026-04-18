@@ -1,26 +1,28 @@
 import type { Request, Response, NextFunction } from 'express';
+import { auth } from '@repo/auth';
+import { fromNodeHeaders } from "better-auth/node";
 
 export interface AuthenticatedRequest extends Request {
   userId?: string;
 }
 
 /**
- * Basic authentication middleware.
- * For now, it expects a 'x-user-id' header. 
- * This allows us to test the API easily before full OIDC/JWT integration.
+ * Authentication middleware using Better Auth.
  */
-export function authMiddleware(
+export async function authMiddleware(
   req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) {
-  const userId = req.headers['x-user-id'] as string;
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers)
+  });
 
-  if (!userId) {
-    return res.status(401).json({ error: 'Unauthorized: Missing User ID header' });
+  if (!session) {
+    return res.status(401).json({ error: 'Unauthorized: Invalid or missing session' });
   }
 
   // Inject userId into request for use in controllers
-  req.userId = userId;
+  req.userId = session.user.id;
   next();
 }
