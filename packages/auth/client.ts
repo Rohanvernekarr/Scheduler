@@ -16,3 +16,4 @@ export const signOut = authClient.signOut;
 export const useSession = authClient.useSession;
 export const updateUser: (args: any) => Promise<any> = authClient.updateUser;
 export const emailOtp = authClient.emailOtp;
+

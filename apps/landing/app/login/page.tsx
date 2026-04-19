@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, authClient } from "@repo/auth/client";
+import { signIn, emailOtp } from "@repo/auth/client";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
     setLoading(true);
     const cleanEmail = email.trim().toLowerCase();
     try {
-      const { error } = await authClient.emailOtp.sendVerificationOtp({
+      const { error } = await emailOtp.sendVerificationOtp({
         email: cleanEmail,
         type: "sign-in",
       });
