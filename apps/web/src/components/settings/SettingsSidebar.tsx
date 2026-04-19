@@ -9,7 +9,6 @@ interface SettingsSidebarProps {
 export function SettingsSidebar({ activeTab, setActiveTab }: SettingsSidebarProps) {
   const navItems = [
     { id: 'profile', label: 'Profile', icon: User },
-    { id: 'preferences', label: 'Preferences', icon: Settings },
     { id: 'notifications', label: 'Notifications', icon: Bell },
     { id: 'security', label: 'Security', icon: Shield },
     { id: 'integrations', label: 'Integrations', icon: Puzzle },

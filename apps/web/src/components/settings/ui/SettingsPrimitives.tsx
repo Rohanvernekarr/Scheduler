@@ -43,16 +43,24 @@ export function SettingsToggle({ label, description, active, onToggle }: any) {
   );
 }
 
-export function SettingsSelect({ label, icon, value, options }: any) {
+export function SettingsSelect({ label, icon, value, options, onChange }: any) {
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <span className="text-zinc-600">{icon}</span>
         <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">{label}</label>
       </div>
-      <div className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white flex items-center justify-between cursor-pointer hover:bg-white/[0.08] transition-all">
-        <span className="text-sm font-medium">{value}</span>
-        <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+      <div className="relative group/select">
+        <select 
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-medium appearance-none focus:outline-none focus:border-white/20 transition-all cursor-pointer"
+        >
+          {options.map((opt: string) => (
+            <option key={opt} value={opt} className="bg-zinc-900 text-white">{opt}</option>
+          ))}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-white/20 pointer-events-none group-hover/select:bg-white/40 transition-colors" />
       </div>
     </div>
   );

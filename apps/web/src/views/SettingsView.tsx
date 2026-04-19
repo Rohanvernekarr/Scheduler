@@ -21,9 +21,6 @@ export default function SettingsView() {
   
   const [formData, setFormData] = useState({
     name: '',
-    bio: 'Infrastructure Engineer & Product Designer',
-    timezone: 'UTC -5 (Eastern Time)',
-    language: 'English (US)',
   });
 
   useEffect(() => {
@@ -42,7 +39,7 @@ export default function SettingsView() {
     try {
       await updateUser({
         name: formData.name,
-      } as any);
+      });
       await refetch();
       setIsEditing(false);
     } catch (error) {
@@ -83,9 +80,9 @@ export default function SettingsView() {
                   {isEditing ? (
                     <>
                       <button onClick={() => setIsEditing(false)} className="px-4 py-2 rounded-lg border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest">Cancel</button>
-                      <button onClick={handleSave} className="px-4 py-2 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                      <button onClick={handleSave} className="px-4 py-2 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
                         {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
-                        Save
+                        Save Changes
                       </button>
                     </>
                   ) : (
@@ -105,7 +102,6 @@ export default function SettingsView() {
                   isEditing={isEditing} 
                 />
               )}
-              {activeTab === 'preferences' && <PreferencesSection formData={formData} setFormData={setFormData} />}
               {activeTab === 'notifications' && <NotificationsSection />}
               {activeTab === 'security' && <SecuritySection />}
               {activeTab === 'integrations' && <IntegrationsSection />}
@@ -120,7 +116,6 @@ export default function SettingsView() {
 function getDescription(tab: Tab) {
   switch (tab) {
     case 'profile': return 'Manage your public identity and profile information.';
-    case 'preferences': return 'Configure your global system and language settings.';
     case 'notifications': return 'Control how and when you receive system alerts.';
     case 'security': return 'Review your account security and active sessions.';
     case 'integrations': return 'Connect external platforms to sync your schedule.';

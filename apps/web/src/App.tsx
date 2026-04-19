@@ -5,10 +5,11 @@ import DashboardView from './views/DashboardView';
 import AvailabilityView from './views/AvailabilityView';
 import BookingView from './views/BookingView';
 import ScheduleView from './views/ScheduleView';
-import InviteCreationView from './views/InviteCreationView';
+// import InviteCreationView from './views/InviteCreationView';
 import GuestInviteView from './views/GuestInviteView';
 import LoginView from './views/LoginView';
 import SettingsView from './views/SettingsView';
+import BookingsView from './views/BookingsView';
 import { useSession } from '@repo/auth/client';
 import { Navigate, Outlet } from 'react-router-dom';
 
@@ -52,6 +53,7 @@ function AppRoutes() {
       <Route element={<PrivateLayout />}>
         <Route path="/" element={<DashboardView />} />
         <Route path="/availability" element={<AvailabilityView />} />
+        <Route path="/bookings" element={<BookingsView />} />
         <Route path="/schedule" element={<ScheduleView />} />
         <Route path="/settings" element={<SettingsView />} />
       </Route>
