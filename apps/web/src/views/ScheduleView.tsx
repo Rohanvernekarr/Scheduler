@@ -1,18 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createMeeting, DEFAULT_USER_ID } from '../lib/api';
+import { createMeeting } from '../lib/api';
 import { ScheduleForm } from '../components/scheduling/ScheduleForm';
 import { motion } from 'framer-motion';
 import { CalendarClock, Zap, Bell, Globe } from 'lucide-react';
+import { useSession } from '@repo/auth/client';
 
 export default function ScheduleView() {
   const navigate = useNavigate();
+  const { data: session } = useSession();
 
   const mutation = useMutation({
     mutationFn: (data: any) =>
       createMeeting({
         ...data,
-        hostId: DEFAULT_USER_ID,
+        hostId: session?.user.id,
       }),
     onSuccess: () => {
       navigate('/');

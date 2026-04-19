@@ -8,6 +8,7 @@ import ScheduleView from './views/ScheduleView';
 import InviteCreationView from './views/InviteCreationView';
 import GuestInviteView from './views/GuestInviteView';
 import LoginView from './views/LoginView';
+import SettingsView from './views/SettingsView';
 import { useSession } from '@repo/auth/client';
 import { Navigate, Outlet } from 'react-router-dom';
 
@@ -52,6 +53,7 @@ function AppRoutes() {
         <Route path="/" element={<DashboardView />} />
         <Route path="/availability" element={<AvailabilityView />} />
         <Route path="/schedule" element={<ScheduleView />} />
+        <Route path="/settings" element={<SettingsView />} />
       </Route>
     </Routes>
   );

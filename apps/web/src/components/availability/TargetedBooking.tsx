@@ -5,6 +5,7 @@ import type { AvailabilitySlot } from './targeted/types';
 import { Sidebar } from './targeted/Sidebar';
 import { Timeline } from './targeted/Timeline';
 import { SuccessToast } from './targeted/SuccessToast';
+import { useSession } from '@repo/auth/client';
 
 export function TargetedBooking() {
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -75,6 +76,8 @@ export function TargetedBooking() {
     }
   };
 
+  const { data: session } = useSession();
+
   const handleSendInvite = async () => {
     if (slots.length === 0 || !guestEmail) return;
     setIsSending(true);
@@ -82,14 +85,15 @@ export function TargetedBooking() {
     try {
       const inviteId = Math.random().toString(36).substring(2, 9);
       const generatedLink = `${window.location.origin}/invite/${inviteId}`;
+      const hostName = session?.user.name || session?.user.email?.split('@')[0] || 'Host';
       
       const existingInvites = JSON.parse(localStorage.getItem('custom_invites') || '{}');
-      existingInvites[inviteId] = { id: inviteId, hostName: 'John Doe', slots, guestEmail };
+      existingInvites[inviteId] = { id: inviteId, hostName, slots, guestEmail };
       localStorage.setItem('custom_invites', JSON.stringify(existingInvites));
 
       await sendTargetedInvite({
-        hostId: 'cm9lndj6y0000ux3v8x9r9fzb', // Placeholder ID
-        hostName: 'John Doe',
+        hostId: session?.user.id || '',
+        hostName,
         guestEmail,
         meetingLink,
         inviteLink: generatedLink,
