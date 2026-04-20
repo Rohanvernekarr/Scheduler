@@ -43,12 +43,6 @@ export function Nav(): ReactNode {
               >
                 Dashboard
               </a>
-              <button
-                onClick={handleSignOut}
-                className="bg-zinc-800 text-white px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-zinc-700 transition-all active:scale-95 border border-white/10"
-              >
-                Log Out
-              </button>
             </>
           ) : (
             <>

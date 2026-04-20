@@ -9,7 +9,6 @@ export async function getStats() {
       prisma.user.count(),
     ]);
 
-    // Adding to base numbers to maintain the "2,470+" look while being dynamic
     return {
       meetings: meetingCount,
       users: userCount,

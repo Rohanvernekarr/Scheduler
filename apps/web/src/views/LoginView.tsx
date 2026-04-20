@@ -103,7 +103,7 @@ export default function LoginView() {
           >
             System <br />
             Authentication <br />
-            Portal.
+            Portal
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

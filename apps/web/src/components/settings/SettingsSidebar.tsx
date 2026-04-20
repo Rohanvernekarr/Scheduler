@@ -1,5 +1,9 @@
 import { motion } from 'framer-motion';
-import { User, Settings, Bell, Shield, Puzzle, LogOut } from 'lucide-react';
+import { User, Bell, Shield, Puzzle, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { signOut } from '@repo/auth/client';
+
 
 interface SettingsSidebarProps {
   activeTab: string;
@@ -13,6 +17,22 @@ export function SettingsSidebar({ activeTab, setActiveTab }: SettingsSidebarProp
     { id: 'security', label: 'Security', icon: Shield },
     { id: 'integrations', label: 'Integrations', icon: Puzzle },
   ];
+
+  const [loggingOut, setLoggingOut] = useState(false);
+
+    const handleSignOut = async () => {
+    setLoggingOut(true);
+    try {
+      await signOut();
+      toast.success("Signed out successfully");
+      window.location.href = 'http://localhost:3000';
+    } catch (err) {
+      toast.error("Failed to sign out");
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
 
   return (
     <aside className="w-full md:w-64 space-y-8">
@@ -40,9 +60,12 @@ export function SettingsSidebar({ activeTab, setActiveTab }: SettingsSidebarProp
       </div>
 
       <div className="pt-8 border-t border-white/5">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500/50 hover:text-red-500 hover:bg-red-500/5 transition-all text-sm font-bold">
+        <button 
+        onClick={handleSignOut}
+        disabled={loggingOut}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500/50 hover:text-red-500 hover:bg-red-500/5 transition-all text-sm font-bold">
           <LogOut size={18} />
-          Sign Out
+          {loggingOut ? 'Signing out...' : 'Sign Out'}
         </button>
       </div>
     </aside>
