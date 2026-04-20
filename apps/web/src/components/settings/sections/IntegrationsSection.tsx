@@ -27,11 +27,11 @@ function IntegrationCard({ name, description, connected }: any) {
     <div className="p-6 bg-white/[0.02] border border-white/5 rounded-2xl flex flex-col justify-between hover:bg-white/[0.04] transition-all group">
       <div>
         <div className="flex justify-between items-start mb-4">
-          <div className="w-10 h-10 bg-white/5 rounded-xl border border-white/10" />
+          <div className="" />
           {connected ? (
-            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Connected</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Not Yet</span>
           ) : (
-            <button className="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white">Connect</button>
+            <button className="text-[10px] font-black uppercase tracking-widest text-zinc-500 hover:text-white">Not Yet</button>
           )}
         </div>
         <h4 className="text-white font-bold">{name}</h4>
