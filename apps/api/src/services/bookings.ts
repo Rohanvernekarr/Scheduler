@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateBookingInput } from '../schemas/bookings.js';
 
 export class BookingService {

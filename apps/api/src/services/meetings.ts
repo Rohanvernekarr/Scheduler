@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateMeetingInput } from '../schemas/meetings.ts';
 import { mailService } from './mail.js';
 

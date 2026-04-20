@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma, Prisma } from '@repo/db';
 import type { UpdateAvailabilityInput } from '../schemas/availability.js';
 
 export class AvailabilityService {
@@ -8,7 +8,7 @@ export class AvailabilityService {
    */
   async updateAvailability(userId: string, data: UpdateAvailabilityInput) {
     // We use a transaction to ensure atomic update
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // 1. Delete all existing availability records for the user
       await tx.availability.deleteMany({
         where: { userId }

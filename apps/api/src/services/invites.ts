@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 
 export class InviteService {
   async createTargetedInvite(data: {

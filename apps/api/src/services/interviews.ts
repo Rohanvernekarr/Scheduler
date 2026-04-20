@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateInterviewInput } from '../schemas/interviews.js';
 
 export class InterviewService {

@@ -24,7 +24,7 @@ function CountUp({ to, suffix = "", className }: { to: number; suffix?: string; 
   return <span className={className}>{value.toLocaleString()}{suffix}</span>;
 }
 
-export function Hero(): ReactNode {
+export function Hero({ stats }: { stats: { meetings: number; users: number; satisfaction: number } }): ReactNode {
   const { data: session } = useSession();
   const [wordIndex, setWordIndex] = useState(0);
 
@@ -36,9 +36,9 @@ export function Hero(): ReactNode {
   }, []);
 
   const STATS = [
-    { value: 2470, label: "Meetings Booked", suffix: "+" },
-    { value: 1240, label: "Active Users", suffix: "+" },
-    { value: 99, label: "Satisfaction", suffix: "%" },
+    { value: stats.meetings, label: "Meetings Booked", suffix: "+" },
+    { value: stats.users, label: "Active Users", suffix: "+" },
+    { value: stats.satisfaction, label: "Satisfaction", suffix: "%" },
   ];
 
   return (

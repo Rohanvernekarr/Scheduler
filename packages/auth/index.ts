@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { prisma } from "db";
+import { prisma } from "@repo/db";
 import { emailOTP } from "better-auth/plugins";
 
 import { Resend } from "resend";

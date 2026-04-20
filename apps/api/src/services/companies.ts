@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateCompanyInput } from '../schemas/companies.js';
 
 export class CompanyService {

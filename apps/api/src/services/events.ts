@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateEventInput } from '../schemas/events.js';
 
 export class EventService {

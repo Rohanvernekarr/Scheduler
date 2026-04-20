@@ -1,4 +1,4 @@
-import { prisma } from 'db';
+import { prisma } from '@repo/db';
 import type { CreateUserInput } from '../schemas/users.js';
 
 export class UserService {
