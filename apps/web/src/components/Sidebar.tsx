@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, CalendarClock, Clock, BookOpen, Settings, User, LogOut } from 'lucide-react';
 import { useSession, signOut } from '@repo/auth/client';
+import toast from 'react-hot-toast';
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -20,7 +21,10 @@ export const Sidebar = () => {
     setLoggingOut(true);
     try {
       await signOut();
+      toast.success("Signed out successfully");
       window.location.href = 'http://localhost:3000';
+    } catch (err) {
+      toast.error("Failed to sign out");
     } finally {
       setLoggingOut(false);
     }

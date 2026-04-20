@@ -62,8 +62,8 @@ export default function LoginPage() {
       if (error) {
         toast.error(error.message || "Invalid OTP");
       } else {
-        toast.success("Welcome back!");
-        window.location.href = "http://localhost:5174/";
+        toast.success("Logged in successfully!");
+        window.location.href = "http://localhost:5174/?login=success";
       }
     } catch (err) {
       console.error(err);
@@ -76,7 +76,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     await signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:5174/",
+      callbackURL: "http://localhost:5174/?login=success",
     });
   };
 

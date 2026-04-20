@@ -3,13 +3,19 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "@repo/auth/client";
+import toast from "react-hot-toast";
 
 export function Nav(): ReactNode {
   const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    await signOut();
-    window.location.href = "/";
+    try {
+      await signOut();
+      toast.success("Signed out successfully");
+      window.location.href = "/";
+    } catch (err) {
+      toast.error("Failed to sign out");
+    }
   };
 
   return (
@@ -37,6 +43,12 @@ export function Nav(): ReactNode {
               >
                 Dashboard
               </a>
+              <button
+                onClick={handleSignOut}
+                className="bg-zinc-800 text-white px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:bg-zinc-700 transition-all active:scale-95 border border-white/10"
+              >
+                Log Out
+              </button>
             </>
           ) : (
             <>
