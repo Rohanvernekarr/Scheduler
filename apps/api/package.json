@@ -13,12 +13,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.6",
-    "@repo/db": "workspace:*",
     "@repo/auth": "workspace:*",
+    "@repo/db": "workspace:*",
     "better-auth": "^1.1.21",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "googleapis": "^171.4.0",
     "resend": "^6.11.0",
     "zod": "^4.3.6"
   },

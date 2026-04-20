@@ -50,7 +50,7 @@ export class MeetingService {
     // Send emails to each participant
     if (data.participants && data.participants.length > 0) {
       await Promise.all(
-        data.participants.map(email => 
+        data.participants.map(email =>
           mailService.sendMeetingInvitation(email, meeting)
         )
       );
