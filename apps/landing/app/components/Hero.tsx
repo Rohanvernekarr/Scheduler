@@ -8,11 +8,16 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center pt-32 pb-10 sm:pt-20 overflow-hidden border-b border-border">
       {/* Giant Background Text */}
-      <div className="absolute top-[55%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1.5 }}
+        className="absolute top-[55%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0"
+      >
         <span className="text-[30vw] sm:text-[25vw] font-black text-white/[0.01] tracking-tighter uppercase whitespace-nowrap">
           System
         </span>
-      </div>
+      </motion.div>
 
       <div className="container relative z-10 mx-auto px-6 max-w-7xl">
         <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-16 lg:gap-24">

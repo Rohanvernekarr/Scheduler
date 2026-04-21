@@ -1,16 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export function Footer() {
   return (
     <footer className="py-24 bg-background border-t border-border relative overflow-hidden">
       {/* Giant Background Text */}
-      <div className="absolute bottom-[5%] sm:bottom-[-25%] left-[-5%] sm:left-[-15px] select-none pointer-events-none z-0">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 2 }}
+        viewport={{ once: true }}
+        className="absolute bottom-[5%] sm:bottom-[-25%] left-[-5%] sm:left-[-15px] select-none pointer-events-none z-0"
+      >
         <span className="text-[30vw] sm:text-[19vw] font-black text-white/[0.05] sm:text-white/[0.03] tracking-tighter uppercase whitespace-nowrap">
           Scheduler
         </span>
-      </div>
+      </motion.div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16 mb-24">

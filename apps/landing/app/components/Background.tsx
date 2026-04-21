@@ -25,6 +25,9 @@ export function Background() {
 
       {/* Parallax Background Texts */}
       <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1, duration: 2 }}
         style={{ y: textY1 }}
         className="bg-text top-[-15%] left-[-5%] text-[30vw] sm:text-[25vw]"
       >
@@ -32,6 +35,9 @@ export function Background() {
       </motion.div>
 
       <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 2 }}
         style={{ y: textY2 }}
         className="bg-text top-[60%] right-[30%] sm:right-[60%] text-[20vw] sm:text-[17vw] rotate-90"
       >
@@ -39,6 +45,9 @@ export function Background() {
       </motion.div>
 
       <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 2 }}
         style={{ y: textY1 }}
         className="bg-text top-[120%] left-[5%] sm:left-[10%] text-[25vw] sm:text-[20vw]"
       >
