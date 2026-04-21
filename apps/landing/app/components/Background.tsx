@@ -26,14 +26,14 @@ export function Background() {
       {/* Parallax Background Texts */}
       <motion.div 
         style={{ y: textY1 }}
-        className="bg-text top-[10%] left-[-5%] text-[25vw]"
+        className="bg-text top-[-15%] left-[-5%] text-[25vw]"
       >
         Scheduler
       </motion.div>
 
       <motion.div 
         style={{ y: textY2 }}
-        className="bg-text top-[60%] right-[-10%] text-[20vw] rotate-90"
+        className="bg-text top-[60%] right-[-10%] text-[17vw] rotate-90"
       >
         Engine
       </motion.div>
