@@ -9,7 +9,7 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center pt-20 pb-10 overflow-hidden border-b border-border">
       {/* Giant Background Text */}
       <div className="absolute top-[55%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
-        <span className="text-[25vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
+        <span className="text-[25vw] font-black text-white/[0.01] tracking-tighter uppercase whitespace-nowrap">
           System
         </span>
       </div>

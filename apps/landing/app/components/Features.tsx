@@ -51,6 +51,12 @@ const FEATURES = [
 export function Features() {
   return (
     <section id="features" className="py-24 border-b border-border relative overflow-hidden">
+      {/* Giant Background Text */}
+      <div className="absolute top-[-15%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
+        <span className="text-[25vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
+          calender
+        </span>
+      </div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8 relative">

@@ -33,7 +33,7 @@ export function Background() {
 
       <motion.div 
         style={{ y: textY2 }}
-        className="bg-text top-[60%] right-[-10%] text-[17vw] rotate-90"
+        className="bg-text top-[60%] right-[60%] text-[17vw] rotate-90"
       >
         Engine
       </motion.div>
