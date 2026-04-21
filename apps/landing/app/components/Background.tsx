@@ -15,7 +15,7 @@ export function Background() {
 
   return (
     <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-background">
-      {/* Precision Grid */}
+     
       <div className="absolute inset-0 grid-bg opacity-30" />
       
       {/* Scanner Line */}
