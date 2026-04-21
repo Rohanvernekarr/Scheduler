@@ -26,7 +26,7 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section id="how" className="py-32 border-b border-border relative overflow-hidden bg-black/20">
-      {/* Giant Background Text */}
+      {/* background Text */}
       <div className="absolute top-1/2 right-[-5%] -translate-y-1/2 select-none pointer-events-none z-0">
         <span className="text-[20vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap rotate-90">
           Process
@@ -36,7 +36,7 @@ export function HowItWorks() {
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
           
-          {/* Left Column: Heading */}
+          {/* Left */}
           <div className="lg:w-1/3 shrink-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -70,9 +70,9 @@ export function HowItWorks() {
             </motion.p>
           </div>
           
-          {/* Right Column: Steps */}
+          {/* Right*/}
           <div className="lg:w-2/3 space-y-2 relative">
-            {/* Connecting Line */}
+          
             <div className="absolute left-[23px] top-10 bottom-10 w-[1px] bg-gradient-to-b from-accent/50 via-white/5 to-transparent z-0 hidden sm:block" />
 
             {STEPS.map((step, index) => (
