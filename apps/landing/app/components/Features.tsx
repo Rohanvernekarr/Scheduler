@@ -53,7 +53,7 @@ export function Features() {
     <section id="features" className="py-24 border-b border-border relative overflow-hidden">
       {/* Giant Background Text */}
       <div className="absolute top-[-15%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
-        <span className="text-[25vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
+        <span className="text-[35vw] sm:text-[25vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
           calender
         </span>
       </div>

@@ -6,22 +6,22 @@ import { ChevronRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 pb-10 overflow-hidden border-b border-border">
+    <section className="relative min-h-screen flex items-center pt-32 pb-10 sm:pt-20 overflow-hidden border-b border-border">
       {/* Giant Background Text */}
       <div className="absolute top-[55%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
-        <span className="text-[25vw] font-black text-white/[0.01] tracking-tighter uppercase whitespace-nowrap">
+        <span className="text-[30vw] sm:text-[25vw] font-black text-white/[0.01] tracking-tighter uppercase whitespace-nowrap">
           System
         </span>
       </div>
 
       <div className="container relative z-10 mx-auto px-6 max-w-7xl">
-        <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+        <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-16 lg:gap-24">
           
-          <div className="flex-1 text-center lg:text-left">
+          <div className="flex-1 text-center lg:text-left pt-10 sm:pt-0">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 mb-8 justify-center lg:justify-start"
+              className="flex items-center gap-2 mb-6 sm:mb-8 justify-center lg:justify-start"
             >
               <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
               <span className="tech-label">Operational v1.0.4</span>
@@ -31,9 +31,9 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl font-bold tracking-tight mb-8"
+              className="text-4xl sm:text-6xl font-bold tracking-tight mb-6 sm:mb-8"
             >
-              The technical standard <br />
+              The technical standard <br className="hidden sm:block" />
               <span className="text-subtle">for meeting coordination.</span>
             </motion.h1>
 
@@ -41,7 +41,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-lg text-subtle max-w-xl mb-12"
+              className="text-base sm:text-lg text-subtle max-w-xl mb-10 sm:mb-12 mx-auto lg:mx-0"
             >
               Engineered for precision. Eliminate scheduling friction with 
               automated invites and real-time availability sync.

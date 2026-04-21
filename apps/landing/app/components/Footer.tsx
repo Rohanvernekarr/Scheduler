@@ -6,8 +6,8 @@ export function Footer() {
   return (
     <footer className="py-24 bg-background border-t border-border relative overflow-hidden">
       {/* Giant Background Text */}
-      <div className="absolute bottom-[-25%] left-[-15px] select-none pointer-events-none z-0">
-        <span className="text-[19vw] font-black text-white/[0.03] tracking-tighter uppercase whitespace-nowrap">
+      <div className="absolute bottom-[5%] sm:bottom-[-25%] left-[-5%] sm:left-[-15px] select-none pointer-events-none z-0">
+        <span className="text-[30vw] sm:text-[19vw] font-black text-white/[0.05] sm:text-white/[0.03] tracking-tighter uppercase whitespace-nowrap">
           Scheduler
         </span>
       </div>

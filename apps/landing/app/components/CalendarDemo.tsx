@@ -80,7 +80,7 @@ export function CalendarDemo(): ReactNode {
 
   return (
     <motion.div
-      className="relative w-full max-w-[440px] mx-auto p-4 select-none"
+      className="relative w-full max-w-[340px] sm:max-w-[440px] mx-auto p-2 sm:p-4 select-none"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
@@ -88,7 +88,7 @@ export function CalendarDemo(): ReactNode {
       <div className="flex flex-col items-center">
         <div className="w-full">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8 relative">
+          <div className="flex justify-between items-center mb-6 sm:mb-8 relative">
             <motion.button
               whileHover={{ scale: 1.1, x: -2 }}
               whileTap={{ scale: 0.95 }}
