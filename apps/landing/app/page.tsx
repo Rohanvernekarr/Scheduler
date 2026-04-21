@@ -4,16 +4,15 @@ import { Hero } from "./components/Hero";
 import { Features } from "./components/Features";
 import { HowItWorks } from "./components/HowItWorks";
 import { Footer } from "./components/Footer";
-import { getStats } from "./actions";
+import { Background } from "./components/Background";
 
-export default async function Home() {
-  const stats = await getStats();
-
+export default function Home() {
   return (
     <>
+      <Background />
       <Nav />
       <main>
-        <Hero stats={stats} />
+        <Hero />
         <Features />
         <HowItWorks />
       </main>
@@ -21,3 +20,4 @@ export default async function Home() {
     </>
   );
 }
+

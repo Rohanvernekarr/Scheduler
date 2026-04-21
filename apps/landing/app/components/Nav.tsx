@@ -1,62 +1,44 @@
-"use client"
+"use client";
 
-import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { useSession, signOut } from "@repo/auth/client";
-import toast from "react-hot-toast";
+import { useSession } from "@repo/auth/client";
+import { Calendar } from "lucide-react";
 
-export function Nav(): ReactNode {
+export function Nav() {
   const { data: session } = useSession();
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      toast.success("Signed out successfully");
-      window.location.href = "/";
-    } catch (err) {
-      toast.error("Failed to sign out");
-    }
-  };
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center border-b border-border glass bg-background/50">
-      <div className="container flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="text-3xl font-black uppercase tracking-tight text-foreground transition-opacity hover:opacity-70">Scheduler</span>
+    <nav className="fixed top-10 left-0 right-0 z-50 flex justify-center px-6">
+      <motion.div 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="precision-pill flex items-center gap-10"
+      >
+        <Link href="/" className="flex items-center gap-3 group">
+          <Calendar className="w-5 h-5 text-accent" />
+          <span className="text-lg font-black tracking-tighter uppercase">Scheduler<span className="text-accent">.</span></span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-4">
-          <Link href="/#features" className="tech-label hover:text-foreground transition-colors">
-            Features
-          </Link>
-          <Link href="/#how" className="tech-label hover:text-foreground transition-colors">
-            How it works
-          </Link>
-          <div className="w-px h-4 bg-border mx-2" />
-          
-          {session ? (
-            <>
-             
-              <a
-                href="http://localhost:5174/"
-                className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
-              >
-                Dashboard
-              </a>
-            </>
-          ) : (
-            <>
-             
-              <Link
-                href="/login"
-                className="bg-foreground text-background px-4 sm:px-6 py-3 text-[10px] sm:text-xs font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95 shadow-xl shadow-foreground/10"
-              >
-                Get started
-              </Link>
-            </>
-          )}
+        <div className="h-6 w-[1px] bg-border" />
+
+        <div className="flex items-center gap-8">
+          <Link href="#features" className="tech-label hover:text-white transition-colors text-[12px]">Features</Link>
+          <Link href="#how" className="tech-label hover:text-white transition-colors text-[12px]">Process</Link>
         </div>
-      </div>
+
+        <div className="h-6 w-[1px] bg-border" />
+
+        <Link 
+          href={session ? "http://localhost:5174/" : "/login"} 
+          className="tech-label hover:text-white transition-colors text-[12px]"
+        >
+          {session ? "Dashboard" : "Login"}
+        </Link>
+      </motion.div>
     </nav>
   );
 }
+
+
+

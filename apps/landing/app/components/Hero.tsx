@@ -1,150 +1,80 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
 import { CalendarDemo } from "./CalendarDemo";
-import { useSession } from "@repo/auth/client";
+import { ChevronRight } from "lucide-react";
 
-const WORDS = ["TEAM MEET", "INTERVIEWS", "SYNC-UPS" , "CLIENT CALLS"];
-
-function CountUp({ to, suffix = "", className }: { to: number; suffix?: string; className?: string }) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    let start = 0;
-    const duration = 2000;
-    const increment = to / (duration / 16);
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= to) { setValue(to); clearInterval(timer); }
-      else setValue(Math.floor(start));
-    }, 16);
-    return () => clearInterval(timer);
-  }, [to]);
-  return <span className={className}>{value.toLocaleString()}{suffix}</span>;
-}
-
-export function Hero({ stats }: { stats: { meetings: number; users: number; satisfaction: number } }): ReactNode {
-  const { data: session } = useSession();
-  const [wordIndex, setWordIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % WORDS.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const STATS = [
-    { value: stats.meetings, label: "Meetings Booked", suffix: "+" },
-    { value: stats.users, label: "Active Users", suffix: "+" },
-    { value: stats.satisfaction, label: "Satisfaction", suffix: "%" },
-  ];
-
+export function Hero() {
   return (
-    <section className="pt-32 pb-24 border-b border-border overflow-hidden">
-      <div className="container">
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-16">
-          <motion.div 
-            initial="hidden"
-            animate="show"
-            variants={{
-              hidden: { opacity: 0 },
-              show: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.1 } }
-            }}
-            className="flex-1 max-w-2xl"
-          >
-            <motion.span 
-              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-              className="tech-label mb-8 block"
+    <section className="relative pt-32 pb-24 overflow-hidden border-b border-border">
+      {/* Giant Background Text */}
+      <div className="absolute top-[10%] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0">
+        <span className="text-[20vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
+          System
+        </span>
+      </div>
+
+      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
+        <div className="flex flex-col lg:flex-row items-center gap-24">
+          
+          <div className="flex-1 text-center lg:text-left">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 mb-8 justify-center lg:justify-start"
             >
-              01 / System Entry
-            </motion.span>
+              <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+              <span className="tech-label">Operational v1.0.4</span>
+            </motion.div>
 
             <motion.h1 
-              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black mb-10 leading-[0.95] text-foreground uppercase"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="text-4xl sm:text-6xl font-bold tracking-tight mb-8"
             >
-              zero Friction <br />
-              <span className="text-foreground/25">to schedule</span>
-              <br />
-              <span className="inline-block relative">
-                <span className="relative inline-block overflow-hidden h-[1.1em] align-bottom">
-                  {WORDS.map((word, i) => (
-                    <motion.span
-                      key={word}
-                      className="absolute left-0 whitespace-nowrap"
-                      initial={{ y: "100%", opacity: 0 }}
-                      animate={
-                        i === wordIndex
-                          ? { y: "0%", opacity: 1 }
-                          : i === (wordIndex - 1 + WORDS.length) % WORDS.length
-                          ? { y: "-100%", opacity: 0 }
-                          : { y: "100%", opacity: 0 }
-                      }
-                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                      {word}
-                    </motion.span>
-                  ))}
-                  <span className="invisible">{WORDS.reduce((a, b) => (a.length > b.length ? a : b))}</span>
-                </span>
-              </span>
+              The technical standard <br />
+              <span className="text-subtle">for meeting coordination.</span>
             </motion.h1>
 
             <motion.p 
-              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-              className="text-md text-foreground/40 leading-relaxed mb-12 max-w-xl font-medium"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-subtle max-w-xl mb-12"
             >
-              Schedule interviews, syncs, and check-ins in seconds. 
-              Share your link and let people pick their own time. 
-              Monolithic speed for modern workflows.
+              Engineered for precision. Eliminate scheduling friction with 
+              automated invites and real-time availability sync.
             </motion.p>
 
             <motion.div 
-              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-              className="flex flex-wrap gap-4 items-center mb-20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap justify-center lg:justify-start gap-4"
             >
-              {session ? (
-                <a href="http://localhost:5174/" className="bg-foreground text-background tech-heading text-md px-10 py-4 hover:opacity-90 transition-all border border-foreground shadow-2xl shadow-foreground/10">
-                  Go to Dashboard
-                </a>
-              ) : (
-                <a href="http://localhost:5174/" className="bg-foreground text-background tech-heading text-md px-10 py-4 hover:opacity-90 transition-all border border-foreground shadow-2xl shadow-foreground/10">
-                  Get Your Link
-                </a>
-              )}
-              <a href="#how" className="tech-label px-8 py-4 hover:text-foreground transition-all border border-border">
-                Learn More
+              <a href="http://localhost:5174/" className="bg-white text-black px-8 py-3 rounded-md font-bold text-sm hover:bg-white/90 transition-all flex items-center gap-2">
+                Deploy Now
+                <ChevronRight className="w-4 h-4" />
+              </a>
+              <a href="#features" className="tech-border text-white px-8 py-3 rounded-md font-bold text-sm hover:bg-white/5 transition-all">
+                Documentation
               </a>
             </motion.div>
+          </div>
 
+          <div className="flex-[2.1] w-full flex justify-center lg:justify-end">
             <motion.div 
-              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-12 pt-10 border-t border-border"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4 }}
+              className="relative w-full"
             >
-               {STATS.map((s) => (
-                 <div key={s.label}>
-                   <div className="flex items-center gap-2 mb-1">
-                      <CountUp to={s.value} suffix={s.suffix} className="tech-heading text-xl tabular-nums" />
-                   </div>
-                   <p className="tech-label">{s.label}</p>
-                 </div>
-               ))}
+              <CalendarDemo />
+              
+             
             </motion.div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="hidden lg:block w-full max-w-sm relative group"
-          >
-            <div className="absolute -inset-4 bg-foreground/5 -z-10 group-hover:bg-foreground/10 transition-colors" />
-            <div className="glass p-2">
-               <CalendarDemo />
-            </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

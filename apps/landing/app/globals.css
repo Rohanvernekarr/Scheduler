@@ -1,104 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-background: hsl(0 0% 0%);
-  --color-foreground: hsl(0 0% 100%);
-  --color-primary: hsl(0 0% 100%);
-  --color-primary-foreground: hsl(0 0% 0%);
-  --color-secondary: hsl(0 0% 15%);
-  --color-secondary-foreground: hsl(0 0% 100%);
-  --color-surface: hsl(0 0% 4%);
-  --color-border: hsl(0 0% 15%);
-  --color-surface-glass: hsl(var(--surface) / 0.7);
-
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+  --color-accent: #3b82f6;
+  --color-muted: #111111;
+  --color-border: #1a1a1a;
+  
+  --font-sans: 'Outfit', var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 90%;
-    --secondary-foreground: 0 0% 0%;
-    --surface: 0 0% 98%;
-    --border: 0 0% 90%;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: 0 0% 0%;
-      --foreground: 0 0% 100%;
-      --primary: 0 0% 100%;
-      --primary-foreground: 0 0% 0%;
-      --secondary: 0 0% 15%;
-      --secondary-foreground: 0 0% 100%;
-      --surface: 0 0% 4%;
-      --border: 0 0% 15%;
-    }
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --accent: 217 91% 60%;
+    --muted: 0 0% 7%;
+    --border: 0 0% 10%;
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-foreground selection:text-background;
+    @apply bg-background text-foreground antialiased selection:bg-accent/30;
     font-family: var(--font-sans);
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
   }
 
-  /* Custom Scrollbar for Monochrome Theme */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
+    width: 4px;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-foreground/10 border-2 border-transparent bg-clip-padding rounded-full hover:bg-foreground/20 transition-colors;
+    @apply bg-white/10 rounded-full;
   }
 }
 
 @layer utilities {
-  .tech-heading {
-    @apply font-black uppercase tracking-tight;
-  }
   .tech-label {
-    @apply font-black uppercase tracking-widest text-[11px] text-foreground/40;
-  }
-  .glass {
-    @apply backdrop-blur-xl border border-border shadow-2xl;
-    background-color: hsl(var(--surface) / 0.7);
+    @apply font-mono text-[11px] uppercase tracking-[0.2em] text-white/40;
   }
   
-  .container {
-    @apply w-full max-w-7xl mx-auto px-6 md:px-8;
-  }
-  
-  /* Re-defining calendar cells to follow the new monochrome style */
-  .calendar-cell {
-    @apply h-10 w-full rounded-lg text-sm font-bold flex items-center justify-center transition-all duration-200 border border-transparent;
-    color: hsl(var(--foreground) / 0.4);
-  }
-  
-  .calendar-cell:hover:not(:disabled) {
-    @apply bg-foreground/5 text-foreground scale-105;
-  }
-  
-  .calendar-cell.selected {
-    @apply bg-foreground text-background scale-105;
-    box-shadow: 0 10px 30px -10px hsl(var(--foreground) / 0.5);
-  }
-  
-  .calendar-cell.today:not(.selected) {
-    @apply border-foreground/20;
-  }
-  
-  .calendar-cell:disabled {
-    @apply opacity-10 cursor-not-allowed;
+  .tech-border {
+    @apply border border-border bg-[#080808];
   }
 
-  .calendar-nav-btn {
-    @apply flex items-center justify-center w-8 h-8 rounded-md bg-foreground/5 hover:bg-foreground/10 transition-all text-foreground;
+  .precision-pill {
+    @apply bg-muted/90 backdrop-blur-xl border border-border px-8 py-3 rounded-full shadow-2xl;
   }
+
+  .text-subtle {
+    @apply text-white/40 font-medium;
+  }
+
+  .grid-bg {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    background-size: 40px 40px;
+  }
+
+  .laser-line {
+    @apply absolute h-[1px] bg-gradient-to-r from-transparent via-accent/50 to-transparent;
+  }
+
+  .bg-text {
+    @apply absolute select-none pointer-events-none font-black text-white/[0.03] uppercase tracking-tighter leading-none;
+  }
+}
+
+/* Animations */
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(1000%); }
+}
+
+.animate-scan {
+  animation: scan 12s linear infinite;
 }
