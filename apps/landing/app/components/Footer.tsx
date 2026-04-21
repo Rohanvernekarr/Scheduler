@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="py-24 bg-background border-t border-border relative overflow-hidden">
       {/* Giant Background Text */}
-      <div className="absolute bottom-[-10%] left-0 select-none pointer-events-none z-0">
+      <div className="absolute bottom-[-25%] left-0 select-none pointer-events-none z-0">
         <span className="text-[20vw] font-black text-white/[0.02] tracking-tighter uppercase whitespace-nowrap">
           Scheduler
         </span>
@@ -15,7 +15,7 @@ export function Footer() {
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-16 mb-24">
           <div className="lg:col-span-2">
-            <Link href="/" className="font-mono text-sm font-bold tracking-tighter uppercase mb-6 block">
+            <Link href="/" className="font-mono text-2xl font-bold tracking-tighter uppercase mb-6 block">
               Scheduler<span className="text-accent">_Core</span>
             </Link>
             <p className="text-subtle text-sm max-w-sm mb-8 leading-relaxed">
