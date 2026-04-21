@@ -43,9 +43,9 @@ export function Footer() {
           <div>
             <span className="tech-label mb-6 block">Compliance</span>
             <ul className="space-y-4 text-sm text-subtle">
-              <li><Link href="/privacy" className="hover:text-white">Privacy Protocol</Link></li>
-              <li><Link href="/terms" className="hover:text-white">Terms of Use</Link></li>
-              <li><Link href="/security" className="hover:text-white">Security</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-white">Privacy Protocol</Link></li>
+              <li><Link href="/terms-of-service" className="hover:text-white">Terms of Use</Link></li>
+              <li><Link href="/terms-of-service" className="hover:text-white">Security</Link></li>
             </ul>
           </div>
         </div>
