@@ -7,14 +7,14 @@ export default function StatusPage(): ReactNode {
     <main className="min-h-screen bg-background text-foreground flex flex-col">
       <Nav />
       <section className="pt-40 pb-24 flex-1 relative overflow-hidden">
-        {/* Giant Background Text */}
-        <div className="absolute top-[-90] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0 opacity-[0.02]">
-          <span className="text-[25vw] font-black tracking-tighter uppercase whitespace-nowrap">
+        {/*Background Text */}
+        <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0 opacity-[0.02]">
+          <span className="text-[20vw] sm:text-[25vw] font-black tracking-tighter uppercase whitespace-nowrap">
             Status
           </span>
         </div>
 
-        <div className="container relative z-10">
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col items-center mb-16 text-center">
               <span className="tech-label mb-4 block">System Logistics / 04</span>

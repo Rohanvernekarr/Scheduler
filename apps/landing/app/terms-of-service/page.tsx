@@ -7,14 +7,14 @@ export default function TermsPage(): ReactNode {
     <main className="min-h-screen bg-background">
       <Nav />
       <section className="pt-40 pb-24 relative overflow-hidden">
-        {/* Giant Background Text */}
-        <div className="absolute top-[-90] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0 opacity-[0.01]">
-          <span className="text-[25vw] font-black tracking-tighter uppercase whitespace-nowrap">
+        {/*Background Text */}
+        <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0 opacity-[0.01]">
+          <span className="text-[20vw] sm:text-[25vw] font-black tracking-tighter uppercase whitespace-nowrap">
             Terms
           </span>
         </div>
 
-        <div className="container relative z-10">
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-16">
               <span className="tech-label mb-4 block">Operation Parameters / 02</span>
