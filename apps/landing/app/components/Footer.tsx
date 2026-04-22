@@ -10,7 +10,7 @@ export function Footer() {
       <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 2 }}
+        transition={{ delay: 0.1, duration: 1 }}
         viewport={{ once: true }}
         className="absolute bottom-[5%] sm:bottom-[-25%] left-[-5%] sm:left-[-15px] select-none pointer-events-none z-0"
       >
