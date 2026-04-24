@@ -53,7 +53,7 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-border">
           <span className="tech-label text-[9px]">© 2026 Scheduler Core V1.0.4. All rights reserved.</span>
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
             <span className="tech-label text-[9px]">All Systems Operational</span>
           </div>
         </div>
