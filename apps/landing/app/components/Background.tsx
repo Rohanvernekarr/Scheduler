@@ -11,7 +11,7 @@ export function Background() {
   });
 
   const textY1 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  const textY2 = useTransform(scrollYProgress, [0, 1], [0, -1000]);
+  // const textY2 = useTransform(scrollYProgress, [0, 1], [0, -1000]);
 
   return (
     <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-background">
@@ -38,7 +38,7 @@ export function Background() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 2 }}
-        style={{ y: textY2 }}
+        // style={{ y: textY2 }}
         className="bg-text top-[60%] right-[30%] sm:right-[60%] text-[20vw] sm:text-[17vw] rotate-90"
       >
         Engine
