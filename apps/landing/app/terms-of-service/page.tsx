@@ -24,7 +24,7 @@ export default function TermsPage(): ReactNode {
             <div className="space-y-16">
               <div className="bg-white/[0.02] border border-white/5 p-8 md:p-12 rounded-lg text-center">
                 <p className="tech-label text-accent mb-4">Effective: April 2026</p>
-                <p className="text-foreground/60 text-lg md:text-xl leading-relaxed">
+                <p className="text-foreground/60 text-sm md:text-base leading-relaxed">
                   By interfacing with the <b>Scheduler</b> system, you agree to abide by the following operational parameters. Unauthorized bypass of system logic is prohibited.
                 </p>
               </div>
