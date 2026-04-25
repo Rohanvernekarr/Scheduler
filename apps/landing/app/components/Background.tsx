@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { FloatingIcons } from "./FloatingIcons";
 
 export function Background() {
   const ref = useRef(null);
@@ -11,19 +12,15 @@ export function Background() {
   });
 
   const textY1 = useTransform(scrollYProgress, [0, 1], [0, -400]);
-  // const textY2 = useTransform(scrollYProgress, [0, 1], [0, -1000]);
 
   return (
-    <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-background">
-     
-      <div className="absolute inset-0 grid-bg opacity-30" />
+    <div ref={ref} className="fixed inset-0 -z-10 overflow-hidden bg-background">
+      <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />
       
-      {/* Scanner Line */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="laser-line w-full opacity-10 animate-scan" />
       </div>
 
-      {/* Parallax Background Texts */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -38,7 +35,6 @@ export function Background() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 2 }}
-        // style={{ y: textY2 }}
         className="bg-text top-[60%] right-[30%] sm:right-[60%] text-[20vw] sm:text-[17vw] rotate-90"
       >
         Engine
@@ -54,8 +50,9 @@ export function Background() {
         Connect
       </motion.div>
 
-      {/* Subtle Vignette */}
-      <div className="absolute inset-0 bg-radial from-transparent to-background opacity-90" />
+      <div className="absolute inset-0 bg-radial from-transparent to-background opacity-90 pointer-events-none" />
+      
+      <FloatingIcons />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { ChevronRight } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center pt-32 pb-10 sm:pt-20 overflow-hidden border-b border-border">
+    <section className="relative min-h-screen flex items-center pt-32 pb-10 sm:pt-20 overflow-hidden border-b border-border pointer-events-none">
       {/* Giant Background Text */}
       <motion.div 
         initial={{ opacity: 0 }}
@@ -19,7 +19,7 @@ export function Hero() {
         </span>
       </motion.div>
 
-      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
+      <div className="container relative z-10 mx-auto px-6 max-w-7xl pointer-events-auto">
         <div className="flex flex-col lg:flex-row items-center gap-12 sm:gap-16 lg:gap-24">
           
           <div className="flex-1 text-center lg:text-left pt-10 sm:pt-0">
