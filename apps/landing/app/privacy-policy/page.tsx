@@ -24,7 +24,7 @@ export default function PrivacyPage(): ReactNode {
             <div className="space-y-16">
               <div className="bg-white/[0.02] border border-white/5 p-8 md:p-12 rounded-lg text-center">
                 <p className="tech-label text-accent mb-4">Last Updated: April 2026</p>
-                <p className="text-foreground/60 text-lg md:text-xl leading-relaxed">
+                <p className="text-foreground/60 text-sm md:text-base leading-relaxed">
                   Your data integrity is a core system requirement. This protocol outlines how <b>Scheduler</b> handles information processing across our network.
                 </p>
               </div>
