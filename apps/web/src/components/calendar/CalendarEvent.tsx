@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
-import type { CalendarEvent } from './types';
+import type  { CalendarEvent } from './types';
 
 export function CalendarEventItem({ event }: { event: CalendarEvent }) {
   const categoryColors = {
@@ -19,9 +19,9 @@ export function CalendarEventItem({ event }: { event: CalendarEvent }) {
 export function EventTooltip({ event }: { event: CalendarEvent }) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="absolute z-50 w-48 p-3 bg-[#111111] border border-white/10 rounded-xl shadow-2xl pointer-events-none"
+      initial={{ opacity: 0, scale: 0.95, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      className="absolute z-[100] w-56 p-4 bg-[#121212]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-none"
     >
       <p className="text-[10px] font-black uppercase text-white/20 tracking-widest mb-1 italic">{event.category}</p>
       <h4 className="text-xs font-black text-white uppercase italic leading-tight mb-2">{event.title}</h4>

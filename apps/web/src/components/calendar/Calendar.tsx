@@ -29,26 +29,29 @@ export function Calendar({ events }: { events: CalendarEvent[] }) {
   }, [viewDate, events]);
 
   return (
-    <div className="bg-[#111111] border border-white/[0.06] rounded-[2.5rem] overflow-hidden shadow-2xl">
-      <div className="flex items-center justify-between p-8 border-b border-white/[0.06]">
-        <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">
-          {viewDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
-        </h2>
-        <div className="flex gap-2">
-          <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1))} className="p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition-all">
-            <ChevronLeft size={20} />
+    <div className="bg-[#0d0d0d] border border-white/[0.06] rounded-[2.5rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
+      <div className="flex items-center justify-between p-10 bg-white/[0.01] border-b border-white/[0.06]">
+        <div>
+          <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white leading-none">
+            {viewDate.toLocaleString('default', { month: 'long' })}
+          </h2>
+          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mt-2 italic">{viewDate.getFullYear()} // Operational Window</p>
+        </div>
+        <div className="flex gap-3">
+          <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1))} className="p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 hover:border-white/10 transition-all active:scale-95 group">
+            <ChevronLeft size={20} className="text-zinc-500 group-hover:text-white transition-colors" />
           </button>
-          <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1))} className="p-3 bg-white/5 rounded-2xl hover:bg-white/10 transition-all">
-            <ChevronRight size={20} />
+          <button onClick={() => setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() + 1))} className="p-4 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 hover:border-white/10 transition-all active:scale-95 group">
+            <ChevronRight size={20} className="text-zinc-500 group-hover:text-white transition-colors" />
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 bg-white/[0.02]">
+      <div className="grid grid-cols-7 border-b border-white/[0.04]">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-          <div key={d} className="p-4 text-center text-[10px] font-black uppercase text-zinc-600 tracking-widest">{d}</div>
+          <div key={d} className="p-5 text-center text-[9px] font-black uppercase text-zinc-700 tracking-[0.3em] italic">{d}</div>
         ))}
       </div>
-      <div className="grid grid-cols-7 border-l border-t border-white/[0.03]">
+      <div className="grid grid-cols-7 bg-white/[0.01]">
         {days.map((day, i) => <CalendarDay key={i} day={day} />)}
       </div>
     </div>

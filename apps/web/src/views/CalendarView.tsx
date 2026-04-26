@@ -6,6 +6,8 @@ import { Calendar } from '../components/calendar/Calendar';
 import type { CalendarEvent } from '../components/calendar/types';
 import { motion } from 'framer-motion';
 
+import { Calendar as CalendarIcon } from 'lucide-react';
+
 export default function CalendarView() {
   const { data: session } = useSession();
   const userId = session?.user.id;
@@ -42,7 +44,6 @@ export default function CalendarView() {
       })),
     ];
 
-    // Add availability slots from localStorage if any
     try {
       const customInvites = JSON.parse(localStorage.getItem('custom_invites') || '{}');
       Object.values(customInvites).forEach((invite: any) => {
@@ -63,13 +64,33 @@ export default function CalendarView() {
   }, [meetings, bookings]);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10">
-      <motion.header initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-3 italic">System Calendar // Global Sync</p>
-        <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic">My Calendar</h1>
+    <div className="max-w-7xl mx-auto space-y-10 relative">
+      <div className="absolute -top-20 -right-20 opacity-[0.02] pointer-events-none">
+        <CalendarIcon size={400} />
+      </div>
+
+      <motion.header 
+        initial={{ opacity: 0, x: -20 }} 
+        animate={{ opacity: 1, x: 0 }}
+        className="relative z-10"
+      >
+        <div className="flex items-center gap-4 mb-3">
+          <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40">
+            <CalendarIcon size={20} />
+          </div>
+          <div>
+            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] italic leading-none">System Infrastructure</p>
+            <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic mt-1">Calendar Sync</h1>
+          </div>
+        </div>
       </motion.header>
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }} 
+        animate={{ opacity: 1, y: 0 }} 
+        transition={{ delay: 0.1 }}
+        className="relative z-10"
+      >
         <Calendar events={allEvents} />
       </motion.div>
     </div>
