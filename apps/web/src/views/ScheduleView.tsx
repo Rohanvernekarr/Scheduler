@@ -1,27 +1,68 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { createMeeting } from '../lib/api';
+import { createMeeting, getMeetings, getHostBookings } from '../lib/api';
 import { ScheduleForm } from '../components/scheduling/ScheduleForm';
 import { motion } from 'framer-motion';
 import { CalendarClock, Zap, Bell, Globe } from 'lucide-react';
 import { useSession } from '@repo/auth/client';
+import toast from 'react-hot-toast';
 
 export default function ScheduleView() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  const { data: meetings = [] } = useQuery({
+    queryKey: ['meetings', userId],
+    queryFn: () => getMeetings(userId!),
+    enabled: !!userId,
+  });
+
+  const { data: bookings = [] } = useQuery({
+    queryKey: ['bookings', userId],
+    queryFn: () => getHostBookings(userId!),
+    enabled: !!userId,
+  });
 
   const mutation = useMutation({
     mutationFn: (data: any) =>
       createMeeting({
         ...data,
-        hostId: session?.user.id,
+        hostId: userId,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['meetings'] });
+      toast.success('Protocol established successfully');
       navigate('/');
     },
   });
+
+  const handleSchedule = (data: any) => {
+    const newStart = new Date(data.startTime).getTime();
+    const newEnd = new Date(data.endTime).getTime();
+
+    const allEvents = [...meetings, ...bookings];
+    const overlap = allEvents.find(e => {
+      if (e.status === 'CANCELLED') return false;
+      const eStart = new Date(e.startTime).getTime();
+      const eEnd = new Date(e.endTime).getTime();
+      return (newStart < eEnd && newEnd > eStart);
+    });
+
+    if (overlap) {
+      const oStart = new Date(overlap.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const oEnd = new Date(overlap.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      toast.error(`Overlap detected: Conflict with "${overlap.title}" (${oStart} - ${oEnd})`, {
+        style: { border: '1px solid rgba(239, 68, 68, 0.2)' },
+        duration: 5000
+      });
+      return;
+    }
+
+    mutation.mutate(data);
+  };
 
   const highlights = [
     { icon: Zap, label: 'Instant invites', desc: 'All participants notified via email immediately' },
@@ -52,18 +93,17 @@ export default function ScheduleView() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.07 }}
         >
-          <ScheduleForm onSubmit={mutation.mutate} isPending={mutation.isPending} />
+          <ScheduleForm onSubmit={handleSchedule} isPending={mutation.isPending} />
         </motion.div>
       </div>
 
-      {/* Right: Info Panel */}
       <motion.aside
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.15 }}
         className="xl:w-72 shrink-0 space-y-4"
       >
-        {/* Hero card */}
+       
         <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
           <div className="w-12 h-12 rounded-2xl bg-zinx-300/20 border border-zinc-500/25 flex items-center justify-center text-zinc-50 mb-5">
             <CalendarClock size={22} />
@@ -74,7 +114,7 @@ export default function ScheduleView() {
           </p>
         </div>
 
-        {/* Highlights */}
+       
         <div className="bg-[#111111] border border-white/[0.06] rounded-2xl overflow-hidden divide-y divide-white/[0.04]">
           {highlights.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="flex items-start gap-3 p-4 hover:bg-white/[0.02] transition-colors">
@@ -89,7 +129,7 @@ export default function ScheduleView() {
           ))}
         </div>
 
-        {/* Tips box */}
+      
         <div className="bg-zinc-950/40 border border-zinc-500/15 rounded-2xl p-5">
           <p className="text-xs font-semibold text-zinc-50 uppercase tracking-wider mb-2">Tip</p>
           <p className="text-white/40 text-xs leading-relaxed">
