@@ -76,8 +76,8 @@ export default function CalendarView() {
             <CalendarIcon size={20} />
           </div>
           <div>
-            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] italic leading-none">System Infrastructure</p>
-            <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic mt-1">Calendar Sync</h1>
+            <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em] leading-none">System Infrastructure</p>
+            <h1 className="text-2xl md:text-3xl font-black tracking-tighter text-white uppercase  mt-1">Calendar Sync</h1>
           </div>
         </div>
       </motion.header>

@@ -11,9 +11,9 @@ export const Sidebar = () => {
 
   const navItems = [
     { label: 'Overview', path: '/', icon: LayoutDashboard },
-    { label: 'My Calendar', path: '/calendar', icon: Calendar },
     { label: 'Schedule', path: '/schedule', icon: CalendarClock },
     { label: 'Availability', path: '/availability', icon: Clock },
+    { label: 'My Calendar', path: '/calendar', icon: Calendar },
     { label: 'Bookings', path: '/bookings', icon: BookOpen },
     { label: 'Settings', path: '/settings', icon: Settings },
   ];

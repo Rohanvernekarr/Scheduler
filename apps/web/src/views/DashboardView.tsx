@@ -48,7 +48,7 @@ export default function DashboardView() {
           <div className="flex items-center gap-2 mt-1">
             <div className="flex items-center gap-1.5 text-xs text-white/60">
               <CheckCircle2 size={14} className="text-emerald-500" />
-              <span>active_session</span>
+              <span>Active</span>
             </div>
             <span className="bg-white/5 text-white/40 text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded border border-white/10 font-bold">
               Default
