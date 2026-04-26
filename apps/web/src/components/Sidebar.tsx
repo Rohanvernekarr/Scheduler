@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, CalendarClock, Clock, BookOpen, Settings, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, Calendar, CalendarClock, Clock, BookOpen, Settings, User, LogOut } from 'lucide-react';
 import { useSession, signOut } from '@repo/auth/client';
 import toast from 'react-hot-toast';
 
@@ -11,6 +11,7 @@ export const Sidebar = () => {
 
   const navItems = [
     { label: 'Overview', path: '/', icon: LayoutDashboard },
+    { label: 'My Calendar', path: '/calendar', icon: Calendar },
     { label: 'Schedule', path: '/schedule', icon: CalendarClock },
     { label: 'Availability', path: '/availability', icon: Clock },
     { label: 'Bookings', path: '/bookings', icon: BookOpen },

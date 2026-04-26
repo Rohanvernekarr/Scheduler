@@ -9,6 +9,7 @@ import BookingView from './views/BookingView';
 import ScheduleView from './views/ScheduleView';
 // import InviteCreationView from './views/InviteCreationView';
 import GuestInviteView from './views/GuestInviteView';
+import CalendarView from './views/CalendarView';
 import LoginView from './views/LoginView';
 import SettingsView from './views/SettingsView';
 import BookingsView from './views/BookingsView';
@@ -68,6 +69,7 @@ function AppRoutes() {
       {/* Private Routes */}
       <Route element={<PrivateLayout />}>
         <Route path="/" element={<DashboardView />} />
+        <Route path="/calendar" element={<CalendarView />} />
         <Route path="/availability" element={<AvailabilityView />} />
         <Route path="/bookings" element={<BookingsView />} />
         <Route path="/schedule" element={<ScheduleView />} />
