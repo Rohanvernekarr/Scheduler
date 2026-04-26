@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createMeeting } from '../lib/api';
 import { ScheduleForm } from '../components/scheduling/ScheduleForm';
@@ -8,6 +8,7 @@ import { useSession } from '@repo/auth/client';
 
 export default function ScheduleView() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data: session } = useSession();
 
   const mutation = useMutation({
@@ -17,6 +18,7 @@ export default function ScheduleView() {
         hostId: session?.user.id,
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meetings'] });
       navigate('/');
     },
   });
