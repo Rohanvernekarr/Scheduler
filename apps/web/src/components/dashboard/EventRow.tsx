@@ -12,6 +12,8 @@ export function EventRow({ event }: EventRowProps) {
   const isBooking = event.type === 'Booking';
   const isPast = date < new Date();
   
+  const duration = event.duration || (event.endTime ? Math.round((new Date(event.endTime).getTime() - new Date(event.startTime).getTime()) / 60000) : 30);
+  
   const statusText = event.status === 'CANCELLED' ? 'Cancelled' : isPast ? 'Completed' : 'Confirmed';
   const statusColors = {
     Cancelled: 'bg-red-500/10 text-red-400 border-red-500/20',
@@ -53,7 +55,7 @@ export function EventRow({ event }: EventRowProps) {
                 {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
               <span className="text-white/15">•</span>
-              <span>30 min</span>
+              <span>{duration} min</span>
             </p>
           </div>
         </div>
@@ -108,7 +110,7 @@ export function EventRow({ event }: EventRowProps) {
                       <Clock size={14} />
                       <span className="text-[10px] font-black uppercase tracking-widest">Protocol Sync</span>
                     </div>
-                    <p className="text-sm font-bold text-white italic">{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} &mdash; 30M</p>
+                    <p className="text-sm font-bold text-white italic">{date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} &mdash; {duration}M</p>
                   </div>
                 </div>
 
