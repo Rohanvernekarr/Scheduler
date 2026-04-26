@@ -29,7 +29,7 @@ export function Calendar({ events }: { events: CalendarEvent[] }) {
   }, [viewDate, events]);
 
   return (
-    <div className="bg-[#0d0d0d] border border-white/[0.06] rounded-[2.5rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
+    <div className="bg-[#0d0d0d] border border-white/[0.06] rounded-[2.5rem] overflow-visible shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
       <div className="flex items-center justify-between p-10 bg-white/[0.01] border-b border-white/[0.06]">
         <div>
           <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white leading-none">

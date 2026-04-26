@@ -65,9 +65,6 @@ export default function CalendarView() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-10 relative">
-      <div className="absolute -top-20 -right-20 opacity-[0.02] pointer-events-none">
-        <CalendarIcon size={400} />
-      </div>
 
       <motion.header 
         initial={{ opacity: 0, x: -20 }} 
