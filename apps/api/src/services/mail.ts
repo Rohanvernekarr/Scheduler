@@ -75,12 +75,6 @@ const body = `
 <html>
 <body style="margin:0;padding:0;background:#ffffff;font-family:Roboto,Arial,sans-serif;color:#3c4043;line-height:1.3;">
 
-<div style="max-width:720px;margin:2px auto;border:1px solid #e0e0e0;border-radius:6px;padding:10px;">
-
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td>
-
 <h1 style="margin:0;font-size:17px;font-weight:500;color:#202124;">
 ${meeting.title}
 </h1>
@@ -88,11 +82,6 @@ ${meeting.title}
 <p style="margin:2px 0 10px 0;font-size:12px;color:#70757a;">
 ${dateStr} · ${timeStr}
 </p>
-
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-
-<td width="55%" style="vertical-align:top;padding-right:14px;border-right:1px solid #f1f3f4;">
 
 <p style="margin:0;font-size:10px;font-weight:700;color:#5f6368;text-transform:uppercase;">
 Booked by
@@ -105,16 +94,9 @@ Rohan Vernekar
 <a href="mailto:${participantEmail}" style="font-size:12px;color:#4759df;text-decoration:none;">
 ${participantEmail}
 </a>
-
-<div style="margin-top:12px;">
 <a href="#" style="display:inline-block;padding:5px 10px;border:1px solid #dadce0;border-radius:4px;color:#4759df;font-size:12px;text-decoration:none;">
 Cancel appointment
 </a>
-</div>
-
-</td>
-
-<td width="45%" style="vertical-align:top;padding-left:16px;">
 
 <a href="${meeting.meetingLink}" style="display:inline-block;background:#4759df;color:#ffffff;padding:6px 14px;border-radius:4px;font-size:12px;text-decoration:none;margin-bottom:10px;">
 Join Meeting
@@ -132,22 +114,9 @@ ${meeting.meetingLink}
 Test setup
 </a>
 
-</td>
-
-</tr>
-</table>
-
-</td>
-</tr>
-</table>
-
-</div>
-
-<div style="max-width:720px;margin:4px auto;text-align:center;">
 <p style="font-size:10px;color:#bdc1c6;margin:0;">
 Sent via Scheduler · One-click booking
 </p>
-</div>
 
 </body>
 </html>
