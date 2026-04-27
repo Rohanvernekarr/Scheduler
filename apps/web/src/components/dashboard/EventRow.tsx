@@ -15,6 +15,12 @@ export function EventRow({ event }: EventRowProps) {
   const duration = event.duration || (event.endTime ? Math.round((new Date(event.endTime).getTime() - new Date(event.startTime).getTime()) / 60000) : 30);
   
   const statusText = event.status === 'CANCELLED' ? 'Cancelled' : isPast ? 'Completed' : 'Confirmed';
+  const participantEmails = (event.participants || []).map((p: any) => p.email);
+  const firstEmail = participantEmails[0] || 'Team Sync';
+  
+  const participantName = event.guestName || (participantEmails.length > 0 ? firstEmail.split('@')[0] : 'Internal Entity');
+  const participantEmail = event.guestEmail || (participantEmails.length > 0 ? participantEmails.join(', ') : 'system.internal');
+
   const statusColors = {
     Cancelled: 'bg-red-500/10 text-red-400 border-red-500/20',
     Completed: 'bg-white/5 text-white/40 border-white/10',
@@ -44,7 +50,7 @@ export function EventRow({ event }: EventRowProps) {
               <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
                 isBooking
                   ? 'bg-zinc-500/15 text-zinc-50 border border-zinc-500/20'
-                  : 'bg-white/5 text-white/40 border border-white/10'
+                  : 'bg-white/5 text-white/40 border-white/10'
               }`}>
                 {event.type}
               </span>
@@ -121,10 +127,10 @@ export function EventRow({ event }: EventRowProps) {
                     </div>
                     <div>
                       <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-0.5 italic">Authorized Participant</p>
-                      <h4 className="text-lg font-black text-white uppercase italic tracking-tight">{event.guestName || event.guestEmail?.split('@')[0] || 'Internal Entity'}</h4>
+                      <h4 className="text-md font-black text-white uppercase italic tracking-tight">{participantName}</h4>
                       <div className="flex items-center gap-2 text-zinc-500 mt-0.5">
                         <Mail size={11} />
-                        <span className="text-[10px] font-bold tracking-wide">{event.guestEmail || 'system.internal'}</span>
+                        <span className="text-[14px] font-bold tracking-wide">{participantEmail}</span>
                       </div>
                     </div>
                   </div>
