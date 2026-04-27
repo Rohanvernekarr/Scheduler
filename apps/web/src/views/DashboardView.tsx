@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { getMeetings, getHostBookings } from '../lib/api';
 import { useQuery } from '@tanstack/react-query';
-import { Info, MoreHorizontal, CheckCircle2, Plus } from 'lucide-react';
+import { Info, MoreHorizontal, CheckCircle2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { EventRow } from '../components/dashboard/EventRow';
 import { Link } from 'react-router-dom';
 import { useSession } from '@repo/auth/client';
@@ -9,6 +9,8 @@ import { useSession } from '@repo/auth/client';
 export default function DashboardView() {
   const { data: session } = useSession();
   const userId = session?.user.id;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   const { data: meetings = [], status: meetingsStatus } = useQuery({
     queryKey: ['meetings', userId],
@@ -32,8 +34,12 @@ export default function DashboardView() {
         description: `External booking from ${b.guestEmail}`
       }))
     ];
-    return combined.sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    // Sort descending (recent on top)
+    return combined.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
   }, [meetings, bookings]);
+
+  const totalPages = Math.ceil(allEvents.length / itemsPerPage);
+  const paginatedEvents = allEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const isPending = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
 
@@ -94,12 +100,31 @@ export default function DashboardView() {
         </div>
       </div>
 
-
-
       {/* Recent Activity */}
       <section className="bg-[#111111] rounded-xl border border-white/5 overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/5">
+        <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
           <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Recent Activity</h2>
+          {totalPages > 1 && (
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-bold text-white/20 uppercase">Page {currentPage} of {totalPages}</span>
+              <div className="flex gap-1">
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="p-1.5 hover:bg-white/5 rounded-lg text-white/40 hover:text-white disabled:opacity-20 transition-all"
+                >
+                  <ChevronLeft size={14} />
+                </button>
+                <button 
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-1.5 hover:bg-white/5 rounded-lg text-white/40 hover:text-white disabled:opacity-20 transition-all"
+                >
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
         <div className="divide-y divide-white/[0.03]">
           {isPending && allEvents.length === 0 ? (
@@ -110,7 +135,7 @@ export default function DashboardView() {
           ) : allEvents.length === 0 ? (
             <div className="p-12 text-center text-white/20 text-sm">No recent activity detected.</div>
           ) : (
-            allEvents.slice(0, 5).map((event: any) => <EventRow key={event.id} event={event} />)
+            paginatedEvents.map((event: any) => <EventRow key={event.id} event={event} />)
           )}
         </div>
       </section>
