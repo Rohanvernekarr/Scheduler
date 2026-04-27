@@ -34,7 +34,7 @@ export default function DashboardView() {
         description: `External booking from ${b.guestEmail}`
       }))
     ];
-    // Sort descending (recent on top)
+    // Sort descending recent on top
     return combined.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
   }, [meetings, bookings]);
 
@@ -43,9 +43,12 @@ export default function DashboardView() {
 
   const isPending = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
 
+  if (isPending && allEvents.length === 0) {
+    return <DashboardSkeleton />;
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      {/* Header  */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -74,8 +77,6 @@ export default function DashboardView() {
           </button>
         </div>
       </div>
-
-      {/* Metrics Bar */}
       <div className="bg-[#111111] border border-white/5 rounded-xl p-6 shadow-2xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <MetricItem 
@@ -100,7 +101,6 @@ export default function DashboardView() {
         </div>
       </div>
 
-      {/* Recent Activity */}
       <section className="bg-[#111111] rounded-xl border border-white/5 overflow-hidden">
         <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
           <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Recent Activity</h2>
