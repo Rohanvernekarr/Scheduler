@@ -8,8 +8,11 @@ interface BookingRowProps {
 export function BookingRow({ event }: BookingRowProps) {
   const date = new Date(event.startTime);
   const isPast = date < new Date();
-  const participantName = event.guestName || event.guestEmail?.split('@')[0] || 'Team Participant';
-  const participantEmail = event.guestEmail || 'Internal Sync';
+  const participantEmails = (event.participants || []).map((p: any) => p.email);
+  const firstEmail = participantEmails[0] || 'Team Sync';
+  
+  const participantName = event.guestName || (participantEmails.length > 0 ? firstEmail.split('@')[0] : 'Internal Meeting');
+  const participantEmail = event.guestEmail || (participantEmails.length > 0 ? participantEmails.join(', ') : 'No participants invited');
 
   return (
     <motion.div 
@@ -23,7 +26,7 @@ export function BookingRow({ event }: BookingRowProps) {
         
         <div className="flex items-center gap-4 shrink-0">
           <div className="w-12 h-12 rounded-2xl bg-white text-black flex flex-col items-center justify-center shadow-xl">
-            <span className="text-[8px] font-black uppercase tracking-tighter leading-none">{date.toLocaleString('default', { month: 'short' })}</span>
+            <span className="text-[10px] font-black uppercase tracking-tighter leading-none">{date.toLocaleString('default', { month: 'short' })}</span>
             <span className="text-xl font-black leading-none mt-0.5">{date.getDate()}</span>
           </div>
           
@@ -44,23 +47,23 @@ export function BookingRow({ event }: BookingRowProps) {
           </div>
           <div className="overflow-hidden">
             <p className="text-[8px] font-black text-white/40 uppercase tracking-[0.2em] mb-0.5 leading-none italic">Booked With</p>
-            <h4 className="text-lg font-black text-white tracking-tight truncate uppercase italic">{participantName}</h4>
+            <h4 className="text-md font-black text-white tracking-tight truncate uppercase">{participantName}</h4>
             <div className="flex items-center gap-1.5 text-emerald-500/60 mt-0.5 font-bold">
               <Mail size={10} />
-              <span className="text-[9px] truncate tracking-wide">{participantEmail}</span>
+              <span className="text-[11px] truncate tracking-wide">{participantEmail}</span>
             </div>
           </div>
         </div>
 
         <div className="min-w-[150px] space-y-1">
           <div className="flex items-center gap-2">
-            <span className={`px-1.5 py-0.5 rounded text-[7px] font-black uppercase tracking-widest border ${
+            <span className={`px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-widest border ${
               event.category === 'External' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-white/5 text-white/40 border-white/10'
             }`}>
               {event.category}
             </span>
           </div>
-          <h3 className="text-xs font-bold text-white/40 line-clamp-1 italic">{event.title}</h3>
+          <h3 className="text-md font-bold text-white/40 line-clamp-1 italic">{event.title}</h3>
         </div>
 
         <div className="flex items-center gap-3 w-full lg:w-auto shrink-0">
