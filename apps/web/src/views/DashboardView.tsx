@@ -24,8 +24,10 @@ export default function DashboardView() {
     enabled: !!userId,
   });
 
+  const [activeTab, setActiveTab] = useState<'upcoming' | 'completed'>('upcoming');
+
   const allEvents = useMemo(() => {
-    const combined = [
+    return [
       ...meetings.map((m: any) => ({ ...m, type: m.type || 'Meeting' })),
       ...bookings.map((b: any) => ({
         ...b,
@@ -34,16 +36,29 @@ export default function DashboardView() {
         description: `External booking from ${b.guestEmail}`
       }))
     ];
-    // Sort descending recent on top
-    return combined.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
   }, [meetings, bookings]);
 
-  const totalPages = Math.ceil(allEvents.length / itemsPerPage);
-  const paginatedEvents = allEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const filteredEvents = useMemo(() => {
+    const now = new Date();
+    const filtered = allEvents.filter(event => {
+      const isPast = new Date(event.startTime) < now;
+      return activeTab === 'completed' ? isPast : !isPast;
+    });
 
-  const isPending = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
+    // Ascending for upcoming (soonest first), Descending for completed (recent first)
+    return filtered.sort((a, b) => {
+      const timeA = new Date(a.startTime).getTime();
+      const timeB = new Date(b.startTime).getTime();
+      return activeTab === 'upcoming' ? timeA - timeB : timeB - timeA;
+    });
+  }, [allEvents, activeTab]);
 
-  if (isPending && allEvents.length === 0) {
+  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const paginatedEvents = filteredEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const isLoading = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
+
+  if (isLoading && allEvents.length === 0) {
     return <DashboardSkeleton />;
   }
 
@@ -82,17 +97,17 @@ export default function DashboardView() {
           <MetricItem 
             label="Events" 
             value={`${allEvents.length} scheduled`} 
-            isLoading={!!isPending && allEvents.length === 0} 
+            isLoading={isLoading && allEvents.length === 0} 
           />
           <MetricItem 
             label="External Bookings" 
             value={bookings.length} 
-            isLoading={!!isPending && bookings.length === 0} 
+            isLoading={isLoading && bookings.length === 0} 
           />
           <MetricItem 
             label="Internal Syncs" 
             value={meetings.length} 
-            isLoading={!!isPending && meetings.length === 0} 
+            isLoading={isLoading && meetings.length === 0} 
           />
           <MetricItem 
             label="Network usage" 
@@ -102,8 +117,29 @@ export default function DashboardView() {
       </div>
 
       <section className="bg-[#111111] rounded-xl border border-white/5 overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
-          <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Recent Activity</h2>
+        <div className="px-6 py-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest whitespace-nowrap">Recent Activity</h2>
+            <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
+              <button 
+                onClick={() => { setActiveTab('upcoming'); setCurrentPage(1); }}
+                className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${
+                  activeTab === 'upcoming' ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                Upcoming
+              </button>
+              <button 
+                onClick={() => { setActiveTab('completed'); setCurrentPage(1); }}
+                className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${
+                  activeTab === 'completed' ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                Completed
+              </button>
+            </div>
+          </div>
+
           {totalPages > 1 && (
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-bold text-white/20 uppercase">Page {currentPage} of {totalPages}</span>
@@ -127,13 +163,15 @@ export default function DashboardView() {
           )}
         </div>
         <div className="divide-y divide-white/[0.03]">
-          {isPending && allEvents.length === 0 ? (
+          {isLoading && filteredEvents.length === 0 ? (
             <div className="p-8 space-y-4">
               <div className="h-12 bg-white/5 rounded-xl animate-pulse" />
               <div className="h-12 bg-white/5 rounded-xl animate-pulse w-3/4" />
             </div>
-          ) : allEvents.length === 0 ? (
-            <div className="p-12 text-center text-white/20 text-sm">No recent activity detected.</div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="p-12 text-center text-white/20 text-sm italic">
+              No {activeTab} activity detected.
+            </div>
           ) : (
             paginatedEvents.map((event: any) => <EventRow key={event.id} event={event} />)
           )}
