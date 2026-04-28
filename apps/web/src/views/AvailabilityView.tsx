@@ -7,7 +7,7 @@ export default function AvailabilityView() {
       <header className="mb-12">
         <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-3">Scheduling Infrastructure // Targeted Sync</p>
         <h1 className="text-4xl font-black tracking-tighter text-white uppercase">Availability Builder</h1>
-        <p className="text-white/30 text-sm mt-2 font-medium max-w-sm">
+        <p className="text-white/30 text-sm mt-2 font-medium">
           Select specific windows from the system calendar to generate high-intent booking invitations. 
         </p>
       </header>

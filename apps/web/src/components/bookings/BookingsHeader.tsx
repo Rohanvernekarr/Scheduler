@@ -21,8 +21,8 @@ export function BookingsHeader({ upcomingCount, completedCount }: BookingsHeader
   return (
     <header className="flex flex-col md:flex-row justify-between items-end gap-6 pb-10 border-b border-white/5">
       <div>
-        <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic">Bookings</h1>
-        <p className="text-white/30 text-sm mt-1 font-medium tracking-wide italic">
+        <h1 className="text-4xl font-black tracking-tighter text-white uppercase">Bookings</h1>
+        <p className="text-white/30 text-sm mt-1 font-medium tracking-wide">
           Manage your scheduled interactions and external appointments.
         </p>
       </div>
