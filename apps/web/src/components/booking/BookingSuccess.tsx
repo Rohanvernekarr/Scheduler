@@ -5,10 +5,11 @@ interface BookingSuccessProps {
   userName: string;
   selectedDate: Date;
   selectedTime: string;
+  duration?: number;
   onDone: () => void;
 }
 
-export function BookingSuccess({ userName, selectedDate, selectedTime, onDone }: BookingSuccessProps) {
+export function BookingSuccess({ userName, selectedDate, selectedTime, duration, onDone }: BookingSuccessProps) {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-6">
       <div className="max-w-md w-full bg-[#111111] border border-white/[0.06] rounded-2xl p-10 text-center space-y-6">
@@ -31,7 +32,7 @@ export function BookingSuccess({ userName, selectedDate, selectedTime, onDone }:
           </div>
           <div className="flex items-center gap-3 text-sm text-white/70">
             <Clock size={14} className="text-zinc-50" />
-            <span>{selectedTime} (30 mins)</span>
+            <span>{selectedTime} {duration ? `(${duration} mins)` : ''}</span>
           </div>
         </div>
 

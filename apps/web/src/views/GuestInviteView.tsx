@@ -108,9 +108,10 @@ export default function GuestInviteView() {
   if (isBooked && selectedSlot) {
     return (
       <BookingSuccess 
-        userName={invite.host?.name || "Host"} 
+        userName={invite.host?.name || invite.hostName || "Host"} 
         selectedDate={new Date(selectedSlot.date)} 
         selectedTime={`${selectedSlot.startTime} - ${selectedSlot.endTime}`} 
+        duration={selectedSlot.duration}
         onDone={() => navigate('/')} 
       />
     );
@@ -130,7 +131,8 @@ export default function GuestInviteView() {
               </div>
               <div>
                  <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-3 italic">Authorized Link</p>
-                 <h1 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Meeting with <span className="text-zinc-500 block">{invite.hostName}</span></h1>
+                 <h1 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Meeting with <span className="text-zinc-500 block">{invite.host?.name || invite.hostName}</span></h1>
+                 <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-2">{invite.host?.email}</p>
               </div>
               <p className="text-xs text-zinc-500 leading-relaxed max-w-xs font-medium">
                  Your host has curated specific operational windows for this session. Choose your preferred slot below.
@@ -235,7 +237,7 @@ export default function GuestInviteView() {
                              <span className="text-base font-black italic tracking-tight uppercase leading-none">{slot.startTime} &mdash; {slot.endTime}</span>
                           </div>
                           {slot.isBooked ? (
-                             <span className="text-[10px] font-black uppercase tracking-widest opacity-50 italic">Booked</span>
+                             <span className="text-[10px] font-black uppercase tracking-widest italic text-red-500">Booked</span>
                           ) : (
                              selectedSlotId === slot.id && <CheckCircle2 size={16} />
                           )}
