@@ -105,6 +105,18 @@ export class InviteService {
       }
     });
   }
+
+  async getInvitesByHostId(hostId: string) {
+    return prisma.targetedInvite.findMany({
+      where: { hostId },
+      include: {
+        slots: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+  }
 }
 
 export const inviteService = new InviteService();

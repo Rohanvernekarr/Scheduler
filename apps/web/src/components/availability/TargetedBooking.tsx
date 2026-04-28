@@ -10,7 +10,10 @@ import { useSession } from '@repo/auth/client';
 import toast from 'react-hot-toast';
 
 export function TargetedBooking() {
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  });
   const [activeTime, setActiveTime] = useState<string>('09:00');
   
   const [slots, setSlots] = useState<AvailabilitySlot[]>([]);
@@ -58,11 +61,17 @@ export function TargetedBooking() {
   useEffect(() => {
     if (existingInvites) {
       const allDispatched = existingInvites.flatMap((inv: any) => 
-        inv.slots.map((s: any) => ({
-          ...s,
-          guestEmail: inv.guestEmail,
-          status: s.isBooked ? 'booked' : 'open'
-        }))
+        inv.slots.map((s: any) => {
+          const d = new Date(s.startTime);
+          const localDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+          
+          return {
+            ...s,
+            date: localDate,
+            guestEmail: inv.guestEmail,
+            status: s.isBooked ? 'booked' : 'open'
+          };
+        })
       );
       setDispatchedSlots(allDispatched);
     }

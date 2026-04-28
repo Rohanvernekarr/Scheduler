@@ -56,6 +56,16 @@ inviteRouter.get('/:id', async (req, res) => {
   }
 });
 
+// Get Host Invites
+inviteRouter.get('/host/:id', async (req, res) => {
+  try {
+    const invites = await inviteService.getInvitesByHostId(req.params.id);
+    res.json({ data: invites });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch host invites' });
+  }
+});
+
 // Book a Slot
 inviteRouter.post('/book', async (req, res) => {
   try {

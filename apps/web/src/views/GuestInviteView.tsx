@@ -35,7 +35,8 @@ export default function GuestInviteView() {
       // Find first unbooked slot date
       const firstAvailable = invite.slots.find((s: any) => !s.isBooked);
       if (firstAvailable) {
-        const dateStr = new Date(firstAvailable.startTime).toISOString().split('T')[0];
+        const d = new Date(firstAvailable.startTime);
+        const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         setSelectedDate(dateStr);
       }
     }
@@ -52,7 +53,7 @@ export default function GuestInviteView() {
     
     invite.slots.forEach((s: any) => {
       const d = new Date(s.startTime);
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
       
       if (!grouped[dateStr]) grouped[dateStr] = [];
       
