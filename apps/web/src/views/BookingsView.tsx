@@ -31,7 +31,7 @@ export default function BookingsView() {
   });
 
   const allEvents = useMemo(() => {
-    const combined = [
+    return [
       ...meetings.map((m: any) => ({ 
         ...m, 
         title: m?.title || 'Internal Sync',
@@ -46,15 +46,13 @@ export default function BookingsView() {
         description: `Meeting with ${b?.guestName || b?.guestEmail || 'Guest'}`
       }))
     ];
-    
-    return combined.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
   }, [meetings, bookings]);
 
   const filteredEvents = useMemo(() => {
     const now = new Date();
     const query = searchQuery?.toLowerCase() || '';
 
-    return allEvents.filter(event => {
+    const filtered = allEvents.filter(event => {
       if (!event?.startTime) return false;
       const eventDate = new Date(event.startTime);
       const isPast = eventDate < now;
@@ -72,6 +70,12 @@ export default function BookingsView() {
       (event.guestName?.toLowerCase() || '').includes(query) ||
       (event.participants?.some((p: any) => (p?.email || p || '').toLowerCase().includes(query)))
     );
+
+    return filtered.sort((a, b) => {
+      const timeA = new Date(a.startTime).getTime();
+      const timeB = new Date(b.startTime).getTime();
+      return activeTab === 'upcoming' ? timeA - timeB : timeB - timeA;
+    });
   }, [allEvents, activeTab, searchQuery]);
 
   const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
