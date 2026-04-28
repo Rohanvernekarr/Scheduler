@@ -38,5 +38,8 @@ export const sendTargetedInvite = (data: any) =>
 export const getInvite = (id: string) =>
   api.get(`/invites/${id}`).then(res => res.data.data);
 
+export const getHostInvites = (hostId: string) =>
+  api.get(`/invites/host/${hostId}`).then(res => res.data.data);
+
 export const bookInviteSlot = (data: { slotId: string, guestName: string, guestEmail: string }) =>
   api.post('/invites/book', data).then(res => res.data);

@@ -7,7 +7,7 @@ const inviteRouter: Router = Router();
 // Send and Save Invite
 inviteRouter.post('/send', async (req, res) => {
   try {
-    const { hostId, hostName, guestEmail, inviteLink, slots, meetingLink } = req.body;
+    const { id, hostId, hostName, guestEmail, inviteLink, slots, meetingLink } = req.body;
     
     if (!guestEmail || !inviteLink || !slots || !Array.isArray(slots)) {
        res.status(400).json({ error: 'Missing required fields or invalid slots array' });
@@ -15,13 +15,14 @@ inviteRouter.post('/send', async (req, res) => {
     }
 
     // 1. Save to Database
-    // Extract ID from link (assuming format is .../invite/{id})
-    const inviteId = inviteLink.split('/').pop();
+    // Extract ID from link if not provided directly
+    const inviteId = id || inviteLink.split('/').pop();
     
     await inviteService.createTargetedInvite({
-      hostId: hostId || 'cm9lndj6y0000ux3v8x9r9fzb', // Default for now
+      id: inviteId,
+      hostId: hostId || 'cm9lndj6y0000ux3v8x9r9fzb', 
       guestEmail,
-      inviteLink: inviteId, // We save the ID part as the unique link identifier
+      inviteLink: inviteId, 
       meetingLink,
       slots
     });

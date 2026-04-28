@@ -16,11 +16,19 @@ export default function GuestInviteView() {
   
   const [viewDate, setViewDate] = useState(new Date());
 
-  const { data: invite, isLoading, error } = useQuery({
+  const { data: inviteBackend, isLoading, error } = useQuery({
     queryKey: ['invite', inviteId],
     queryFn: () => getInvite(inviteId!),
     enabled: !!inviteId
   });
+
+  const inviteLocal = useMemo(() => {
+    if (!inviteId) return null;
+    const existing = JSON.parse(localStorage.getItem('custom_invites') || '{}');
+    return existing[inviteId];
+  }, [inviteId]);
+
+  const invite = inviteBackend || inviteLocal;
 
   useEffect(() => {
     if (invite?.slots?.length > 0) {

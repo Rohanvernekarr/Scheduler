@@ -57,13 +57,12 @@ export function Timeline({
                     const startMs = new Date(selectedDate).setHours(hour, min, 0, 0);
                     
                     const coveringSlot = allSlotsForDate.find(s => {
-                      const [sh, sm] = s.startTime.split(':').map(Number);
-                      const sStart = new Date(selectedDate).setHours(sh, sm, 0, 0);
-                      const sEnd = sStart + (s.duration * 60000);
-                      return startMs >= sStart && startMs < sEnd;
+                      const sStartMs = new Date(s.startTime).getTime();
+                      const sEndMs = new Date(s.endTime).getTime();
+                      return startMs >= sStartMs && startMs < sEndMs;
                     });
 
-                    const isStartingSegment = coveringSlot && coveringSlot.startTime === time;
+                    const isStartingSegment = coveringSlot && new Date(coveringSlot.startTime).getHours() === hour && new Date(coveringSlot.startTime).getMinutes() === min;
 
                     return (
                       <div key={min} className="h-10 relative group/row">
@@ -112,29 +111,40 @@ export function Timeline({
   );
 }
 
-function SlotBlock({ slot, isDispatched, onRemove }: { slot: AvailabilitySlot, isDispatched: boolean, onRemove: () => void }) {
+function SlotBlock({ slot, isDispatched, onRemove }: { slot: any, isDispatched: boolean, onRemove: () => void }) {
+  const isBooked = slot.status === 'booked' || slot.isBooked;
+  
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }} 
       animate={{ opacity: 1, scale: 1 }}
       style={{ height: `calc(${(slot.duration / 15) * 100}% + ${((slot.duration / 15) - 1) * 6}px)` }}
       className={`absolute inset-x-0 top-0 px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 ${
-        isDispatched
-          ? 'bg-zinc-950 border-zinc-800 text-zinc-500' 
-          : 'bg-white text-black border-white'
+        isBooked 
+          ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+          : isDispatched
+            ? 'bg-zinc-950 border-zinc-800 text-zinc-500' 
+            : 'bg-white text-black border-white'
       }`}
     >
       <div className="flex items-center gap-4">
         <div className={`px-2 py-0.5 text-[9px] font-black uppercase italic rounded-md ${
-          isDispatched ? 'bg-zinc-900 text-zinc-600' : 'bg-black text-white'
+          isBooked ? 'bg-emerald-500 text-black' : isDispatched ? 'bg-zinc-900 text-zinc-600' : 'bg-black text-white'
         }`}>
           {slot.duration}M
         </div>
         <div className="flex flex-col">
-          <span className="text-sm font-black tracking-tighter uppercase italic">{slot.startTime} — {slot.endTime}</span>
-          {isDispatched && (
-            <span className="text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500/50">Dispatched Protocol</span>
-          )}
+          <span className="text-sm font-black tracking-tighter uppercase italic">
+            {new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} — {new Date(slot.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+          </span>
+          <div className="flex items-center gap-2">
+            {isDispatched && (
+              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600">Dispatched Protocol</span>
+            )}
+            {isBooked && (
+              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500">Confirmed Booking</span>
+            )}
+          </div>
         </div>
       </div>
       <button 

@@ -70,8 +70,8 @@ export function Sidebar({
             </label>
             <div className="relative">
               <input
-                type="email"
-                placeholder="name@organization.com"
+                type="text"
+                placeholder="email1@org.com, email2@org.com"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
                 className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
@@ -97,8 +97,9 @@ export function Sidebar({
           </div>
 
           <button
+            type="button"
             onClick={onSendInvite}
-            disabled={slots.length === 0 || !guestEmail || isSending}
+            disabled={slots.length === 0 || !guestEmail.trim() || isSending}
             className="w-full bg-white text-black py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-zinc-200 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 group shadow-xl shadow-white/5"
           >
             {isSending ? (
@@ -132,7 +133,7 @@ export function Sidebar({
                     {new Date(s.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                   </p>
                   <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1 opacity-50">
-                    {s.startTime} — {s.endTime} // {s.duration}m Cluster
+                    {new Date(s.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} — {new Date(s.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} // {s.duration}m Cluster
                   </p>
                </div>
                <button 

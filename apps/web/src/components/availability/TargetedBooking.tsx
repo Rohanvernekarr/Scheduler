@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { sendTargetedInvite } from '../../lib/api';
+import { sendTargetedInvite, getHostInvites } from '../../lib/api';
+import { useQuery } from '@tanstack/react-query';
 import type { AvailabilitySlot } from './targeted/types';
 import { Sidebar } from './targeted/Sidebar';
 import { Timeline } from './targeted/Timeline';
 import { SuccessToast } from './targeted/SuccessToast';
 import { useSession } from '@repo/auth/client';
+import toast from 'react-hot-toast';
 
 export function TargetedBooking() {
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
@@ -21,17 +23,50 @@ export function TargetedBooking() {
   const [inviteLink, setInviteLink] = useState('');
   const [pendingTime, setPendingTime] = useState<string | null>(null);
 
+  const { data: session } = useSession();
+  const userId = session?.user.id;
+
+  // Persistence: Fetch existing invites from backend
+  const { data: existingInvites = [], refetch: refetchInvites } = useQuery({
+    queryKey: ['targeted-invites', userId],
+    queryFn: () => getHostInvites(userId!),
+    enabled: !!userId,
+  });
+
   useEffect(() => {
     const savedPending = localStorage.getItem('pending_slots');
-    const savedDispatched = localStorage.getItem('dispatched_slots');
-    if (savedPending) setSlots(JSON.parse(savedPending));
-    if (savedDispatched) setDispatchedSlots(JSON.parse(savedDispatched));
+    if (savedPending) {
+      try {
+        const parsed = JSON.parse(savedPending);
+        // Clean up old data format (ensure startTime is a full ISO string/date)
+        const valid = parsed.filter((s: any) => {
+          const d = new Date(s.startTime);
+          return !isNaN(d.getTime()) && s.startTime.includes('T');
+        });
+        setSlots(valid);
+      } catch (e) {
+        setSlots([]);
+      }
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('pending_slots', JSON.stringify(slots));
-    localStorage.setItem('dispatched_slots', JSON.stringify(dispatchedSlots));
-  }, [slots, dispatchedSlots]);
+  }, [slots]);
+
+  // Derive dispatched slots from backend data
+  useEffect(() => {
+    if (existingInvites) {
+      const allDispatched = existingInvites.flatMap((inv: any) => 
+        inv.slots.map((s: any) => ({
+          ...s,
+          guestEmail: inv.guestEmail,
+          status: s.isBooked ? 'booked' : 'open'
+        }))
+      );
+      setDispatchedSlots(allDispatched);
+    }
+  }, [existingInvites]);
 
   const handleAddSlot = (time: string, dur: number) => {
     const [h, m] = time.split(':').map(Number);
@@ -45,23 +80,18 @@ export function TargetedBooking() {
 
     const allCurrent = [...slots, ...dispatchedSlots].filter(s => s.date === selectedDate);
     const isOverlapping = allCurrent.some(s => {
-      const [sh, sm] = s.startTime.split(':').map(Number);
-      const sStart = new Date(selectedDate);
-      sStart.setHours(sh, sm, 0, 0);
-      const sStartMs = sStart.getTime();
-      const sEndMs = sStartMs + (s.duration * 60000);
+      const sStartMs = new Date(s.startTime).getTime();
+      const sEndMs = new Date(s.endTime).getTime();
       return (startMs < sEndMs && endMs > sStartMs);
     });
 
     if (isOverlapping) return;
 
-    const endTimeStr = endObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-
     const newSlot: AvailabilitySlot = {
       id: Math.random().toString(36).substring(2, 9),
       date: selectedDate,
-      startTime: time,
-      endTime: endTimeStr,
+      startTime: startObj.toISOString(),
+      endTime: endObj.toISOString(),
       duration: dur
     };
     setSlots([...slots, newSlot]);
@@ -76,41 +106,64 @@ export function TargetedBooking() {
     }
   };
 
-  const { data: session } = useSession();
-
   const handleSendInvite = async () => {
     if (slots.length === 0 || !guestEmail) return;
     setIsSending(true);
     
+    let backendSuccessCount = 0;
     try {
-      const inviteId = Math.random().toString(36).substring(2, 9);
-      const generatedLink = `${window.location.origin}/invite/${inviteId}`;
-      const hostName = session?.user.name || session?.user.email?.split('@')[0] || 'Host';
+      const emails = guestEmail.split(',').map(e => e.trim()).filter(e => e);
+      if (emails.length === 0) {
+        toast.error('Please enter at least one valid email');
+        return;
+      }
       
-      const existingInvites = JSON.parse(localStorage.getItem('custom_invites') || '{}');
-      existingInvites[inviteId] = { id: inviteId, hostName, slots, guestEmail };
-      localStorage.setItem('custom_invites', JSON.stringify(existingInvites));
+      for (const email of emails) {
+        const inviteId = Math.random().toString(36).substring(2, 9);
+        const generatedLink = `${window.location.origin}/invite/${inviteId}`;
+        const hostName = session?.user.name || session?.user.email?.split('@')[0] || 'Host';
+        
+        // 1. Local Persistence Fallback (Instant availability)
+        const existingLocal = JSON.parse(localStorage.getItem('custom_invites') || '{}');
+        existingLocal[inviteId] = { id: inviteId, hostName, slots, guestEmail: email };
+        localStorage.setItem('custom_invites', JSON.stringify(existingLocal));
 
-      await sendTargetedInvite({
-        hostId: session?.user.id || '',
-        hostName,
-        guestEmail,
-        meetingLink,
-        inviteLink: generatedLink,
-        slots
-      });
+        // 2. Backend Synchronization
+        try {
+          await sendTargetedInvite({
+            id: inviteId,
+            hostId: userId || undefined,
+            hostName,
+            guestEmail: email,
+            meetingLink,
+            inviteLink: generatedLink,
+            slots
+          });
+          backendSuccessCount++;
+        } catch (apiError) {
+          console.error(`Backend sync failed for ${email}:`, apiError);
+          // We don't throw here so other emails can be processed and local fallback remains active
+        }
 
-      setInviteLink(generatedLink);
+        setInviteLink(generatedLink);
+      }
+
       setIsSent(true);
-      
-      setDispatchedSlots([...dispatchedSlots, ...slots]);
       setSlots([]);
       setGuestEmail('');
       setMeetingLink('');
       
+      if (backendSuccessCount === 0 && emails.length > 0) {
+        toast('Invite generated locally (Sync Pending)', { icon: '⚠️' });
+      } else {
+        toast.success(`Invite${emails.length > 1 ? 's' : ''} dispatched and synchronized`);
+      }
+      
+      refetchInvites();
       setTimeout(() => setIsSent(false), 8000);
     } catch (error) {
-      console.error('Failed to send invite:', error);
+      console.error('Critical failure during invite distribution:', error);
+      toast.error('Failed to generate invites. Please check your connection.');
     } finally {
       setIsSending(false);
     }

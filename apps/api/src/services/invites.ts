@@ -2,6 +2,7 @@ import { prisma } from '@repo/db';
 
 export class InviteService {
   async createTargetedInvite(data: {
+    id?: string;
     hostId: string;
     guestEmail: string;
     inviteLink: string;
@@ -15,26 +16,35 @@ export class InviteService {
   }) {
     return prisma.targetedInvite.create({
       data: {
+        id: data.id,
         hostId: data.hostId,
         guestEmail: data.guestEmail,
         inviteLink: data.inviteLink,
         meetingLink: data.meetingLink ?? null,
         slots: {
           create: data.slots.map(slot => {
-             const [sh, sm] = slot.startTime.split(':').map(Number);
-             const [eh, em] = slot.endTime.split(':').map(Number);
-             
-             const start = new Date(slot.date);
-             start.setHours(sh ?? 0, sm ?? 0, 0, 0);
-             
-             const end = new Date(slot.date);
-             end.setHours(eh ?? 0, em ?? 0, 0, 0);
+            let start: Date;
+            let end: Date;
 
-             return {
-               startTime: start,
-               endTime: end,
-               duration: slot.duration
-             };
+            if (slot.startTime.includes('T')) {
+              start = new Date(slot.startTime);
+              end = new Date(slot.endTime);
+            } else {
+              const [sh, sm] = slot.startTime.split(':').map(Number);
+              const [eh, em] = slot.endTime.split(':').map(Number);
+              
+              start = new Date(slot.date);
+              start.setHours(sh ?? 0, sm ?? 0, 0, 0);
+              
+              end = new Date(slot.date);
+              end.setHours(eh ?? 0, em ?? 0, 0, 0);
+            }
+
+            return {
+              startTime: start,
+              endTime: end,
+              duration: slot.duration
+            };
           })
         }
       },
@@ -45,11 +55,13 @@ export class InviteService {
   }
 
   async getInviteByLinkId(inviteId: string) {
-    // The link ID is the last part of the inviteLink URL or the ID itself
-    // In our case, the user generates links like /invite/{id}
-    // So we search by the id directly if we save it as the id.
-    return prisma.targetedInvite.findUnique({
-      where: { id: inviteId },
+    return prisma.targetedInvite.findFirst({
+      where: {
+        OR: [
+          { id: inviteId },
+          { inviteLink: inviteId }
+        ]
+      },
       include: {
         slots: true,
         host: {
