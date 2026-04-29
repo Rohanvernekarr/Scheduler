@@ -63,67 +63,68 @@ export default function DashboardView() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
             Dashboard
           </h1>
           <div className="flex items-center gap-2 mt-1">
-            <div className="flex items-center gap-1.5 text-xs text-white/60">
-              <CheckCircle2 size={14} className="text-emerald-500" />
+            <div className="flex items-center gap-1.5 text-[10px] md:text-xs text-white/60">
+              <CheckCircle2 size={12} className="text-emerald-500 md:w-[14px]" />
               <span>Active</span>
             </div>
-            <span className="bg-white/5 text-white/40 text-[10px] uppercase tracking-widest px-1.5 py-0.5 rounded border border-white/10 font-bold">
+            <span className="bg-white/5 text-white/40 text-[8px] md:text-[10px] uppercase tracking-widest px-1 md:px-1.5 py-0.5 rounded border border-white/10 font-bold">
               Default
             </span>
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Link to="/schedule">
-            <button className="bg-white text-black text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-zinc-200 transition-colors">
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <Link to="/schedule" className="flex-1 md:flex-none">
+            <button className="w-full bg-white text-black text-[11px] md:text-xs font-black uppercase tracking-widest px-4 py-2.5 rounded-xl flex items-center justify-center gap-2 hover:bg-zinc-200 transition-all active:scale-95">
               <Plus size={14} />
               Schedule
             </button>
           </Link>
-          <button className="bg-transparent border border-white/10 text-white px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
+          <button className="bg-transparent border border-white/10 text-white p-2.5 rounded-xl hover:bg-white/5 transition-colors">
             <MoreHorizontal size={14} />
           </button>
         </div>
       </div>
-      <div className="bg-[#111111] border border-white/5 rounded-xl p-4 md:p-6 shadow-2xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+
+      <div className="bg-[#111111] border border-white/5 rounded-2xl p-4 md:p-6 shadow-2xl">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           <MetricItem 
             label="Events" 
-            value={`${allEvents.length} scheduled`} 
+            value={`${allEvents.length}`} 
             isLoading={isLoading && allEvents.length === 0} 
           />
           <MetricItem 
-            label="External Bookings" 
+            label="Bookings" 
             value={bookings.length} 
             isLoading={isLoading && bookings.length === 0} 
           />
           <MetricItem 
-            label="Internal Syncs" 
+            label="Internal" 
             value={meetings.length} 
             isLoading={isLoading && meetings.length === 0} 
           />
           <MetricItem 
-            label="Network usage" 
+            label="Network" 
             value="857.1 kB" 
           />
         </div>
       </div>
 
       <section className="bg-[#111111] rounded-xl border border-white/5 overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <h2 className="text-[10px] font-bold text-white/20 uppercase tracking-widest whitespace-nowrap">Recent Activity</h2>
-            <div className="flex bg-white/5 p-1 rounded-lg border border-white/10">
+        <div className="px-4 md:px-6 py-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4">
+            <h2 className="text-[9px] md:text-[10px] font-black text-white/20 uppercase tracking-[0.2em] italic">Recent Activity</h2>
+            <div className="flex bg-white/5 p-1 rounded-lg border border-white/10 w-fit">
               <button 
                 onClick={() => { setActiveTab('upcoming'); setCurrentPage(1); }}
-                className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${
+                className={`px-3 py-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded-md transition-all ${
                   activeTab === 'upcoming' ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'
                 }`}
               >
@@ -131,7 +132,7 @@ export default function DashboardView() {
               </button>
               <button 
                 onClick={() => { setActiveTab('completed'); setCurrentPage(1); }}
-                className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md transition-all ${
+                className={`px-3 py-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded-md transition-all ${
                   activeTab === 'completed' ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'
                 }`}
               >

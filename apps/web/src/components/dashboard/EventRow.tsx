@@ -31,23 +31,23 @@ export function EventRow({ event }: EventRowProps) {
     <>
       <div 
         onClick={() => setShowDetails(true)}
-        className="flex items-center justify-between px-6 py-4 hover:bg-white/[0.03] transition-all group cursor-pointer"
+        className="flex items-center justify-between px-4 md:px-6 py-4 hover:bg-white/[0.03] transition-all group cursor-pointer overflow-hidden"
       >
-        <div className="flex items-center gap-4">
-          <div className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center font-bold shrink-0 ${
+        <div className="flex items-center gap-3 md:gap-4 min-w-0">
+          <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl flex flex-col items-center justify-center font-bold shrink-0 ${
             isBooking
               ? 'bg-zinc-500/15 border border-zinc-500/20 text-zinc-300'
               : 'bg-white/5 border border-white/10 text-white/60'
           }`}>
-            <span className="text-[9px] uppercase opacity-70 leading-none mb-0.5">
+            <span className="text-[8px] md:text-[9px] uppercase opacity-70 leading-none mb-0.5">
               {date.toLocaleString('default', { month: 'short' })}
             </span>
-            <span className="text-base leading-none">{date.getDate()}</span>
+            <span className="text-sm md:text-base leading-none">{date.getDate()}</span>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-2 mb-0.5">
-              <h4 className="font-semibold text-sm text-white">{event.title}</h4>
-              <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+              <h4 className="font-bold text-xs md:text-sm text-white truncate">{event.title}</h4>
+              <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-wider px-1.5 md:px-2 py-0.5 rounded-md flex-shrink-0 ${
                 isBooking
                   ? 'bg-zinc-500/15 text-zinc-50 border border-zinc-500/20'
                   : 'bg-white/5 text-white/40 border-white/10'
@@ -55,22 +55,22 @@ export function EventRow({ event }: EventRowProps) {
                 {event.type}
               </span>
             </div>
-            <p className="text-white/35 text-xs flex items-center gap-2">
+            <p className="text-white/35 text-[10px] md:text-xs flex items-center gap-2">
               <span className="flex items-center gap-1">
-                <Clock size={11} />
+                <Clock size={10} className="md:w-[11px]" />
                 {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
               <span className="text-white/15">•</span>
-              <span>{duration} min</span>
+              <span>{duration}M</span>
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button className="opacity-0 group-hover:opacity-100 transition-all p-1.5 hover:bg-white/10 rounded-lg text-white/40 hover:text-white">
+        <div className="flex items-center gap-2 md:gap-3 flex-shrink-0 ml-4">
+          <button className="hidden md:block opacity-0 group-hover:opacity-100 transition-all p-1.5 hover:bg-white/10 rounded-lg text-white/40 hover:text-white">
             <ExternalLink size={14} />
           </button>
-          <span className={`px-3 py-1 text-[11px] font-semibold rounded-full uppercase tracking-wider border ${statusColors[statusText as keyof typeof statusColors]}`}>
+          <span className={`px-2 md:px-3 py-1 text-[8px] md:text-[10px] font-black rounded-full uppercase tracking-widest border shrink-0 ${statusColors[statusText as keyof typeof statusColors]}`}>
             {statusText}
           </span>
         </div>
