@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Link, Check } from 'lucide-react';
+import { Trash2, Link, Check, Clock } from 'lucide-react';
 import type { AvailabilitySlot } from './types';
 import { HOURS, INTERVALS, DURATIONS } from './types';
 
@@ -26,22 +26,22 @@ export function Timeline({
   const allSlotsForDate = [...slots, ...dispatchedSlots].filter(s => s.date === selectedDate);
 
   return (
-    <div className="xl:col-span-8 bg-[#111111] border border-white/[0.06] rounded-[2.5rem] overflow-hidden flex flex-col h-[850px] shadow-2xl relative z-0">
-      <div className="p-10 border-b border-white/[0.04] bg-black/40 flex items-center justify-between">
+    <div className="xl:col-span-8 bg-[#111111] border border-white/[0.06] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col h-[650px] md:h-[850px] shadow-2xl relative z-0">
+      <div className="px-4 md:px-10 py-4 md:py-8 border-b border-white/[0.04] bg-black/40 flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-black text-white italic uppercase leading-none tracking-tighter">Timeline Analysis</h2>
-          <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.15em] mt-3">
+          <h2 className="text-lg md:text-xl font-black text-white italic uppercase leading-none tracking-tighter">Timeline Analysis</h2>
+          <p className="text-[8px] md:text-[10px] text-zinc-600 font-bold uppercase tracking-[0.15em] mt-2 md:mt-3">
             Active // {new Date(selectedDate).toLocaleDateString('en-GB', { weekday: 'long' })} Protocol
           </p>
         </div>
-        <div className="flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
-          <span className="text-[10px] font-black text-white uppercase tracking-widest">Clock Sync Active</span>
+        <div className="hidden sm:flex items-center gap-3 px-4 py-1.5 bg-white/5 border border-white/10 rounded-full">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]" />
+          <span className="text-[9px] font-black text-white uppercase tracking-widest">Clock Sync Active</span>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar">
-        <div className="relative min-h-[1440px] px-4 md:px-10 pt-6 pb-20">
+        <div className="relative min-h-[1440px] px-3 md:px-10 pt-4 md:pt-6 pb-20">
           {HOURS.map(hour => {
             const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
             

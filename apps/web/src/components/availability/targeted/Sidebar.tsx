@@ -35,17 +35,17 @@ export function Sidebar({
   setMeetingLink,
 }: SidebarProps) {
   return (
-    <div className="xl:col-span-4 space-y-6">
-      <div className="bg-[#111111] border border-white/[0.06] rounded-3xl p-6 shadow-2xl">
-        <div className="mb-6">
-          <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">
+    <div className="xl:col-span-4 space-y-4 md:space-y-6">
+      <div className="bg-[#111111] border border-white/[0.06] rounded-[2rem] p-5 md:p-6 shadow-2xl">
+        <div className="mb-4 md:mb-6">
+          <h2 className="text-xl md:text-2xl font-black text-white italic uppercase tracking-tighter">
             {new Date(selectedDate).toLocaleDateString('en-GB', { 
               day: 'numeric', 
               month: 'short', 
               year: 'numeric' 
             })}
           </h2>
-          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mt-1 italic leading-none">
+          <p className="text-[8px] md:text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mt-1 italic leading-none">
             Global Synchronization Mode
           </p>
         </div>
@@ -63,9 +63,9 @@ export function Sidebar({
           />
         </div>
         
-        <div className="mt-8 pt-8 border-t border-white/[0.04] space-y-6">
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">
+        <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-white/[0.04] space-y-4 md:space-y-6">
+          <div className="space-y-2 md:space-y-3">
+            <label className="text-[8px] md:text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">
               Recipient Credentials
             </label>
             <div className="relative">
@@ -74,14 +74,14 @@ export function Sidebar({
                 placeholder="email1@org.com, email2@org.com"
                 value={guestEmail}
                 onChange={(e) => setGuestEmail(e.target.value)}
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 md:py-4 text-xs md:text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
               />
-              <Mail size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800" />
+              <Mail size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800 md:w-4 md:h-4" />
             </div>
           </div>
 
-          <div className="space-y-3">
-            <label className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">
+          <div className="space-y-2 md:space-y-3">
+            <label className="text-[8px] md:text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] px-1 block">
               Meeting Location (URL)
             </label>
             <div className="relative">
@@ -90,9 +90,9 @@ export function Sidebar({
                 placeholder="meet.google.com/abc-defg-hij"
                 value={meetingLink}
                 onChange={(e) => setMeetingLink(e.target.value)}
-                className="w-full bg-black border border-white/10 rounded-xl px-4 py-4 text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
+                className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 md:py-4 text-xs md:text-sm text-white focus:border-zinc-500 focus:outline-none transition-all placeholder:text-zinc-800"
               />
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800 text-[10px] font-bold">LINK</div>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-800 text-[8px] md:text-[10px] font-black">LINK</div>
             </div>
           </div>
 
@@ -100,7 +100,7 @@ export function Sidebar({
             type="button"
             onClick={onSendInvite}
             disabled={slots.length === 0 || !guestEmail.trim() || isSending}
-            className="w-full bg-white text-black py-5 rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-zinc-200 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 group shadow-xl shadow-white/5"
+            className="w-full bg-white text-black py-4 md:py-5 rounded-xl md:rounded-2xl font-black uppercase tracking-widest text-[10px] md:text-[11px] hover:bg-zinc-200 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale flex items-center justify-center gap-3 group shadow-xl shadow-white/5"
           >
             {isSending ? (
               <>Dispatching... <Loader2 size={14} className="animate-spin" /></>
