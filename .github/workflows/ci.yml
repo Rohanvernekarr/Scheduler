@@ -32,7 +32,7 @@ jobs:
         run: pnpm lint
 
       - name: Type Check
-        run: pnpm exec turbo run type-check
+        run: pnpm exec turbo run check-types
 
       - name: Build
         run: pnpm build
