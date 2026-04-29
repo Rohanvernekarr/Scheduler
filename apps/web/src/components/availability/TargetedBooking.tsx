@@ -69,6 +69,7 @@ export function TargetedBooking() {
             ...s,
             date: localDate,
             guestEmail: inv.guestEmail,
+            inviteLink: inv.inviteLink ? `${window.location.origin}/invite/${inv.inviteLink}` : undefined,
             status: s.isBooked ? 'booked' : 'open'
           };
         })
