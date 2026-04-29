@@ -21,7 +21,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000', // Landing
     'http://localhost:5173', // Web
-    'http://localhost:5174'  // Admin (likely)
+    'http://localhost:5174'  // Admin 
   ],
   credentials: true
 }));
