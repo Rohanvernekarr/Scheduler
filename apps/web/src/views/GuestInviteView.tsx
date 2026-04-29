@@ -120,39 +120,39 @@ export default function GuestInviteView() {
   const currentSlots = selectedDate ? (slotsByDate[selectedDate] || []) : [];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white p-6 md:p-12 selection:bg-white selection:text-black flex justify-center items-center font-sans">
-      <div className="max-w-6xl w-full flex flex-col xl:flex-row gap-12 items-start">
+    <div className="min-h-screen bg-[#0a0a0a] text-white p-4 md:p-6 lg:p-12 selection:bg-white selection:text-black flex justify-center items-center font-sans overflow-x-hidden">
+      <div className="max-w-6xl w-full flex flex-col xl:flex-row gap-8 md:gap-12 items-start">
         
         {/* Left: Info Section */}
-        <div className="xl:w-80 flex-shrink-0 space-y-10">
-           <div className="space-y-6">
-              <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-black shadow-2xl">
-                 <User size={32} />
+        <div className="w-full xl:w-80 flex-shrink-0 space-y-8 md:space-y-10">
+           <div className="space-y-4 md:space-y-6">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl flex items-center justify-center text-black shadow-2xl">
+                 <User size={24} className="md:w-8 md:h-8" />
               </div>
               <div>
-                 <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-3 italic">Authorized Link</p>
-                 <h1 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Meeting with <span className="text-zinc-500 block">{invite.host?.name || invite.hostName}</span></h1>
-                 <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-2">{invite.host?.email}</p>
+                 <p className="text-[9px] md:text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-2 md:mb-3 italic">Authorized Link</p>
+                 <h1 className="text-2xl md:text-3xl font-black italic tracking-tighter uppercase leading-none">Meeting with <span className="text-zinc-500 block">{invite.host?.name || invite.hostName}</span></h1>
+                 <p className="text-[9px] md:text-[10px] font-bold text-zinc-600 uppercase tracking-widest mt-2">{invite.host?.email}</p>
               </div>
-              <p className="text-xs text-zinc-500 leading-relaxed max-w-xs font-medium">
+              <p className="text-[11px] md:text-xs text-zinc-500 leading-relaxed max-w-xs font-medium">
                  Your host has curated specific operational windows for this session. Choose your preferred slot below.
               </p>
            </div>
 
-           <div className="bg-white/5 border border-white/5 p-6 rounded-3xl space-y-4">
+           <div className="bg-white/5 border border-white/5 p-4 md:p-6 rounded-3xl space-y-3 md:space-y-4">
               <div className="flex items-center gap-3">
                  <Mail size={14} className="text-zinc-600" />
-                 <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest truncate">{invite.guestEmail}</span>
+                 <span className="text-[9px] md:text-[10px] font-black text-zinc-400 uppercase tracking-widest truncate">{invite.guestEmail}</span>
               </div>
               <div className="flex items-center gap-3">
                  <Clock size={14} className="text-zinc-600" />
-                 <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Multi-Slot Protocol</span>
+                 <span className="text-[9px] md:text-[10px] font-black text-zinc-400 uppercase tracking-widest">Multi-Slot Protocol</span>
               </div>
            </div>
         </div>
 
         {/* Center: Calendar Picker */}
-        <div className="flex-1 bg-[#111111] border border-white/[0.06] rounded-[3rem] p-10 shadow-2xl space-y-10 overflow-hidden relative">
+        <div className="w-full flex-1 bg-[#111111] border border-white/[0.06] rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 shadow-2xl space-y-8 md:space-y-10 overflow-hidden relative">
            <div className="flex flex-col md:flex-row gap-12 relative z-10">
               
               {/* Mini Calendar */}

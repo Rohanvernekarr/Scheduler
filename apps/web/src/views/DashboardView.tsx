@@ -92,8 +92,8 @@ export default function DashboardView() {
           </button>
         </div>
       </div>
-      <div className="bg-[#111111] border border-white/5 rounded-xl p-6 shadow-2xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="bg-[#111111] border border-white/5 rounded-xl p-4 md:p-6 shadow-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <MetricItem 
             label="Events" 
             value={`${allEvents.length} scheduled`} 

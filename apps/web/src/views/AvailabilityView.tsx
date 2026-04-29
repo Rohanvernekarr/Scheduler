@@ -4,10 +4,10 @@ import { motion } from 'framer-motion';
 export default function AvailabilityView() {
   return (
     <div className="max-w-6xl mx-auto">
-      <header className="mb-12">
-        <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-3">Scheduling Infrastructure // Targeted Sync</p>
-        <h1 className="text-4xl font-black tracking-tighter text-white uppercase">Availability Builder</h1>
-        <p className="text-white/30 text-sm mt-2 font-medium">
+      <header className="mb-8 md:mb-12">
+        <p className="text-[9px] md:text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-2 md:mb-3">Scheduling Infrastructure // Targeted Sync</p>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-white uppercase leading-none">Availability Builder</h1>
+        <p className="text-white/30 text-xs md:text-sm mt-3 font-medium max-w-2xl">
           Select specific windows from the system calendar to generate high-intent booking invitations. 
         </p>
       </header>

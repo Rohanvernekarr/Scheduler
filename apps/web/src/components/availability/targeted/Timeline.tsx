@@ -41,13 +41,13 @@ export function Timeline({
       </div>
 
       <div className="flex-1 overflow-y-auto custom-scrollbar">
-        <div className="relative min-h-[1440px] px-10 pt-6 pb-20">
+        <div className="relative min-h-[1440px] px-4 md:px-10 pt-6 pb-20">
           {HOURS.map(hour => {
             const hourLabel = hour === 0 ? '12 AM' : hour < 12 ? `${hour} AM` : hour === 12 ? '12 PM' : `${hour - 12} PM`;
             
             return (
               <div key={hour} className="flex border-t border-white/[0.02] last:border-b transition-colors hover:bg-white/[0.01]">
-                <div className="w-24 pr-8 -mt-2.5 text-[10px] font-black text-zinc-400 uppercase tabular-nums sticky left-0 bg-[#111111] z-10 py-1 transition-colors group-hover:text-zinc-600">
+                <div className="w-16 md:w-24 pr-4 md:pr-8 -mt-2.5 text-[9px] md:text-[10px] font-black text-zinc-400 uppercase tabular-nums sticky left-0 bg-[#111111] z-10 py-1 transition-colors group-hover:text-zinc-600">
                   {hourLabel}
                 </div>
 
@@ -130,7 +130,7 @@ function SlotBlock({ slot, isDispatched, onRemove }: { slot: any, isDispatched: 
       initial={{ opacity: 0, scale: 0.95 }} 
       animate={{ opacity: 1, scale: 1 }}
       style={{ height: `calc(${(slot.duration / 15) * 100}% + ${((slot.duration / 15) - 1) * 6}px)` }}
-      className={`absolute inset-x-0 top-0 px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 transition-all group/slot ${
+      className={`absolute inset-x-0 top-0 px-3 md:px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 transition-all group/slot ${
         isBooked 
           ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
           : isDispatched
@@ -138,24 +138,24 @@ function SlotBlock({ slot, isDispatched, onRemove }: { slot: any, isDispatched: 
             : 'bg-white text-black border-white'
       }`}
     >
-      <div className="flex items-center gap-4 flex-1 min-w-0">
-        <div className={`px-2 py-0.5 text-[9px] font-black uppercase italic rounded-md flex-shrink-0 ${
+      <div className="flex items-center gap-2 md:gap-4 flex-1 min-w-0">
+        <div className={`px-1.5 md:px-2 py-0.5 text-[8px] md:text-[9px] font-black uppercase italic rounded-md flex-shrink-0 ${
           isBooked ? 'bg-emerald-500 text-black' : isDispatched ? 'bg-zinc-900 text-zinc-600' : 'bg-black text-white'
         }`}>
           {slot.duration}M
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="text-sm font-black tracking-tighter uppercase italic truncate">
+          <span className="text-[11px] md:text-sm font-black tracking-tighter uppercase italic truncate">
             {new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} — {new Date(slot.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
           </span>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 md:gap-2">
             {isDispatched && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600 truncate">
+              <span className="text-[6px] md:text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600 truncate">
                 {slot.guestEmail || 'Dispatched Protocol'}
               </span>
             )}
             {isBooked && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500">Confirmed Booking</span>
+              <span className="text-[6px] md:text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500">Confirmed Booking</span>
             )}
           </div>
         </div>
