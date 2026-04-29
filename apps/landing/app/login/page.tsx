@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { signIn, emailOtp } from "@repo/auth/client";
-import { Nav } from "../components/Nav";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Calendar, Clock, CheckCircle2 } from "lucide-react";

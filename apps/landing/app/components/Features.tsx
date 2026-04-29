@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Globe, MousePointer2, Zap, BarChart3, Shield, Cpu, Layers, Workflow } from "lucide-react";
+import { Globe, MousePointer2, BarChart3, Shield, Cpu, Workflow } from "lucide-react";
 
 const FEATURES = [
   {

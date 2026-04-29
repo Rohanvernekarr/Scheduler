@@ -11,7 +11,8 @@ import {
   Globe, 
   Lock,
   MousePointer2,
-  Workflow
+  Workflow,
+  LucideIcon
 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
@@ -56,6 +57,7 @@ export function FloatingIcons() {
         const y = (row * cellHeight) + (cellHeight / 2) + jitterY;
 
         const Icon = ICONS[i % ICONS.length];
+        if (!Icon) return null;
         
         return (
           <InteractiveIcon 
@@ -79,11 +81,11 @@ function InteractiveIcon({
   mouseX, 
   mouseY 
 }: { 
-  Icon: any, 
+  Icon: LucideIcon, 
   initialX: number, 
   initialY: number, 
-  mouseX: any, 
-  mouseY: any 
+  mouseX: import("framer-motion").MotionValue<number>, 
+  mouseY: import("framer-motion").MotionValue<number> 
 }) {
   const [position] = useState({
     x: initialX,
