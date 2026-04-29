@@ -1,13 +1,12 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Calendar as CalendarIcon, CheckCircle2, User, ChevronRight, Mail, ChevronLeft } from 'lucide-react';
+import { Clock, CheckCircle2, User, ChevronRight, Mail, ChevronLeft } from 'lucide-react';
 import { getInvite, bookInviteSlot } from '../lib/api';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { BookingSuccess } from '../components/booking/BookingSuccess';
 export default function GuestInviteView() {
   const { inviteId } = useParams();
-  const navigate = useNavigate();
   
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
@@ -16,7 +15,7 @@ export default function GuestInviteView() {
   
   const [viewDate, setViewDate] = useState(new Date());
 
-  const { data: inviteBackend, isLoading, error } = useQuery({
+  const { data: inviteBackend } = useQuery({
     queryKey: ['invite', inviteId],
     queryFn: () => getInvite(inviteId!),
     enabled: !!inviteId
@@ -112,7 +111,6 @@ export default function GuestInviteView() {
         selectedDate={new Date(selectedSlot.date)} 
         selectedTime={`${selectedSlot.startTime} - ${selectedSlot.endTime}`} 
         duration={selectedSlot.duration}
-        onDone={() => navigate('/')} 
       />
     );
   }

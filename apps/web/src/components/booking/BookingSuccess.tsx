@@ -6,10 +6,9 @@ interface BookingSuccessProps {
   selectedDate: Date;
   selectedTime: string;
   duration?: number;
-  onDone: () => void;
 }
 
-export function BookingSuccess({ userName, selectedDate, selectedTime, duration, onDone }: BookingSuccessProps) {
+export function BookingSuccess({ userName, selectedDate, selectedTime, duration }: BookingSuccessProps) {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-4 md:p-6">
       <div className="max-w-md w-full bg-[#111111] border border-white/[0.06] rounded-2xl p-6 md:p-10 text-center space-y-6">

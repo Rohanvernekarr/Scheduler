@@ -56,7 +56,7 @@ export default function DashboardView() {
   const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
   const paginatedEvents = filteredEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const isLoading = (meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId;
+  const isLoading = !!((meetingsStatus === 'pending' || bookingsStatus === 'pending') && userId);
 
   if (isLoading && allEvents.length === 0) {
     return <DashboardSkeleton />;

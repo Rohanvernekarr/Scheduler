@@ -68,7 +68,7 @@ export default function BookingView() {
 
   if (isLoading) return <LoadingSpinner />;
   if (error || !user) return <ErrorState />;
-  if (isBooked) return <BookingSuccess userName={user.name} selectedDate={selectedDate} selectedTime={selectedTime!} onDone={() => window.location.reload()} />;
+  if (isBooked) return <BookingSuccess userName={user.name} selectedDate={selectedDate} selectedTime={selectedTime!} />;
 
   const days = Array.from({ length: 14 }, (_, i) => {
     const d = new Date();
