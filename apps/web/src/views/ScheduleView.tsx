@@ -71,7 +71,7 @@ export default function ScheduleView() {
   ];
 
   return (
-    <div className="max-w-7xl flex flex-col xl:flex-row gap-8">
+    <div className="max-w-7xl flex flex-col xl:flex-row gap-8 md:gap-10">
 
       <div className="flex-1 min-w-0">
         <motion.header
@@ -79,12 +79,12 @@ export default function ScheduleView() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <p className="text-xs font-semibold text-zinc-50 uppercase tracking-widest mb-2">
-            New Event
+          <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2 md:mb-3 italic">
+            Initialization // New Event
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Schedule a Meeting</h1>
-          <p className="text-white/35 text-sm mt-1">
-            Fill in the details below - invites go out the moment you hit schedule.
+          <h1 className="text-3xl md:text-4xl font-black tracking-tighter text-white uppercase leading-none">Schedule a Meeting</h1>
+          <p className="text-white/30 text-xs md:text-sm mt-3 font-medium max-w-2xl">
+            Configure your operational parameters below. Automated invites and synchronization protocols will propagate upon confirmation.
           </p>
         </motion.header>
 
@@ -92,6 +92,7 @@ export default function ScheduleView() {
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.07 }}
+          className="space-y-6"
         >
           <ScheduleForm onSubmit={handleSchedule} isPending={mutation.isPending} />
         </motion.div>
@@ -101,39 +102,39 @@ export default function ScheduleView() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.15 }}
-        className="xl:w-72 shrink-0 space-y-4"
+        className="w-full xl:w-72 shrink-0 space-y-4 md:space-y-6"
       >
        
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
-          <div className="w-12 h-12 rounded-2xl bg-zinx-300/20 border border-zinc-500/25 flex items-center justify-center text-zinc-50 mb-5">
-            <CalendarClock size={22} />
+        <div className="bg-[#111111] border border-white/[0.06] rounded-[2rem] p-6 md:p-8 shadow-2xl">
+          <div className="w-12 h-12 rounded-2xl bg-zinc-500/5 border border-zinc-500/20 flex items-center justify-center text-white mb-6">
+            <CalendarClock size={20} />
           </div>
-          <h2 className="text-base font-bold text-white mb-1">Smart Scheduling</h2>
-          <p className="text-white/35 text-sm leading-relaxed">
-            Scheduler automatically handles invites, reminders, and timezone conversions for all attendees.
+          <h2 className="text-base font-black uppercase italic tracking-tighter text-white mb-2">Smart Scheduling</h2>
+          <p className="text-white/30 text-xs leading-relaxed font-medium">
+            Scheduler automatically handles invites, reminders, and timezone conversions for all attendees globally.
           </p>
         </div>
 
        
-        <div className="bg-[#111111] border border-white/[0.06] rounded-2xl overflow-hidden divide-y divide-white/[0.04]">
+        <div className="bg-[#111111] border border-white/[0.06] rounded-[2rem] overflow-hidden divide-y divide-white/[0.04]">
           {highlights.map(({ icon: Icon, label, desc }) => (
-            <div key={label} className="flex items-start gap-3 p-4 hover:bg-white/[0.02] transition-colors">
-              <div className="w-8 h-8 rounded-xl bg-zinc-500/10 border border-zinc-500/15 flex items-center justify-center text-zinc-50 shrink-0 mt-0.5">
+            <div key={label} className="flex items-start gap-4 p-5 hover:bg-white/[0.02] transition-colors">
+              <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0 mt-0.5">
                 <Icon size={14} />
               </div>
               <div>
-                <p className="text-sm font-semibold text-white">{label}</p>
-                <p className="text-xs text-white/35 mt-0.5 leading-relaxed">{desc}</p>
+                <p className="text-xs font-black uppercase italic tracking-tight text-white">{label}</p>
+                <p className="text-[10px] text-zinc-500 font-medium mt-1 leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
         </div>
 
       
-        <div className="bg-zinc-950/40 border border-zinc-500/15 rounded-2xl p-5">
-          <p className="text-xs font-semibold text-zinc-50 uppercase tracking-wider mb-2">Tip</p>
-          <p className="text-white/40 text-xs leading-relaxed">
-            Add a video link (Google Meet, Zoom, Teams) so attendees can join with a single click from their invite.
+        <div className="bg-white/5 border border-white/5 rounded-[2rem] p-6">
+          <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-3 italic">Pro Tip</p>
+          <p className="text-zinc-500 text-[11px] leading-relaxed font-medium">
+            Add a video link (Google Meet, Zoom, Teams) so attendees can join with a single click from their invite protocol.
           </p>
         </div>
       </motion.aside>

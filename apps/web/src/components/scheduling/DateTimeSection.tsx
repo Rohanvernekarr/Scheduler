@@ -28,9 +28,9 @@ export function DateTimeSection({
 }: DateTimeSectionProps) {
   return (
     <div className="bg-[#111111] border border-white/[0.06] rounded-2xl p-6">
-      <div className="flex items-center justify-between mb-6">
-        <p className="text-[11px] font-semibold text-white/30 uppercase tracking-widest">
-          Schedule
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 md:mb-8">
+        <p className="text-[10px] md:text-[11px] font-black text-white/20 uppercase tracking-[0.2em] italic">
+          Operational Window
         </p>
         
         <DurationPresets selected={duration} onSelect={onDurationChange} />

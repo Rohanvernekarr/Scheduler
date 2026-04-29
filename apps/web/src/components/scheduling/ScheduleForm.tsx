@@ -153,7 +153,7 @@ export function ScheduleForm({ onSubmit, isPending }: ScheduleFormProps) {
 
       <div className="flex items-center justify-between pt-1">
         <p className="text-white/25 text-xs">All participants will receive an email invite.</p>
-        <Button size="lg" type="submit" disabled={isPending} className="px-6 gap-2 cursor-pointer">
+        <Button size="lg" type="submit" disabled={isPending} className="px-4 py-1 md:px-8 md:py-4 gap-2 cursor-pointer">
           {isPending ? 'Scheduling...' : 'Schedule & Notify'}
         </Button>
       </div>
