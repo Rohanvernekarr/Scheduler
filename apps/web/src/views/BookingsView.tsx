@@ -85,7 +85,7 @@ export default function BookingsView() {
   if (isLoading && filteredEvents.length === 0) return <LoadingState />;
 
   return (
-    <div className="max-w-6xl mx-auto space-y-10">
+    <div className="w-full lg:max-w-6xl lg:mx-auto space-y-4 md:space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-end gap-6">
         <BookingsHeader 
           upcomingCount={allEvents.filter(e => new Date(e.startTime) > new Date() && e.status !== 'CANCELLED').length}

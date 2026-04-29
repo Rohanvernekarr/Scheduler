@@ -39,7 +39,7 @@ function PrivateLayout() {
     <div className="flex min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
       <Sidebar />
       <main className="flex-1 transition-all duration-300 min-h-screen w-full lg:ml-64 pt-20 p-4 md:pt-8 md:p-8 lg:p-12 overflow-x-hidden">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full lg:max-w-7xl lg:mx-auto">
           <Outlet />
         </div>
       </main>
