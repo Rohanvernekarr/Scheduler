@@ -26,7 +26,7 @@ export function SettingsSidebar({ activeTab, setActiveTab }: SettingsSidebarProp
       await signOut();
       toast.success("Signed out successfully");
       window.location.href = 'http://localhost:3000';
-    } catch (err) {
+    } catch {
       toast.error("Failed to sign out");
     } finally {
       setLoggingOut(false);

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signIn, emailOtp } from "@repo/auth/client";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,7 +7,6 @@ import { Loader2, Calendar, Clock, CheckCircle2 } from "lucide-react";
 
 export default function LoginView() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);

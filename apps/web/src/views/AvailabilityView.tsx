@@ -22,12 +22,3 @@ export default function AvailabilityView() {
     </div>
   );
 }
-
-function LoadingSkeleton() {
-  return (
-    <div className="animate-pulse space-y-8">
-      <div className="h-16 bg-white/5 rounded-2xl w-1/3" />
-      <div className="h-[500px] bg-white/5 rounded-[40px] w-full" />
-    </div>
-  );
-}

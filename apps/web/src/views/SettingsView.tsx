@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 // Component Imports
 import { SettingsSidebar } from '../components/settings/SettingsSidebar';
 import { ProfileSection } from '../components/settings/sections/ProfileSection';
-import { PreferencesSection } from '../components/settings/sections/PreferencesSection';
 import { NotificationsSection } from '../components/settings/sections/NotificationsSection';
 import { SecuritySection } from '../components/settings/sections/SecuritySection';
 import { IntegrationsSection } from '../components/settings/sections/IntegrationsSection';

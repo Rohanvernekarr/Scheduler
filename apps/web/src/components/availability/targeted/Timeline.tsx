@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Link, Check, Clock } from 'lucide-react';
+import { Trash2, Link, Check } from 'lucide-react';
 import type { AvailabilitySlot } from './types';
 import { HOURS, INTERVALS, DURATIONS } from './types';
 

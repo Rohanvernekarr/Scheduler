@@ -48,7 +48,7 @@ function PrivateLayout() {
 }
 
 function AppRoutes() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {

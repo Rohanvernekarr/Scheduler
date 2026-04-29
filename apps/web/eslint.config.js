@@ -4,14 +4,14 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import { config as baseConfig } from '@repo/eslint-config/base'
 
 export default defineConfig([
+  ...baseConfig,
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
@@ -19,5 +19,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      'react-refresh/only-export-components': 'warn',
+    }
   },
 ])
