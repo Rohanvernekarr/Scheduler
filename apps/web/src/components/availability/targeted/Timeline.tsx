@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Link, Check } from 'lucide-react';
 import type { AvailabilitySlot } from './types';
 import { HOURS, INTERVALS, DURATIONS } from './types';
 
@@ -113,33 +114,45 @@ export function Timeline({
 
 function SlotBlock({ slot, isDispatched, onRemove }: { slot: any, isDispatched: boolean, onRemove: () => void }) {
   const isBooked = slot.status === 'booked' || slot.isBooked;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (slot.inviteLink) {
+      navigator.clipboard.writeText(slot.inviteLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
   
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95 }} 
       animate={{ opacity: 1, scale: 1 }}
       style={{ height: `calc(${(slot.duration / 15) * 100}% + ${((slot.duration / 15) - 1) * 6}px)` }}
-      className={`absolute inset-x-0 top-0 px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 ${
+      className={`absolute inset-x-0 top-0 px-5 rounded-xl flex items-center justify-between shadow-2xl z-10 border-2 transition-all group/slot ${
         isBooked 
           ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
           : isDispatched
-            ? 'bg-zinc-950 border-zinc-800 text-zinc-500' 
+            ? 'bg-zinc-950 border-zinc-800 text-zinc-500 hover:border-zinc-600' 
             : 'bg-white text-black border-white'
       }`}
     >
-      <div className="flex items-center gap-4">
-        <div className={`px-2 py-0.5 text-[9px] font-black uppercase italic rounded-md ${
+      <div className="flex items-center gap-4 flex-1 min-w-0">
+        <div className={`px-2 py-0.5 text-[9px] font-black uppercase italic rounded-md flex-shrink-0 ${
           isBooked ? 'bg-emerald-500 text-black' : isDispatched ? 'bg-zinc-900 text-zinc-600' : 'bg-black text-white'
         }`}>
           {slot.duration}M
         </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-black tracking-tighter uppercase italic">
+        <div className="flex flex-col min-w-0">
+          <span className="text-sm font-black tracking-tighter uppercase italic truncate">
             {new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} — {new Date(slot.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
           </span>
           <div className="flex items-center gap-2">
             {isDispatched && (
-              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600">Dispatched Protocol</span>
+              <span className="text-[7px] font-black uppercase tracking-[0.2em] text-zinc-600 truncate">
+                {slot.guestEmail || 'Dispatched Protocol'}
+              </span>
             )}
             {isBooked && (
               <span className="text-[7px] font-black uppercase tracking-[0.2em] text-emerald-500">Confirmed Booking</span>
@@ -147,19 +160,34 @@ function SlotBlock({ slot, isDispatched, onRemove }: { slot: any, isDispatched: 
           </div>
         </div>
       </div>
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          onRemove();
-        }} 
-        className={`p-1.5 rounded-lg active:scale-90 transition-all ${
-          isDispatched
-            ? 'hover:bg-white/5 text-zinc-800 hover:text-white'
-            : 'hover:bg-black/10'
-        }`}
-      >
-        <Trash2 size={14} className={isDispatched ? "" : "opacity-50 hover:opacity-100 transition-opacity"} />
-      </button>
+
+      <div className="flex items-center gap-1">
+        {isDispatched && slot.inviteLink && (
+          <button 
+            onClick={handleCopy}
+            className="p-1.5 rounded-lg bg-white/5 text-zinc-600 hover:text-white hover:bg-white/10 transition-all active:scale-90 flex items-center gap-2"
+            title="Copy Invite Link"
+          >
+            {copied ? <Check size={12} className="text-emerald-500" /> : <Link size={12} />}
+            <span className="hidden group-hover/slot:inline text-[8px] font-black uppercase tracking-widest">{copied ? 'Copied' : 'Link'}</span>
+          </button>
+        )}
+        
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }} 
+          className={`p-1.5 rounded-lg active:scale-90 transition-all ${
+            isDispatched
+              ? 'hover:bg-red-500/10 text-zinc-800 hover:text-red-500'
+              : 'hover:bg-black/10'
+          }`}
+          title="Remove Slot"
+        >
+          <Trash2 size={14} className={isDispatched ? "" : "opacity-50 hover:opacity-100 transition-opacity"} />
+        </button>
+      </div>
     </motion.div>
   );
 }
