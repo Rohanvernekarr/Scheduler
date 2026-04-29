@@ -53,7 +53,7 @@ export default function SettingsView() {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-6xl mx-auto flex flex-col md:flex-row gap-12 min-h-[80vh]"
+      className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 md:gap-12 min-h-[80vh]"
     >
       <SettingsSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -65,28 +65,28 @@ export default function SettingsView() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="space-y-10"
+            className="space-y-6 md:space-y-10"
           >
             {/* Header */}
-            <div className="flex justify-between items-end pb-8 border-b border-white/5">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3 pb-4 md:pb-8 border-b border-white/5">
               <div>
-                <h1 className="text-4xl font-black tracking-tighter text-white uppercase">{activeTab}</h1>
-                <p className="text-white/30 text-sm mt-1 font-medium">
+                <h1 className="text-2xl md:text-4xl font-black tracking-tighter text-white uppercase italic leading-none">{activeTab}</h1>
+                <p className="text-white/30 text-[10px] md:text-sm mt-1 md:mt-1 font-medium">
                   {getDescription(activeTab)}
                 </p>
               </div>
               {activeTab === 'profile' && (
-                <div className="flex gap-3">
+                <div className="flex gap-2 w-full sm:w-auto mt-1 md:mt-0">
                   {isEditing ? (
                     <>
-                      <button onClick={() => setIsEditing(false)} className="px-4 py-2 rounded-lg border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest">Cancel</button>
-                      <button onClick={handleSave} className="px-4 py-2 rounded-lg bg-white text-black text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-                        {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
-                        Save Changes
+                      <button onClick={() => setIsEditing(false)} className="flex-1 sm:flex-none px-3 py-2 rounded-lg border border-white/10 text-[9px] md:text-xs font-bold uppercase tracking-widest text-zinc-400">Cancel</button>
+                      <button onClick={handleSave} className="flex-1 sm:flex-none px-3 py-2 rounded-lg bg-white text-black text-[9px] md:text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-1.5 shadow-lg">
+                        {isSaving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />}
+                        Save
                       </button>
                     </>
                   ) : (
-                    <button onClick={() => setIsEditing(true)} className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">Edit Profile</button>
+                    <button onClick={() => setIsEditing(true)} className="w-full sm:w-auto px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-[9px] md:text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">Edit Profile</button>
                   )}
                 </div>
               )}
