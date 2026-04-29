@@ -268,12 +268,18 @@ importers:
         specifier: ^4.1.2
         version: 4.8.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
     devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
         specifier: ^25.6.0
         version: 25.6.0
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.4(jiti@2.6.1)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -290,6 +296,9 @@ importers:
         specifier: ^8.20.0
         version: 8.20.0
     devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
@@ -299,6 +308,9 @@ importers:
       '@types/pg':
         specifier: ^8.20.0
         version: 8.20.0
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.4(jiti@2.6.1)
       prisma:
         specifier: ^7.7.0
         version: 7.7.0(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(typescript@6.0.2)
