@@ -31,10 +31,18 @@ app.get('/health', (req: Request, res: Response) => {
   res.json({ status: 'ok', message: 'API is running' });
 });
 
-// Better Auth handler
+// Better Auth 
 app.all(/^\/api\/auth\/.*/, toNodeHandler(auth));
 
-// Apply auth middleware to all v1 routes
+// modular router
+app.use('/api/v1/invites', (req, res, next) => {
+  if ((req.method === 'GET' && !req.path.includes('/host/')) || (req.method === 'POST' && req.path === '/book')) {
+    return next();
+  }
+  return authMiddleware(req, res, next);
+}, inviteRouter);
+
+// Apply auth middleware to all other v1 routes
 app.use('/api/v1', authMiddleware);
 
 // Mount modular routers
@@ -45,9 +53,8 @@ app.use('/api/v1/availability', availabilityRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/events', eventRouter);
 app.use('/api/v1/interviews', interviewRouter);
-app.use('/api/v1/invites', inviteRouter);
 
-// Global Error Handler (must be last)
+// Global Error Handler
 app.use(errorHandler);
 
 app.listen(port, () => {
