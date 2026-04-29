@@ -30,7 +30,7 @@ export function EventTooltip({ event }: { event: CalendarEvent }) {
         {new Date(event.startTime).toLocaleTimeString()} - {new Date(event.endTime).toLocaleTimeString()}
       </div>
       {event.description && (
-        <p className="text-[9px] text-zinc-600 leading-relaxed mt-2 border-t border-white/5 pt-2 italic">
+        <p className="text-[9px] text-zinc-400 leading-relaxed mt-2 border-t border-white/5 pt-2 ">
           {event.description}
         </p>
       )}
