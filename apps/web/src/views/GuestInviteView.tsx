@@ -153,10 +153,6 @@ export default function GuestInviteView() {
 
         {/* Center: Calendar Picker */}
         <div className="flex-1 bg-[#111111] border border-white/[0.06] rounded-[3rem] p-10 shadow-2xl space-y-10 overflow-hidden relative">
-           <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
-              <CalendarIcon size={240} />
-           </div>
-
            <div className="flex flex-col md:flex-row gap-12 relative z-10">
               
               {/* Mini Calendar */}
