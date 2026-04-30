@@ -35,6 +35,17 @@ function PrivateLayout() {
     return <Navigate to="/login" replace />;
   }
 
+  // Role Checker
+  useEffect(() => {
+    if (!isPending && session?.user?.role === 'ADMIN') {
+      const adminUrl = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5173';
+      window.location.href = adminUrl;
+    }
+  }, [isPending, session]);
+
+  if (!isPending && session?.user?.role === 'ADMIN') {
+    return <div className="flex min-h-screen items-center justify-center">Redirecting to Admin...</div>;5  }
+
   return (
     <div className="flex min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
       <Sidebar />
