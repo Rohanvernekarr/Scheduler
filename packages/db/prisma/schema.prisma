@@ -22,7 +22,7 @@ model User {
   image          String?
   username       String?        @unique
   name           String
-  role           Role           @default(MEMBER)
+  role           Role           @default(USER)
   companyId      String?
   company        Company?       @relation(fields: [companyId], references: [id])
   availabilities Availability[]
@@ -86,7 +86,7 @@ model Verification {
 
 enum Role {
   ADMIN
-  MEMBER
+  USER
 }
 
 model Meeting {
