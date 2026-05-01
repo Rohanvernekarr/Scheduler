@@ -1,19 +1,22 @@
 import { createAuthClient } from "better-auth/react";
-import { emailOTPClient } from "better-auth/client/plugins";
+import { emailOTPClient, inferAdditionalFields, adminClient } from "better-auth/client/plugins";
+import type { auth } from "./index.js";
 
-const authClient = createAuthClient({
+export const authClient = createAuthClient({
   baseURL: typeof window !== "undefined" 
     ? (window as any).ENV?.BETTER_AUTH_URL || "http://localhost:8000"
     : (globalThis as any).process?.env?.BETTER_AUTH_URL || "http://localhost:8000",
   plugins: [
     emailOTPClient(),
+    adminClient(),
+    inferAdditionalFields<typeof auth>(),
   ],
 });
 
-export const signIn = authClient.signIn;
-export const signUp = authClient.signUp;
-export const signOut = authClient.signOut;
-export const useSession = authClient.useSession;
+export const signIn: typeof authClient.signIn = authClient.signIn;
+export const signUp: typeof authClient.signUp = authClient.signUp;
+export const signOut: typeof authClient.signOut = authClient.signOut;
+export const useSession: typeof authClient.useSession = authClient.useSession;
 export const updateUser: (args: any) => Promise<any> = authClient.updateUser;
-export const emailOtp = authClient.emailOtp;
+export const emailOtp: any = (authClient as any).emailOtp;
 

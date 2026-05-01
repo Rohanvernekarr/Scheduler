@@ -1,13 +1,13 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "@repo/db";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, admin } from "better-auth/plugins";
 
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export const auth: any = betterAuth({
+export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -17,8 +17,12 @@ export const auth: any = betterAuth({
     'http://localhost:5174'
   ],
   plugins: [
+    admin({
+      defaultRole: "USER",
+      adminRole: "ADMIN"
+    }),
     emailOTP({
-      async sendVerificationOTP({ email, otp, type }) {
+      async sendVerificationOTP({ email, otp }) {
         await resend.emails.send({
           from: process.env.FROM_EMAIL || "onboarding@rohanrv.tech",
           to: email,
@@ -28,6 +32,15 @@ export const auth: any = betterAuth({
       },
     }),
   ],
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "USER",
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
