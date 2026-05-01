@@ -9,6 +9,7 @@ import { bookingRouter } from './routes/v1/bookings.js';
 import { eventRouter } from './routes/v1/events.js';
 import { interviewRouter } from './routes/v1/interviews.js';
 import { inviteRouter } from './routes/v1/invites.js';
+import { adminRouter } from './routes/v1/admin.js';
 import { errorHandler } from './middleware/error.js';
 import { authMiddleware } from './middleware/auth.js';
 import { auth } from '@repo/auth';
@@ -53,6 +54,7 @@ app.use('/api/v1/availability', availabilityRouter);
 app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/events', eventRouter);
 app.use('/api/v1/interviews', interviewRouter);
+app.use('/api/v1/admin', adminRouter);
 
 // Global Error Handler
 app.use(errorHandler);
