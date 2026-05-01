@@ -4,6 +4,7 @@ import { fromNodeHeaders } from "better-auth/node";
 
 export interface AuthenticatedRequest extends Request {
   userId?: string;
+  userRole?: string | null | undefined;
 }
 
 /**
@@ -22,7 +23,8 @@ export async function authMiddleware(
     return res.status(401).json({ error: 'Unauthorized: Invalid or missing session' });
   }
 
-  // Inject userId into request for use in controllers
+  // Inject userId and userRole into request for use in controllers
   req.userId = session.user.id;
+  req.userRole = session.user.role;
   next();
 }
