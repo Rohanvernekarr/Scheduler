@@ -24,12 +24,15 @@ interface DataTableProps<T> {
   rowKey: (row: T) => string;
   searchField?: (row: T) => string;
   searchPlaceholder?: string;
+  /** Called when a row is clicked */
+  onRowClick?: (row: T) => void;
 }
 
 export function DataTable<T>({
   data, columns, isLoading, isError, errorMessage,
   pageSize = 20, rowKey,
   searchField, searchPlaceholder = "Search…",
+  onRowClick,
 }: DataTableProps<T>) {
   const [page, setPage] = useState(1);
 
@@ -131,7 +134,11 @@ export function DataTable<T>({
                 </TableRow>
               )}
               {!isLoading && !isError && paginated.map(row => (
-                <TableRow key={rowKey(row)} className="border-border hover:bg-zinc-900/60 transition-colors">
+                <TableRow
+                  key={rowKey(row)}
+                  className={`border-border hover:bg-zinc-900/60 transition-colors ${onRowClick ? "cursor-pointer" : ""}`}
+                  onClick={onRowClick ? () => onRowClick(row) : undefined}
+                >
                   {columns.map(col => (
                     <TableCell key={col.key} className={`py-3 text-sm ${col.className ?? ""}`}>
                       {col.render(row)}
