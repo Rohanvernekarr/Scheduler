@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "../ui/table";
@@ -24,7 +24,6 @@ interface DataTableProps<T> {
   rowKey: (row: T) => string;
   searchField?: (row: T) => string;
   searchPlaceholder?: string;
-  /** Called when a row is clicked */
   onRowClick?: (row: T) => void;
 }
 
@@ -38,12 +37,8 @@ export function DataTable<T>({
 
   const {
     query, setQuery, debouncedQuery, filtered, isFiltering,
-  } = useSearch(data, searchField ?? (() => ""));
+  } = useSearch(data, searchField ?? (() => ""), 300, () => setPage(1));
 
-  // Reset to page 1 whenever the search query settles
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedQuery]);
 
   // Use filtered data when a searchField is provided, otherwise use raw data
   const displayData = searchField ? filtered : data;

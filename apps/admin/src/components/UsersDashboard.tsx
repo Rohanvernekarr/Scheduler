@@ -3,6 +3,11 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from './ui/table';
 
+interface User {
+  id: string; name: string; email: string;
+  role: string; emailVerified: boolean;
+}
+
 export function UsersDashboard() {
   const { data: users, isLoading, isError, error } = useQuery({
     queryKey: ['admin-users'],
@@ -14,7 +19,7 @@ export function UsersDashboard() {
         throw new Error(text || res.statusText);
       }
       const data = await res.json();
-      return data.data.users || [];
+      return (data.data.users || []) as User[];
     }
   });
 
@@ -64,7 +69,7 @@ export function UsersDashboard() {
                   </TableCell>
                 </TableRow>
               )}
-              {!isLoading && !isError && users?.map((user: any) => (
+              {!isLoading && !isError && users?.map((user: User) => (
                 <TableRow key={user.id} className="hover:bg-indigo-50/40 transition-colors border-b border-slate-100 last:border-0 group">
                   <TableCell className="py-4">
                     <div className="flex flex-col">

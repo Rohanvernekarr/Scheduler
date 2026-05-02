@@ -1,16 +1,23 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 export function useSearch<T>(
   data: T[] | undefined,
   field: (item: T) => string,
-  debounceMs = 300
+  debounceMs = 300,
+  onSettle?: () => void
 ) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
 
-  // Debounce: only update the effective query after the user stops typing
+  // Keep a stable ref to onSettle so changing it doesn't retrigger the debounce
+  const onSettleRef = useRef(onSettle);
+  useEffect(() => { onSettleRef.current = onSettle; });
+
   useEffect(() => {
-    const id = setTimeout(() => setDebouncedQuery(query.trim()), debounceMs);
+    const id = setTimeout(() => {
+      setDebouncedQuery(query.trim());
+      onSettleRef.current?.();
+    }, debounceMs);
     return () => clearTimeout(id);
   }, [query, debounceMs]);
 
@@ -18,9 +25,7 @@ export function useSearch<T>(
     if (!data) return undefined;
     if (!debouncedQuery) return data;
     const lower = debouncedQuery.toLowerCase();
-    return data.filter((item) =>
-      field(item).toLowerCase().includes(lower)
-    );
+    return data.filter((item) => field(item).toLowerCase().includes(lower));
   }, [data, debouncedQuery, field]);
 
   return {
