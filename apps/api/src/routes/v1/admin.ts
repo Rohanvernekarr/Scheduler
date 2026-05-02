@@ -55,8 +55,9 @@ adminRouter.get('/bookings', async (_req, res: Response) => {
     const bookings = await prisma.booking.findMany({
       orderBy: { createdAt: 'desc' },
       select: {
-        id: true, hostId: true, guestEmail: true,
+        id: true, guestEmail: true,
         startTime: true, endTime: true, status: true, createdAt: true,
+        host: { select: { id: true, name: true, email: true } },
       },
     });
     res.json({ data: { bookings } });

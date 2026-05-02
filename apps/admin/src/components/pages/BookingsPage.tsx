@@ -6,9 +6,10 @@ import { Badge } from "../ui/badge";
 const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
 
 interface Booking {
-  id: string; hostId: string; guestEmail: string;
+  id: string; guestEmail: string;
   startTime: string; endTime: string;
   status: "CONFIRMED" | "CANCELLED"; createdAt: string;
+  host: { id: string; name: string; email: string };
 }
 
 const COLUMNS = [
@@ -25,9 +26,12 @@ const COLUMNS = [
     ),
   },
   {
-    key: "hostId", label: "Host ID",
+    key: "host", label: "Host",
     render: (b: Booking) => (
-      <span className="text-xs font-mono text-muted-foreground">{b.hostId.slice(0, 8)}…</span>
+      <div>
+        <p className="text-sm">{b.host.name}</p>
+        <p className="text-xs text-muted-foreground">{b.host.email}</p>
+      </div>
     ),
   },
   {
@@ -81,6 +85,8 @@ export function BookingsPage() {
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}
         rowKey={(b) => b.id}
+        searchField={(b) => b.host.email}
+        searchPlaceholder="Search by host email…"
       />
     </div>
   );
