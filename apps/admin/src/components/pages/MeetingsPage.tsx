@@ -83,6 +83,8 @@ export function MeetingsPage() {
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}
         rowKey={(m) => m.id}
+        searchField={(m) => m.host.email}
+        searchPlaceholder="Search by host email…"
       />
     </div>
   );
