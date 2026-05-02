@@ -24,7 +24,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
       <div className="h-14 px-5 flex items-center justify-between border-b border-border">
         <div className="flex items-center gap-2">
           <LayoutGrid size={16} className="text-foreground" />
-          <span className="font-semibold text-sm tracking-tight">Admin</span>
+          <span className="font-semibold text-sm tracking-tight">Scheduler Admin</span>
         </div>
         {onClose && (
           <button onClick={onClose} className="md:hidden text-muted-foreground hover:text-foreground p-1">
