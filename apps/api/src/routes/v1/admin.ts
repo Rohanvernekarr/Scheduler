@@ -30,6 +30,46 @@ adminRouter.get('/users', async (_req, res: Response) => {
   }
 });
 
+// GET /admin/users/:id — full user analytics
+adminRouter.get('/users/:id', async (req, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true, name: true, email: true, role: true,
+        emailVerified: true, createdAt: true, username: true,
+        company: { select: { name: true } },
+        meetingsAsHost: {
+          orderBy: { startTime: 'desc' },
+          select: {
+            id: true, title: true, type: true,
+            startTime: true, endTime: true, meetingLink: true, createdAt: true,
+            participants: { select: { id: true, email: true, status: true } },
+          },
+        },
+        bookingsAsHost: {
+          orderBy: { createdAt: 'desc' },
+          select: {
+            id: true, guestEmail: true,
+            startTime: true, endTime: true, status: true, createdAt: true,
+          },
+        },
+        availabilities: {
+          orderBy: { dayOfWeek: 'asc' },
+          select: { id: true, dayOfWeek: true, startTime: true, endTime: true },
+        },
+      },
+    });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ data: { user } });
+  } catch (e) {
+    console.error('[admin/users/:id]', e);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // GET /admin/meetings
 adminRouter.get('/meetings', async (_req, res: Response) => {
   try {
