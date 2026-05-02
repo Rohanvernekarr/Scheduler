@@ -79,6 +79,8 @@ export function UsersPage() {
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}
         rowKey={(u) => u.id}
+        searchField={(u) => u.email}
+        searchPlaceholder="Search by email…"
       />
     </div>
   );
