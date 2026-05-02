@@ -56,7 +56,7 @@ const COLUMNS = [
 ];
 
 export function AvailabilityPage() {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     queryKey: ["admin-availability"],
     queryFn: async () => {
       const res = await fetch(`${API}/admin/availability`, { credentials: "include" });
@@ -67,7 +67,7 @@ export function AvailabilityPage() {
 
   return (
     <div className="fade-in">
-      <PageHeader title="Availability" description="User availability schedules across all accounts" count={data?.length} />
+      <PageHeader title="Availability" description="User availability schedules across all accounts" count={data?.length} onRefresh={refetch} isRefetching={isRefetching} />
       <DataTable
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}

@@ -69,7 +69,7 @@ const COLUMNS = [
 ];
 
 export function BookingsPage() {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     queryKey: ["admin-bookings"],
     queryFn: async () => {
       const res = await fetch(`${API}/admin/bookings`, { credentials: "include" });
@@ -80,7 +80,7 @@ export function BookingsPage() {
 
   return (
     <div className="fade-in">
-      <PageHeader title="Bookings" description="All confirmed and cancelled bookings" count={data?.length} />
+      <PageHeader title="Bookings" description="All confirmed and cancelled bookings" count={data?.length} onRefresh={refetch} isRefetching={isRefetching} />
       <DataTable
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}

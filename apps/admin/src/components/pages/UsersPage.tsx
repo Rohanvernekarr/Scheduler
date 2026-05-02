@@ -72,7 +72,7 @@ const COLUMNS = [
 
 export function UsersPage() {
   const navigate = useNavigate();
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
       const res = await fetch(`${API}/admin/users`, { credentials: "include" });
@@ -83,7 +83,7 @@ export function UsersPage() {
 
   return (
     <div className="fade-in">
-      <PageHeader title="Users" description="All registered platform members" count={data?.length} />
+      <PageHeader title="Users" description="All registered platform members" count={data?.length} onRefresh={refetch} isRefetching={isRefetching} />
       <DataTable
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}

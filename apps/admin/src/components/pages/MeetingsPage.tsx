@@ -67,7 +67,7 @@ const COLUMNS = [
 ];
 
 export function MeetingsPage() {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch, isRefetching } = useQuery({
     queryKey: ["admin-meetings"],
     queryFn: async () => {
       const res = await fetch(`${API}/admin/meetings`, { credentials: "include" });
@@ -78,7 +78,7 @@ export function MeetingsPage() {
 
   return (
     <div className="fade-in">
-      <PageHeader title="Meetings" description="All scheduled meetings across the platform" count={data?.length} />
+      <PageHeader title="Meetings" description="All scheduled meetings across the platform" count={data?.length} onRefresh={refetch} isRefetching={isRefetching} />
       <DataTable
         data={data} columns={COLUMNS} isLoading={isLoading} isError={isError}
         errorMessage={error instanceof Error ? error.message : undefined}
