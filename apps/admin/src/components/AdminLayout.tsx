@@ -1,76 +1,107 @@
-import { useEffect } from 'react';
-import type { ReactNode } from 'react';
-import { useSession, signOut } from '@repo/auth/client';
-import { LogOut, Users, Settings } from 'lucide-react';
+import { useState } from "react";
+import type { ReactNode } from "react";
+import { NavLink } from "react-router-dom";
+import { useSession, signOut } from "@repo/auth/client";
+import { Users, Calendar, BookOpen, Clock, Settings, LogOut, Menu, X, LayoutGrid } from "lucide-react";
 
-export function AdminLayout({ children }: { children: ReactNode }) {
-  const { data: session, isPending } = useSession();
+const NAV = [
+  { to: "/",             icon: Users,    label: "Users"        },
+  { to: "/meetings",     icon: Calendar, label: "Meetings"     },
+  { to: "/bookings",     icon: BookOpen, label: "Bookings"     },
+  { to: "/availability", icon: Clock,    label: "Availability" },
+  { to: "/settings",     icon: Settings, label: "Settings"     },
+];
 
-  useEffect(() => {
-    if (!isPending) {
-      if (!session) {
-        window.location.href = import.meta.env.VITE_WEB_URL || 'http://localhost:5173/login';
-      } else if (session.user?.role !== 'ADMIN') {
-        window.location.href = import.meta.env.VITE_WEB_URL || 'http://localhost:5173/';
-      }
-    }
-  }, [isPending, session]);
-
-  if (isPending) {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
-  }
-
-  if (!session || session.user?.role !== 'ADMIN') {
-    return <div className="flex min-h-screen items-center justify-center">Redirecting...</div>;
-  }
-
+function Sidebar({ onClose }: { onClose?: () => void }) {
+  const { data: session } = useSession();
   const handleSignOut = async () => {
     await signOut();
-    window.location.href = import.meta.env.VITE_WEB_URL || 'http://localhost:5173/login';
+    window.location.href = import.meta.env.VITE_WEB_URL || "http://localhost:5173/login";
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      <aside className="w-64 bg-white/60 backdrop-blur-xl border-r border-slate-200/60 flex-col hidden md:flex shadow-sm z-10 relative">
-        <div className="h-16 flex items-center px-6 border-b border-slate-200/60 font-bold text-lg tracking-tight bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">
-          Nexus Admin
+    <div className="flex flex-col h-full bg-zinc-950 border-r border-border">
+      <div className="h-14 px-5 flex items-center justify-between border-b border-border">
+        <div className="flex items-center gap-2">
+          <LayoutGrid size={16} className="text-foreground" />
+          <span className="font-semibold text-sm tracking-tight">Admin</span>
         </div>
-        <nav className="flex-1 p-4 space-y-1">
-          <a href="#" className="flex items-center gap-3 px-3 py-2.5 bg-indigo-50 text-indigo-700 rounded-lg font-medium transition-all shadow-sm ring-1 ring-indigo-100">
-            <Users size={18} className="text-indigo-600" /> Users
-          </a>
-          <a href="#" className="flex items-center gap-3 px-3 py-2.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 rounded-lg font-medium transition-all">
-            <Settings size={18} /> Settings
-          </a>
-        </nav>
-        <div className="p-4 border-t border-slate-200/60 bg-white/40">
-          <button 
-            onClick={handleSignOut}
-            className="flex items-center gap-3 w-full px-3 py-2.5 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg font-medium transition-all"
-          >
-            <LogOut size={18} /> Sign Out
+        {onClose && (
+          <button onClick={onClose} className="md:hidden text-muted-foreground hover:text-foreground p-1">
+            <X size={16} />
           </button>
+        )}
+      </div>
+
+      <nav className="flex-1 p-3 space-y-0.5">
+        {NAV.map(({ to, icon: Icon, label }) => (
+          <NavLink
+            key={to} to={to} end={to === "/"}
+            onClick={onClose}
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
+                isActive
+                  ? "bg-zinc-800 text-foreground font-medium"
+                  : "text-muted-foreground hover:bg-zinc-900 hover:text-foreground"
+              }`
+            }
+          >
+            <Icon size={15} />
+            {label}
+          </NavLink>
+        ))}
+      </nav>
+
+      <div className="p-3 border-t border-border space-y-2">
+        <div className="px-3 py-2">
+          <p className="text-xs font-medium text-foreground truncate">{session?.user.name}</p>
+          <p className="text-xs text-muted-foreground truncate">{session?.user.email}</p>
         </div>
+        <button
+          onClick={handleSignOut}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-zinc-900 hover:text-foreground transition-colors"
+        >
+          <LogOut size={15} /> Sign out
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export function AdminLayout({ children }: { children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-background">
+     
+      <aside className="hidden md:flex flex-col w-56 flex-shrink-0">
+        <Sidebar />
       </aside>
-      <main className="flex-1 flex flex-col relative overflow-hidden">
-        {/* Background decorative blobs */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-100/40 blur-3xl -z-10 pointer-events-none" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-100/40 blur-3xl -z-10 pointer-events-none" />
-        
-        <header className="h-16 bg-white/60 backdrop-blur-xl border-b border-slate-200/60 flex items-center px-6 md:px-8 justify-between sticky top-0 z-10">
-          <h1 className="font-semibold text-lg md:hidden bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent">Nexus Admin</h1>
-          <div className="flex-1"></div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm font-medium text-slate-700">{session.user.name}</div>
-            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-cyan-500 text-white flex items-center justify-center font-bold text-sm shadow-md ring-2 ring-white">
-              {session.user.name?.[0] || 'A'}
-            </div>
+
+      {open && (
+        <div className="fixed inset-0 z-40 flex md:hidden">
+          <div className="w-56 flex-shrink-0">
+            <Sidebar onClose={() => setOpen(false)} />
+          </div>
+          <div className="flex-1 bg-black/60" onClick={() => setOpen(false)} />
+        </div>
+      )}
+
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+        <header className="h-14 border-b border-border flex items-center px-4 md:hidden bg-zinc-950">
+          <button onClick={() => setOpen(true)} className="text-muted-foreground hover:text-foreground p-1 mr-3">
+            <Menu size={18} />
+          </button>
+          <div className="flex items-center gap-2">
+            <LayoutGrid size={14} />
+            <span className="font-semibold text-sm">Admin</span>
           </div>
         </header>
-        <div className="p-6 md:p-10 flex-1 overflow-auto">
+
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
