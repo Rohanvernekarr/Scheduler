@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthGuard } from "./components/AuthGuard";
 import { AdminLayout } from "./components/AdminLayout";
 import { UsersPage }       from "./components/pages/UsersPage";
+import { UserDetailPage }  from "./components/pages/UserDetailPage";
 import { MeetingsPage }    from "./components/pages/MeetingsPage";
 import { BookingsPage }    from "./components/pages/BookingsPage";
 import { AvailabilityPage } from "./components/pages/AvailabilityPage";
@@ -42,6 +43,7 @@ export default function App() {
             <AdminLayout>
               <Routes>
                 <Route path="/"             element={<UsersPage />} />
+                <Route path="/users/:id"    element={<UserDetailPage />} />
                 <Route path="/meetings"     element={<MeetingsPage />} />
                 <Route path="/bookings"     element={<BookingsPage />} />
                 <Route path="/availability" element={<AvailabilityPage />} />

@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import { DataTable } from "../shared/DataTable";
 import { PageHeader } from "../shared/PageHeader";
 import { Badge } from "../ui/badge";
+import { ChevronRight } from "lucide-react";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+import { API } from "../../lib/config";
 
 interface User {
   id: string; name: string; email: string;
@@ -60,9 +62,16 @@ const COLUMNS = [
       </span>
     ),
   },
+  {
+    key: "view", label: "",
+    render: () => (
+      <ChevronRight size={14} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+    ),
+  },
 ];
 
 export function UsersPage() {
+  const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["admin-users"],
     queryFn: async () => {
@@ -81,6 +90,7 @@ export function UsersPage() {
         rowKey={(u) => u.id}
         searchField={(u) => u.email}
         searchPlaceholder="Search by email…"
+        onRowClick={(u) => navigate(`/users/${u.id}`)}
       />
     </div>
   );
