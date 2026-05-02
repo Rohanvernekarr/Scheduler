@@ -27,6 +27,7 @@ model User {
   company        Company?       @relation(fields: [companyId], references: [id])
   availabilities Availability[]
   meetingsAsHost Meeting[]      @relation("MeetingHost")
+  bookingsAsHost Booking[]      @relation("BookingHost")
   interviews     Interview[]    @relation("Interviewer")
   eventsAsHost   Event[]        @relation("EventHost")
   participants   Participant[]
@@ -145,6 +146,7 @@ model Availability {
 model Booking {
   id        String   @id @default(cuid())
   hostId    String
+  host      User     @relation("BookingHost", fields: [hostId], references: [id])
   guestEmail String
   startTime DateTime
   endTime   DateTime
