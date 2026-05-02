@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DataTable } from "../shared/DataTable";
 import { PageHeader } from "../shared/PageHeader";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+import { API } from "../../lib/config";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

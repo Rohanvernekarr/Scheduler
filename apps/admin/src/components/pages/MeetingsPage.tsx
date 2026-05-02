@@ -3,7 +3,7 @@ import { DataTable } from "../shared/DataTable";
 import { PageHeader } from "../shared/PageHeader";
 import { Badge } from "../ui/badge";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+import { API } from "../../lib/config";
 
 interface Meeting {
   id: string; title: string; type: string;
