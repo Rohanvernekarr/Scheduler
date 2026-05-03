@@ -43,7 +43,7 @@ export function UserDetailPage() {
   }
 
   return (
-    <div className="fade-in space-y-6 max-w-5xl">
+    <div className="fade-in space-y-6 max-w-7xl">
 
       <button
         onClick={() => navigate("/")}
