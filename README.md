@@ -54,7 +54,7 @@ This monorepo uses **pnpm** and **Turborepo** to manage multiple packages and ap
 ### Installation
 1.  **Clone the repository**
     ```bash
-    git clone https://github.com/yourusername/scheduler-core.git
+    git clone https://github.com/yourusername/Scheduler.git
     cd scheduler-core
     ```
 
@@ -91,5 +91,5 @@ This project is licensed under the MIT License - see the **[LICENSE](./LICENSE)*
 ---
 
 <p align="center">
-  <sub>Built by <a href="https://github.com/yourusername">@yourusername</a> with precision and intent.</sub>
+  <sub>Built by <a href="https://github.com/Rohanvernekarr">@Rohanvernekarr</a> with precision and intent.</sub>
 </p>
