@@ -1,4 +1,4 @@
-# SCHEDULER_CORE v1.0.4
+# SCHEDULER
 
 ### The Technical Standard for Modern Meeting Coordination.
 Built with an **Industrial Noir** aesthetic, engineered for precision, and designed to eliminate scheduling friction.
