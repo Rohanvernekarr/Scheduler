@@ -2,8 +2,20 @@ import { useEffect, useState } from 'react';
 import { Trash2, Smartphone, Laptop, Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
 import { authClient } from '@repo/auth/client';
 
+interface Session {
+  id: string;
+  token: string;
+  userAgent?: string;
+  ipAddress?: string;
+  isCurrent?: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  expiresAt: string | Date;
+  userId: string;
+}
+
 export function SecuritySection() {
-  const [sessions, setSessions] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -13,8 +25,19 @@ export function SecuritySection() {
 
   const fetchSessions = async () => {
     try {
-      const res = await authClient.listSessions();
-      if (res.data) setSessions(res.data);
+      const [sessionsRes, currentRes] = await Promise.all([
+        authClient.listSessions(),
+        authClient.getSession()
+      ]);
+
+      if (sessionsRes.data) {
+        const currentToken = currentRes.data?.session.token;
+        const mappedSessions = sessionsRes.data.map(s => ({
+          ...s,
+          isCurrent: s.token === currentToken
+        }));
+        setSessions(mappedSessions as Session[]);
+      }
     } catch (err) {
       console.error('Failed to fetch sessions:', err);
     } finally {

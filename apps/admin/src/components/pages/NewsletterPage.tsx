@@ -27,7 +27,7 @@ export function NewsletterPage() {
         credentials: "include",
       });
 
-      const result = await res.json();
+      const result = await res.json() as { data: { sentCount: number }, error?: string };
 
       if (!res.ok) {
         throw new Error(result.error || "Failed to send newsletter.");
@@ -39,11 +39,11 @@ export function NewsletterPage() {
       });
       setSubject("");
       setContent("");
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       setStatus({ 
         type: "error", 
-        message: err.message || "An unexpected error occurred." 
+        message: err instanceof Error ? err.message : "An unexpected error occurred." 
       });
     } finally {
       setLoading(false);
