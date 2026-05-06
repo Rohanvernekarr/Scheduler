@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { Button } from '@repo/ui';
 import {
   Users,
@@ -110,12 +111,41 @@ export function ScheduleForm({ onSubmit, isPending }: ScheduleFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 1. Title Validation
+    if (!title || title.trim().length < 3) {
+      toast.error('Title must be at least 3 characters');
+      return;
+    }
+
+    // 2. Date/Time Validation
+    if (!startDate || !startTime || !endDate || !endTime) {
+      toast.error('Please select both start and end time');
+      return;
+    }
+
+    // 3. Meeting Link Validation (if provided)
+    if (meetingLink && !meetingLink.startsWith('http')) {
+      toast.error('Meeting link must be a valid URL (starting with http/https)');
+      return;
+    }
+
+    // 4. Participants Validation (if provided)
+    const emailList = participants.split(',').map((e) => e.trim()).filter(Boolean);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const invalidEmails = emailList.filter(email => !emailRegex.test(email));
+    
+    if (invalidEmails.length > 0) {
+      toast.error(`Invalid email address: ${invalidEmails[0]}`);
+      return;
+    }
+
     onSubmit({
       title,
       type,
       meetingLink,
       description,
-      participants: participants.split(',').map((e) => e.trim()).filter(Boolean),
+      participants: emailList,
       startTime: toISOString(startDate, startTime),
       endTime: toISOString(endDate, endTime),
     });
