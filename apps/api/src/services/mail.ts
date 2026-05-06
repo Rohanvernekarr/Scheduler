@@ -56,19 +56,22 @@ export class MailService {
 
   async sendMeetingInvitation(participantEmail: string, meeting: any) {
     const subject = `Invitation: ${meeting.title}`;
+    const userTimeZone = meeting.timeZone || 'UTC';
 
     const date = new Date(meeting.startTime);
-    // Formatting to match: Wednesday 15 Apr 2026 · 2:45pm - 3:00pm
+    // Formatting based on provided timezone
     const dateStr = date.toLocaleDateString('en-GB', {
       weekday: 'long',
       day: 'numeric',
       month: 'short',
-      year: 'numeric'
+      year: 'numeric',
+      timeZone: userTimeZone
     });
     const timeStr = date.toLocaleTimeString('en-GB', {
       hour: 'numeric',
       minute: '2-digit',
-      hour12: true
+      hour12: true,
+      timeZone: userTimeZone
     }).toLowerCase();
     const body = `
 <!DOCTYPE html>

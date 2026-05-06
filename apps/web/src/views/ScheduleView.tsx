@@ -30,6 +30,7 @@ export default function ScheduleView() {
       createMeeting({
         ...data,
         hostId: userId,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['meetings'] });
