@@ -8,7 +8,7 @@ if (!RESEND_API_KEY) {
 }
 
 const resend = new Resend(RESEND_API_KEY || 'MISSING_KEY');
-const FROM_EMAIL = process.env.FROM_EMAIL || 'Scheduler <notifications@rohanrv.tech>';
+const FROM_EMAIL = 'Scheduler <notifications@rohanrv.tech>';
 
 export class MailService {
   /**

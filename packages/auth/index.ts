@@ -55,7 +55,7 @@ export const auth = betterAuth({
     emailOTP({
       async sendVerificationOTP({ email, otp }) {
         await resend.emails.send({
-          from: process.env.FROM_EMAIL || "Scheduler Auth <auth@rohanrv.tech>",
+          from: "Scheduler Auth <auth@rohanrv.tech>",
           to: email,
           subject: "Your Verification Code",
           html: `Your verification code is: <b>${otp}</b>`,
