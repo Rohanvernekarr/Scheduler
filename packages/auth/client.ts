@@ -4,7 +4,7 @@ import type { auth } from "./index.js";
 
 export const authClient = createAuthClient({
   baseURL: typeof window !== "undefined" && window.location.hostname !== "localhost"
-    ? "https://scheduler-9smh.onrender.com"
+    ? "/api/auth"
     : "http://localhost:8000",
   plugins: [
     emailOTPClient(),

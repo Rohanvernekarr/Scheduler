@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = window.location.hostname === 'localhost' 
+const API_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:8000/api/v1'
-  : 'https://scheduler-9smh.onrender.com/api/v1';
+  : '/api/v1';
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -12,7 +12,7 @@ export const api = axios.create({
   }
 });
 
-export const getAvailability = (userId: string) => 
+export const getAvailability = (userId: string) =>
   api.get(`/availability/${userId}`).then(res => res.data.data);
 
 export const updateAvailability = (userId: string, data: any) =>
