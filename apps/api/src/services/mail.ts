@@ -40,7 +40,7 @@ export class MailService {
       return { success: true, id: data?.id };
     } catch (error: any) {
       console.error('[MailService] Resend Error:', error);
-      
+
       await prisma.emailLog.create({
         data: {
           recipient: to,
@@ -56,21 +56,21 @@ export class MailService {
 
   async sendMeetingInvitation(participantEmail: string, meeting: any) {
     const subject = `Invitation: ${meeting.title}`;
-    
+
     const date = new Date(meeting.startTime);
     // Formatting to match: Wednesday 15 Apr 2026 · 2:45pm - 3:00pm
-    const dateStr = date.toLocaleDateString('en-GB', { 
-      weekday: 'long', 
+    const dateStr = date.toLocaleDateString('en-GB', {
+      weekday: 'long',
       day: 'numeric',
       month: 'short',
       year: 'numeric'
     });
-    const timeStr = date.toLocaleTimeString('en-GB', { 
-      hour: 'numeric', 
+    const timeStr = date.toLocaleTimeString('en-GB', {
+      hour: 'numeric',
       minute: '2-digit',
       hour12: true
     }).toLowerCase();
-const body = `
+    const body = `
 <!DOCTYPE html>
 <html>
 <body style="margin:0;padding:0;background:#ffffff;font-family:Roboto,Arial,sans-serif;color:#3c4043;line-height:1.3;">
@@ -133,7 +133,7 @@ Sent via Scheduler · One-click booking
     slots: any[]; // Keep in data but don't show all in mail
   }) {
     const subject = `Priority Invitation: Book your session with ${data.hostName}`;
-    
+
     const body = `
 <!DOCTYPE html>
 <html>
