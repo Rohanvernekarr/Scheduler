@@ -7,7 +7,7 @@ export const authClient = createAuthClient({
     ? "https://scheduler-9smh.onrender.com" // Server-side
     : window.location.hostname === "localhost"
       ? "http://localhost:8000" // Local client
-      : "/api/auth", // Production client (proxy)
+      : `${window.location.origin}/api/auth`, // Production client (proxy)
   plugins: [
     emailOTPClient(),
     adminClient(),
