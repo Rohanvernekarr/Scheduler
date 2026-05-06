@@ -29,13 +29,19 @@ export const Sidebar = () => {
     try {
       await signOut();
       toast.success("Signed out successfully");
-      window.location.href = 'http://localhost:3000';
+      window.location.href = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000' 
+        : 'https://scheduler-kappa-teal.vercel.app';
     } catch {
       toast.error("Failed to sign out");
     } finally {
       setLoggingOut(false);
     }
   };
+
+  const landingUrl = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000' 
+    : 'https://scheduler-kappa-teal.vercel.app';
 
   return (
     <>
@@ -62,7 +68,7 @@ export const Sidebar = () => {
        
         <div className="mb-8 px-2 py-1 mt-12 lg:mt-0">
           <a 
-            href="http://localhost:3000" 
+            href={landingUrl} 
             className="font-bold text-[25px] tracking-tight text-white hover:opacity-80 transition-opacity"
           >
             Scheduler
