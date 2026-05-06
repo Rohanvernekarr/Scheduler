@@ -30,6 +30,18 @@ export const auth = betterAuth({
           sameSite: "none",
           secure: true
         }
+      },
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true
+        }
+      },
+      callback_url: {
+        attributes: {
+          sameSite: "none",
+          secure: true
+        }
       }
     }
   },
