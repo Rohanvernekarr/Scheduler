@@ -20,6 +20,10 @@ export const auth = betterAuth({
     'https://scheduler-9smh.onrender.com'
   ],
   advanced: {
+    useSecureCookies: true,
+    crossTab: {
+      enabled: true
+    },
     cookies: {
       session_token: {
         attributes: {
