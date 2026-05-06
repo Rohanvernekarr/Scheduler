@@ -3,9 +3,11 @@ import { emailOTPClient, inferAdditionalFields, adminClient, multiSessionClient 
 import type { auth } from "./index.js";
 
 export const authClient = createAuthClient({
-  baseURL: typeof window !== "undefined" && window.location.hostname !== "localhost"
-    ? "/api/auth"
-    : "http://localhost:8000",
+  baseURL: typeof window === "undefined"
+    ? "https://scheduler-9smh.onrender.com" // Server-side
+    : window.location.hostname === "localhost"
+      ? "http://localhost:8000" // Local client
+      : "/api/auth", // Production client (proxy)
   plugins: [
     emailOTPClient(),
     adminClient(),
