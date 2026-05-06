@@ -2,8 +2,7 @@ import { Router } from 'express';
 import { notificationService } from '../../services/notifications.js';
 import type { AuthenticatedRequest } from '../../middleware/auth.js';
 
-const router = Router();
-
+const router: Router = Router();
 
 router.get('/settings', async (req: AuthenticatedRequest, res) => {
   const userId = req.userId;
