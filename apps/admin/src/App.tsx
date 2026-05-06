@@ -10,6 +10,7 @@ import { MeetingsPage }    from "./components/pages/MeetingsPage";
 import { BookingsPage }    from "./components/pages/BookingsPage";
 import { AvailabilityPage } from "./components/pages/AvailabilityPage";
 import { SettingsPage }    from "./components/pages/SettingsPage";
+import { NewsletterPage }  from "./components/pages/NewsletterPage";
 import "./index.css";
 
 class ErrorBoundary extends Component<{children: ReactNode}, {hasError: boolean; error: Error | null}> {
@@ -47,6 +48,7 @@ export default function App() {
                 <Route path="/meetings"     element={<MeetingsPage />} />
                 <Route path="/bookings"     element={<BookingsPage />} />
                 <Route path="/availability" element={<AvailabilityPage />} />
+                <Route path="/newsletter"   element={<NewsletterPage />} />
                 <Route path="/settings"     element={<SettingsPage />} />
               </Routes>
             </AdminLayout>

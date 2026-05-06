@@ -2,13 +2,14 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 import { useSession, signOut } from "@repo/auth/client";
-import { Users, Calendar, BookOpen, Clock, Settings, LogOut, Menu, X, LayoutGrid } from "lucide-react";
+import { Users, Calendar, BookOpen, Clock, Settings, LogOut, Menu, X, LayoutGrid, Mail } from "lucide-react";
 
 const NAV = [
   { to: "/",             icon: Users,    label: "Users"        },
   { to: "/meetings",     icon: Calendar, label: "Meetings"     },
   { to: "/bookings",     icon: BookOpen, label: "Bookings"     },
   { to: "/availability", icon: Clock,    label: "Availability" },
+  { to: "/newsletter",   icon: Mail,     label: "Newsletter"   },
   { to: "/settings",     icon: Settings, label: "Settings"     },
 ];
 

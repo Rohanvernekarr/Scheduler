@@ -1,5 +1,6 @@
 import { Router, type Response } from 'express';
 import { prisma } from '@repo/db';
+import { notificationService } from '../../services/notifications.js';
 import type { AuthenticatedRequest } from '../../middleware/auth.js';
 
 const adminRouter: Router = Router();
@@ -10,6 +11,23 @@ adminRouter.use((req: AuthenticatedRequest, res: Response, next) => {
     return res.status(403).json({ error: 'Forbidden' });
   }
   next();
+});
+
+// POST /admin/notifications/newsletter — broadcast to subscribers
+adminRouter.post('/notifications/newsletter', async (req: AuthenticatedRequest, res: Response) => {
+  const { subject, content } = req.body;
+
+  if (!subject || !content) {
+    return res.status(400).json({ error: 'Subject and Content are required' });
+  }
+
+  try {
+    const result = await notificationService.broadcastNewsletter(subject, content);
+    res.json({ message: 'Newsletter broadcast started', data: result });
+  } catch (e) {
+    console.error('[admin/newsletter]', e);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // GET /admin/users

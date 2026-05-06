@@ -50,6 +50,32 @@ export class NotificationService {
   }
 
   /**
+   * Broadcasts a newsletter to all opted-in users.
+   */
+  async broadcastNewsletter(subject: string, content: string) {
+    const subscribers = await prisma.user.findMany({
+      where: {
+        notificationSettings: {
+          newsletter: true,
+        },
+      },
+      select: { email: true },
+    });
+
+    console.log(`[NotificationService] Broadcasting newsletter to ${subscribers.length} subscribers.`);
+
+    for (const sub of subscribers) {
+      await addNotificationJob('newsletter-broadcast', {
+        email: sub.email,
+        subject,
+        content,
+      });
+    }
+
+    return { sentCount: subscribers.length };
+  }
+
+  /**
    * Fetches notification settings for a user.
    */
   async getSettings(userId: string) {

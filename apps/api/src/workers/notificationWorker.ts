@@ -23,6 +23,9 @@ export const initNotificationWorker = () => {
           case 'new-booking-alert':
             await handleNewBookingAlert(job.data);
             break;
+          case 'newsletter-broadcast':
+            await handleNewsletter(job.data);
+            break;
           default:
             console.warn(`[Worker] Unknown job type: ${job.name}`);
         }
@@ -85,6 +88,20 @@ async function handleNewBookingAlert(data: { bookingId: string }) {
     `;
     await mailService.sendEmail(booking.host.email, 'New Booking Alert', body);
   }
+}
+
+async function handleNewsletter(data: { email: string, subject: string, content: string }) {
+  const body = `
+    <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
+      ${data.content}
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
+      <p style="font-size: 12px; color: #999;">
+        You received this because you are subscribed to our newsletter. 
+        You can unsubscribe in your account settings.
+      </p>
+    </div>
+  `;
+  await mailService.sendEmail(data.email, data.subject, body);
 }
 
 async function handleWeeklyDigest(data: { userId: string }) {
