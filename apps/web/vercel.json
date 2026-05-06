@@ -7,6 +7,10 @@
     {
       "source": "/api/auth/:path*",
       "destination": "https://scheduler-9smh.onrender.com/api/auth/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ]
 }
