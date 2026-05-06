@@ -5,6 +5,7 @@ import { signIn, emailOtp } from "@repo/auth/client";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Calendar, Clock, CheckCircle2 } from "lucide-react";
+import { WEB_URL } from "../lib/config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -55,13 +56,13 @@ export default function LoginPage() {
       const { error } = await signIn.emailOtp({
         email: cleanEmail,
         otp,
-        callbackURL: "http://localhost:5174/",
+        callbackURL: `${WEB_URL}/`,
       });
       if (error) {
         toast.error(error.message || "Invalid OTP");
       } else {
         toast.success("Logged in successfully!");
-        window.location.href = "http://localhost:5174/?login=success";
+        window.location.href = `${WEB_URL}/?login=success`;
       }
     } catch (err) {
       console.error(err);
@@ -74,7 +75,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     await signIn.social({
       provider: "google",
-      callbackURL: "http://localhost:5174/?login=success",
+      callbackURL: `${WEB_URL}/?login=success`,
     });
   };
 

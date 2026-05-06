@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { CalendarDemo } from "./CalendarDemo";
 import { ChevronRight } from "lucide-react";
+import { WEB_URL } from "../lib/config";
 
 export function Hero() {
   return (
@@ -58,7 +59,7 @@ export function Hero() {
               transition={{ delay: 0.3 }}
               className="flex flex-wrap justify-center lg:justify-start gap-4"
             >
-              <a href="http://localhost:5174/" className="bg-white text-black px-8 py-3 rounded-md font-bold text-sm hover:bg-white/90 transition-all flex items-center gap-2">
+              <a href={`${WEB_URL}/`} className="bg-white text-black px-8 py-3 rounded-md font-bold text-sm hover:bg-white/90 transition-all flex items-center gap-2">
                 Deploy Now
                 <ChevronRight className="w-4 h-4" />
               </a>

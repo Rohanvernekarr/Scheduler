@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSession } from "@repo/auth/client";
 import { Calendar } from "lucide-react";
+import { WEB_URL } from "../lib/config";
 
 export function Nav() {
   const { data: session } = useSession();
@@ -30,7 +31,7 @@ export function Nav() {
         <div className="h-4 sm:h-6 w-[1px] bg-border" />
 
         <Link 
-          href={session ? "http://localhost:5174/" : "/login"} 
+          href={session ? `${WEB_URL}/` : "/login"} 
           className="tech-label hover:text-white transition-colors text-[10px] sm:text-[12px]"
         >
           {session ? "Dashboard" : "Login"}
