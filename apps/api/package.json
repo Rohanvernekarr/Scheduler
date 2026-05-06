@@ -18,10 +18,12 @@
     "@repo/auth": "workspace:*",
     "@repo/db": "workspace:*",
     "better-auth": "^1.1.21",
+    "bullmq": "^5.76.5",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "googleapis": "^171.4.0",
+    "ioredis": "^5.10.1",
     "node-cron": "^4.2.1",
     "resend": "^6.11.0",
     "zod": "^4.3.6"
