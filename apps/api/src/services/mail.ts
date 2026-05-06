@@ -8,7 +8,7 @@ if (!RESEND_API_KEY) {
 }
 
 const resend = new Resend(RESEND_API_KEY || 'MISSING_KEY');
-const FROM_EMAIL = process.env.FROM_EMAIL || 'onboarding@rohanrv.tech';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'Scheduler <notifications@rohanrv.tech>';
 
 export class MailService {
   /**
@@ -73,51 +73,29 @@ export class MailService {
     const body = `
 <!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#ffffff;font-family:Roboto,Arial,sans-serif;color:#3c4043;line-height:1.3;">
+<body style="margin:0;padding:20px;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#1a1a1a;">
+  <div style="max-width:400px;border:1px solid #e5e7eb;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+    <h1 style="margin:0 0 4px 0;font-size:18px;font-weight:700;color:#111827;">${meeting.title}</h1>
+    <p style="margin:0 0 20px 0;font-size:14px;color:#6b7280;">${dateStr} // ${timeStr}</p>
+    
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f3f4f6;">
+      <p style="margin:0 0 4px 0;font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Organized by</p>
+      <p style="margin:0;font-size:14px;font-weight:500;color:#111827;">Rohan Vernekar</p>
+    </div>
 
-<h1 style="margin:0;font-size:17px;font-weight:500;color:#202124;">
-${meeting.title}
-</h1>
+    <a href="${meeting.meetingLink}" style="display:block;background:#000000;color:#ffffff;text-align:center;padding:12px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:16px;">
+      Join Meeting
+    </a>
 
-<p style="margin:2px 0 10px 0;font-size:12px;color:#70757a;">
-${dateStr} · ${timeStr}
-</p>
+    <div style="font-size:12px;color:#6b7280;line-height:1.5;">
+      <p style="margin:0 0 4px 0;font-weight:600;color:#374151;">Link:</p>
+      <p style="margin:0;word-break:break-all;">${meeting.meetingLink}</p>
+    </div>
 
-<p style="margin:0;font-size:10px;font-weight:700;color:#5f6368;text-transform:uppercase;">
-Booked by
-</p>
-
-<p style="margin:2px 0 0 0;font-size:13px;color:#202124;font-weight:500;">
-Rohan Vernekar
-</p>
-
-<a href="mailto:${participantEmail}" style="font-size:12px;color:#4759df;text-decoration:none;">
-${participantEmail}
-</a>
-<a href="#" style="display:inline-block;padding:5px 10px;border:1px solid #dadce0;border-radius:4px;color:#4759df;font-size:12px;text-decoration:none;">
-Cancel appointment
-</a>
-
-<a href="${meeting.meetingLink}" style="display:inline-block;background:#4759df;color:#ffffff;padding:6px 14px;border-radius:4px;font-size:12px;text-decoration:none;margin-bottom:10px;">
-Join Meeting
-</a>
-
-<p style="margin:0;font-size:10px;font-weight:700;color:#5f6368;text-transform:uppercase;">
-Meeting link
-</p>
-
-<p style="margin:2px 0 6px 0;font-size:12px;color:#70757a;word-break:break-all;">
-${meeting.meetingLink}
-</p>
-
-<a href="#" style="font-size:12px;color:#4759df;text-decoration:none;">
-Test setup
-</a>
-
-<p style="font-size:10px;color:#bdc1c6;margin:0;">
-Sent via Scheduler · One-click booking
-</p>
-
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid #f3f4f6;">
+      <p style="margin:0;font-size:11px;color:#9ca3af;">Sent via Scheduler</p>
+    </div>
+  </div>
 </body>
 </html>
 `;
