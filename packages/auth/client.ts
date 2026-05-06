@@ -3,13 +3,12 @@ import { emailOTPClient, inferAdditionalFields, adminClient, twoFactorClient, mu
 import type { auth } from "./index.js";
 
 export const authClient = createAuthClient({
-  baseURL: typeof window !== "undefined" 
-    ? (window as any).ENV?.BETTER_AUTH_URL || "http://localhost:8000"
-    : (globalThis as any).process?.env?.BETTER_AUTH_URL || "http://localhost:8000",
+  baseURL: typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? "https://scheduler-9smh.onrender.com"
+    : "http://localhost:8000",
   plugins: [
     emailOTPClient(),
     adminClient(),
-    twoFactorClient(),
     multiSessionClient(),
     inferAdditionalFields<typeof auth>(),
   ],
