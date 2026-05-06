@@ -100,6 +100,7 @@ model Meeting {
   type         String        @default("Meeting")
   description  String?
   meetingLink  String?
+  timeZone     String?
   startTime    DateTime
   endTime      DateTime
   hostId       String

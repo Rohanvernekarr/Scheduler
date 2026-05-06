@@ -35,6 +35,7 @@ export class MeetingService {
         endTime: new Date(data.endTime),
         hostId: data.hostId,
         meetingLink: data.meetingLink ?? null,
+        timeZone: data.timeZone ?? null,
         participants: {
           create: data.participants?.map((email) => ({
             email,
@@ -44,6 +45,7 @@ export class MeetingService {
       },
       include: {
         participants: true,
+        host: true,
       },
     });
 

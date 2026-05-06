@@ -83,9 +83,10 @@ export class MailService {
     
     <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #f3f4f6;">
       <p style="margin:0 0 4px 0;font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Organized by</p>
-      <p style="margin:0;font-size:14px;font-weight:500;color:#111827;">Rohan Vernekar</p>
+      <p style="margin:0;font-size:14px;font-weight:500;color:#111827;">${meeting.host?.name || 'Rohan Vernekar'}</p>
     </div>
 
+    ${meeting.meetingLink ? `
     <a href="${meeting.meetingLink}" style="display:block;background:#000000;color:#ffffff;text-align:center;padding:12px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;margin-bottom:16px;">
       Join Meeting
     </a>
@@ -94,6 +95,9 @@ export class MailService {
       <p style="margin:0 0 4px 0;font-weight:600;color:#374151;">Link:</p>
       <p style="margin:0;word-break:break-all;">${meeting.meetingLink}</p>
     </div>
+    ` : `
+    <p style="font-size:12px;color:#6b7280;font-style:italic;">No meeting link provided.</p>
+    `}
 
     <div style="margin-top:24px;padding-top:16px;border-top:1px solid #f3f4f6;">
       <p style="margin:0;font-size:11px;color:#9ca3af;">Sent via Scheduler</p>
