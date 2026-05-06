@@ -10,6 +10,8 @@ import { eventRouter } from './routes/v1/events.js';
 import { interviewRouter } from './routes/v1/interviews.js';
 import { inviteRouter } from './routes/v1/invites.js';
 import { adminRouter } from './routes/v1/admin.js';
+import notificationRouter from './routes/v1/notifications.js';
+import { initCronJobs } from './services/cron.js';
 import { errorHandler } from './middleware/error.js';
 import { authMiddleware } from './middleware/auth.js';
 import { auth } from '@repo/auth';
@@ -55,9 +57,13 @@ app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/events', eventRouter);
 app.use('/api/v1/interviews', interviewRouter);
 app.use('/api/v1/admin', adminRouter);
+app.use('/api/v1/notifications', notificationRouter);
 
 // Global Error Handler
 app.use(errorHandler);
+
+// Initialize Cron Jobs
+initCronJobs();
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

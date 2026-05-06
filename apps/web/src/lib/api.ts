@@ -43,3 +43,9 @@ export const getHostInvites = (hostId: string) =>
 
 export const bookInviteSlot = (data: { slotId: string, guestName: string, guestEmail: string }) =>
   api.post('/invites/book', data).then(res => res.data);
+
+export const getNotificationSettings = () =>
+  api.get('/notifications/settings').then(res => res.data);
+
+export const updateNotificationSettings = (data: any) =>
+  api.patch('/notifications/settings', data).then(res => res.data);

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Calendar, BookOpen, Clock } from "lucide-react";
-
 import { DataTable } from "../shared/DataTable";
 import { SectionHead } from "../shared/SectionHead";
 import { UserProfileCard } from "../user-detail/UserProfileCard";

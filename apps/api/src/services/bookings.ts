@@ -1,4 +1,5 @@
 import { prisma } from '@repo/db';
+import { notificationService } from './notifications.js';
 import type { CreateBookingInput } from '../schemas/bookings.js';
 
 export class BookingService {
@@ -63,7 +64,7 @@ export class BookingService {
       throw new Error('Host already has a booking at this time');
     }
 
-    return prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
         hostId: data.hostId,
         guestEmail: data.guestEmail,
@@ -72,6 +73,15 @@ export class BookingService {
         status: 'CONFIRMED'
       }
     });
+
+    // 4. Trigger Notification Alert
+    try {
+      await notificationService.sendNewBookingAlert(booking.id);
+    } catch (error) {
+      console.error('[BookingService] Failed to send booking alert:', error);
+    }
+
+    return booking;
   }
 
   /**
