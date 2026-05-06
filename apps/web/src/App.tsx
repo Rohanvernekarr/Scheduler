@@ -36,7 +36,7 @@ function PrivateLayout() {
     if (!isPending && session?.user?.role === 'ADMIN') {
       const adminUrl = window.location.hostname === 'localhost' 
         ? (import.meta.env.VITE_ADMIN_URL || 'http://localhost:5174')
-        : 'https://scheduler-admin-xi.vercel.app'; 
+        : 'https://scheduler-admin-one.vercel.app'; 
       window.location.href = adminUrl;
     }
   }, [isPending, session]);

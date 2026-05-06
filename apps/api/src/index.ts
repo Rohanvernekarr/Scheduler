@@ -28,7 +28,8 @@ app.use(cors({
     'http://localhost:5174',
     'https://scheduler-kappa-teal.vercel.app',
     'https://scheduler-web-mu.vercel.app',
-    'https://scheduler-9smh.onrender.com'
+    'https://scheduler-9smh.onrender.com',
+    'https://scheduler-admin-one.vercel.app'
   ],
   credentials: true
 }));
