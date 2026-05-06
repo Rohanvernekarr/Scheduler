@@ -25,7 +25,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000', // Landing
     'http://localhost:5173', // Web
-    'http://localhost:5174'  // Admin 
+    'http://localhost:5174',
+    'https://scheduler-kappa-teal.vercel.app'
   ],
   credentials: true
 }));
