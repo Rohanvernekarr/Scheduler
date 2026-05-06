@@ -38,13 +38,16 @@ function PrivateLayout() {
   // Role Checker
   useEffect(() => {
     if (!isPending && session?.user?.role === 'ADMIN') {
-      const adminUrl = import.meta.env.VITE_ADMIN_URL || 'http://localhost:5173';
+      const adminUrl = window.location.hostname === 'localhost' 
+        ? (import.meta.env.VITE_ADMIN_URL || 'http://localhost:5174')
+        : 'https://scheduler-admin-xi.vercel.app'; 
       window.location.href = adminUrl;
     }
   }, [isPending, session]);
 
   if (!isPending && session?.user?.role === 'ADMIN') {
-    return <div className="flex min-h-screen items-center justify-center">Redirecting to Admin...</div>;5  }
+    return <div className="flex min-h-screen items-center justify-center">Redirecting to Admin...</div>;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
