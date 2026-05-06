@@ -31,6 +31,9 @@ const queryClient = new QueryClient({
 function PrivateLayout() {
   const { data: session, isPending } = useSession();
 
+  console.log('[Auth Debug] isPending:', isPending);
+  console.log('[Auth Debug] session:', session);
+
   // Role Checker
   useEffect(() => {
     if (!isPending && session?.user?.role === 'ADMIN') {
@@ -64,6 +67,9 @@ function PrivateLayout() {
 function AppRoutes() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  console.log('[URL Debug] Path:', window.location.pathname);
+  console.log('[URL Debug] Params:', searchParams.toString());
 
   useEffect(() => {
     if (searchParams.get('login') === 'success') {
