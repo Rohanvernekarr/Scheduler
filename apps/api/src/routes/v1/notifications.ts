@@ -4,13 +4,10 @@ import type { AuthenticatedRequest } from '../../middleware/auth.js';
 
 const router = Router();
 
-/**
- * @route GET /api/v1/notifications/settings
- * @desc Get current user's notification settings
- */
+
 router.get('/settings', async (req: AuthenticatedRequest, res) => {
   const userId = req.userId;
-  
+
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
@@ -24,10 +21,7 @@ router.get('/settings', async (req: AuthenticatedRequest, res) => {
   }
 });
 
-/**
- * @route PATCH /api/v1/notifications/settings
- * @desc Update current user's notification settings
- */
+
 router.patch('/settings', async (req: AuthenticatedRequest, res) => {
   const userId = req.userId;
 
@@ -45,3 +39,4 @@ router.patch('/settings', async (req: AuthenticatedRequest, res) => {
 });
 
 export default router;
+
