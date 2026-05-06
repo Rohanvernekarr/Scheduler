@@ -19,6 +19,16 @@ export const auth = betterAuth({
     'https://scheduler-web-mu.vercel.app',
     'https://scheduler-9smh.onrender.com'
   ],
+  advanced: {
+    cookies: {
+      session_token: {
+        attributes: {
+          sameSite: "none",
+          secure: true
+        }
+      }
+    }
+  },
   plugins: [
     admin({
       defaultRole: "USER",
