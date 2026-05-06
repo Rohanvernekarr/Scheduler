@@ -31,10 +31,6 @@ const queryClient = new QueryClient({
 function PrivateLayout() {
   const { data: session, isPending } = useSession();
 
-  if (!isPending && !session) {
-    return <Navigate to="/login" replace />;
-  }
-
   // Role Checker
   useEffect(() => {
     if (!isPending && session?.user?.role === 'ADMIN') {
@@ -44,6 +40,10 @@ function PrivateLayout() {
       window.location.href = adminUrl;
     }
   }, [isPending, session]);
+
+  if (!isPending && !session) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (!isPending && session?.user?.role === 'ADMIN') {
     return <div className="flex min-h-screen items-center justify-center">Redirecting to Admin...</div>;
