@@ -21,13 +21,6 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Geist', system-ui, sans-serif;
-    /* Fix for mobile "ghosting" during scroll */
-    -webkit-overflow-scrolling: touch;
-  }
-
-  input[type="datetime-local"],
-  input[type="time"] {
-    color-scheme: dark;
   }
 
   /* Custom scrollbar */
@@ -43,32 +36,47 @@
   }
 }
 
-/* 🚀 HIGH-PERFORMANCE MOBILE OVERRIDES */
+/* 🚀 MOBILE STABILITY & GHOSTING FIX */
 @media (max-width: 768px) {
-  /* 1. Kill all Framer Motion / CSS transforms that cause ghosting */
-  * {
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
-    will-change: auto !important;
-    perspective: none !important;
-    backface-visibility: visible !important;
+  /* 1. Prevent background tearing and ghosting */
+  body {
+    height: 100%;
+    overflow-x: hidden;
+    position: relative;
+    /* Create a new stacking context for the whole body */
+    isolation: isolate;
   }
 
-  /* 2. Completely disable blurs (major source of GPU lag) */
-  [class*="backdrop-blur"], .backdrop-blur-sm, .backdrop-blur-md {
+  /* 2. Fix for "Ghosting" elements during scroll */
+  /* instead of transform: none, we force a specific composite layer */
+  .motion-container, 
+  div[class*="motion"], 
+  header[class*="motion"], 
+  aside[class*="motion"] {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+
+  /* 3. Completely disable blurs on mobile (Heavy GPU cost) */
+  [class*="backdrop-blur"] {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background-color: rgba(15, 15, 15, 1) !important;
+    background-color: rgba(10, 10, 10, 0.98) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
   }
 
-  /* 3. Ensure background doesn't tear */
-  body {
-    background-attachment: scroll !important;
+  /* 4. Fix for black boxes (GPU memory limit) */
+  .max-w-7xl {
+    overflow: visible !important;
   }
-
-  /* 4. Fix for noisy artifacts */
-  div, section, header, footer {
+  
+  /* 5. Force text to stay in place */
+  h1, h2, h3, p, span {
     -webkit-transform: none !important;
+    transform: none !important;
   }
 }
