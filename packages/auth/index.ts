@@ -18,7 +18,10 @@ export const auth = betterAuth({
     'https://scheduler-kappa-teal.vercel.app',
     'https://scheduler-web-mu.vercel.app',
     'https://scheduler-9smh.onrender.com',
-    'https://scheduler-admin-one.vercel.app'
+    'https://scheduler-admin-one.vercel.app',
+    'https://schedulers.app',
+    'https://dashboard.schedulers.app',
+    'https://admin.schedulers.app',
   ],
   advanced: {
     useSecureCookies: true,
@@ -28,20 +31,23 @@ export const auth = betterAuth({
     cookies: {
       session_token: {
         attributes: {
-          sameSite: "none",
-          secure: true
+          sameSite: "lax",
+          secure: true,
+          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
         }
       },
       state: {
         attributes: {
-          sameSite: "none",
-          secure: true
+          sameSite: "lax",
+          secure: true,
+          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
         }
       },
       callback_url: {
         attributes: {
-          sameSite: "none",
-          secure: true
+          sameSite: "lax",
+          secure: true,
+          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
         }
       }
     }
@@ -67,16 +73,11 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        required: false,
         defaultValue: "USER",
       },
-    },
-  },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-  },
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:8000",
+      username: {
+        type: "string",
+      }
+    }
+  }
 });

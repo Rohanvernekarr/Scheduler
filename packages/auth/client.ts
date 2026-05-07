@@ -3,9 +3,11 @@ import { emailOTPClient, inferAdditionalFields, adminClient, multiSessionClient 
 import type { auth } from "./index.js";
 
 export const authClient = createAuthClient({
-  baseURL: typeof window !== "undefined" && window.location.hostname !== "localhost"
-    ? "https://scheduler-9smh.onrender.com"
-    : "http://localhost:8000",
+  baseURL: typeof window === "undefined"
+    ? "https://api.schedulers.app" // Server-side
+    : window.location.hostname === "localhost"
+      ? "http://localhost:8000" // Local client
+      : "https://api.schedulers.app", // Production client
   plugins: [
     emailOTPClient(),
     adminClient(),
@@ -14,10 +16,4 @@ export const authClient = createAuthClient({
   ],
 });
 
-export const signIn: typeof authClient.signIn = authClient.signIn;
-export const signUp: typeof authClient.signUp = authClient.signUp;
-export const signOut: typeof authClient.signOut = authClient.signOut;
-export const useSession: typeof authClient.useSession = authClient.useSession;
-export const updateUser: (args: any) => Promise<any> = authClient.updateUser;
-export const emailOtp: any = (authClient as any).emailOtp;
-
+export const { signIn, signUp, useSession, signOut, emailOtp } = authClient;
