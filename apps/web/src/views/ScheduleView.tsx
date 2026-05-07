@@ -2,7 +2,6 @@ import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createMeeting, getMeetings, getHostBookings } from '../lib/api';
 import { ScheduleForm } from '../components/scheduling/ScheduleForm';
-import { motion } from 'framer-motion';
 import { CalendarClock, Zap, Bell, Globe } from 'lucide-react';
 import { useSession } from '@repo/auth/client';
 import toast from 'react-hot-toast';
@@ -75,11 +74,7 @@ export default function ScheduleView() {
     <div className="max-w-7xl flex flex-col xl:flex-row gap-8 md:gap-10">
 
       <div className="flex-1 min-w-0">
-        <motion.header
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <header className="mb-8 fade-in-up">
           <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-2 md:mb-3 italic">
             Initialization // New Event
           </p>
@@ -87,25 +82,14 @@ export default function ScheduleView() {
           <p className="text-white/30 text-xs md:text-sm mt-3 font-medium max-w-2xl">
             Configure your operational parameters below. Automated invites and synchronization protocols will propagate upon confirmation.
           </p>
-        </motion.header>
+        </header>
 
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.07 }}
-          className="space-y-6"
-        >
+        <div className="space-y-6 fade-in-up" style={{ animationDelay: '50ms' }}>
           <ScheduleForm onSubmit={handleSchedule} isPending={mutation.isPending} />
-        </motion.div>
+        </div>
       </div>
 
-      <motion.aside
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.15 }}
-        className="w-full xl:w-72 shrink-0 space-y-4 md:space-y-6"
-      >
-       
+      <aside className="w-full xl:w-72 shrink-0 space-y-4 md:space-y-6 fade-in-up" style={{ animationDelay: '100ms' }}>
         <div className="bg-[#111111] border border-white/[0.06] rounded-[2rem] p-6 md:p-8 shadow-2xl">
           <div className="w-12 h-12 rounded-2xl bg-zinc-500/5 border border-zinc-500/20 flex items-center justify-center text-white mb-6">
             <CalendarClock size={20} />
@@ -116,7 +100,6 @@ export default function ScheduleView() {
           </p>
         </div>
 
-       
         <div className="bg-[#111111] border border-white/[0.06] rounded-[2rem] overflow-hidden divide-y divide-white/[0.04]">
           {highlights.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="flex items-start gap-4 p-5 hover:bg-white/[0.02] transition-colors">
@@ -131,14 +114,13 @@ export default function ScheduleView() {
           ))}
         </div>
 
-      
         <div className="bg-white/5 border border-white/5 rounded-[2rem] p-6">
           <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-3 italic">Pro Tip</p>
           <p className="text-zinc-500 text-[11px] leading-relaxed font-medium">
             Add a video link (Google Meet, Zoom, Teams) so attendees can join with a single click from their invite protocol.
           </p>
         </div>
-      </motion.aside>
+      </aside>
     </div>
   );
 }
