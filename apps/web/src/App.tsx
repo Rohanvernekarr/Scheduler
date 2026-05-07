@@ -42,7 +42,11 @@ function PrivateLayout() {
   }, [isPending, session]);
 
   if (!isPending && !session) {
-    return <Navigate to="/login" replace />;
+    const loginUrl = window.location.hostname === 'localhost' 
+      ? 'http://localhost:3000/login' 
+      : 'https://schedulers.app/login';
+    window.location.href = loginUrl;
+    return null;
   }
 
   if (!isPending && session?.user?.role === 'ADMIN') {
@@ -80,7 +84,6 @@ function AppRoutes() {
       {/* Public Routes */}
       <Route path="/book/:username" element={<BookingView />} />
       <Route path="/invite/:inviteId" element={<GuestInviteView />} />
-      <Route path="/login" element={<LoginView />} />
 
       {/* Private Routes */}
       <Route element={<PrivateLayout />}>

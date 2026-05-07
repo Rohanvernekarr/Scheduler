@@ -13,7 +13,6 @@
   }
 
   :root {
-    /* CSS variables used by PremiumDateTimePicker directly */
     --background: #0a0a0a;
     --foreground: #ffffff;
     --border: rgba(255, 255, 255, 0.08);
@@ -22,9 +21,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Geist', system-ui, sans-serif;
+    /* Fix for mobile "ghosting" during scroll */
+    -webkit-overflow-scrolling: touch;
   }
 
-  /* Dark mode datetime-local and time inputs */
   input[type="datetime-local"],
   input[type="time"] {
     color-scheme: dark;
@@ -41,38 +41,34 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  /* Browser Autofill Fix for Dark Mode */
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  textarea:-webkit-autofill,
-  textarea:-webkit-autofill:hover,
-  textarea:-webkit-autofill:focus {
-    -webkit-text-fill-color: #ffffff !important;
-    -webkit-box-shadow: 0 0 0px 1000px #0d0d0d inset !important;
-    transition: background-color 5000s ease-in-out 0s;
-  }
 }
 
-/* Fix for mobile rendering glitches (black boxes/tearing) */
+/* 🚀 HIGH-PERFORMANCE MOBILE OVERRIDES */
 @media (max-width: 768px) {
+  /* 1. Kill all Framer Motion / CSS transforms that cause ghosting */
   * {
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  /* Disable heavy optimizations that cause GPU crashes on some mobile devices */
-  [style*="will-change"] {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
     will-change: auto !important;
+    perspective: none !important;
+    backface-visibility: visible !important;
   }
 
-  /* Simplify blurs on mobile to prevent "noisy" artifacts or black boxes */
-  [class*="backdrop-blur"] {
+  /* 2. Completely disable blurs (major source of GPU lag) */
+  [class*="backdrop-blur"], .backdrop-blur-sm, .backdrop-blur-md {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background-color: rgba(10, 10, 10, 0.98) !important;
+    background-color: rgba(15, 15, 15, 1) !important;
+  }
+
+  /* 3. Ensure background doesn't tear */
+  body {
+    background-attachment: scroll !important;
+  }
+
+  /* 4. Fix for noisy artifacts */
+  div, section, header, footer {
+    -webkit-transform: none !important;
   }
 }
