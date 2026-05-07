@@ -31,7 +31,7 @@ export const Sidebar = () => {
       toast.success("Signed out successfully");
       window.location.href = window.location.hostname === 'localhost' 
         ? 'http://localhost:3000' 
-        : 'https://scheduler-kappa-teal.vercel.app';
+        : 'https://schedulers.app';
     } catch {
       toast.error("Failed to sign out");
     } finally {
@@ -41,7 +41,7 @@ export const Sidebar = () => {
 
   const landingUrl = window.location.hostname === 'localhost' 
     ? 'http://localhost:3000' 
-    : 'https://scheduler-kappa-teal.vercel.app';
+    : 'https://schedulers.app';
 
   return (
     <>

@@ -25,7 +25,9 @@ export function SettingsSidebar({ activeTab, setActiveTab }: SettingsSidebarProp
     try {
       await signOut();
       toast.success("Signed out successfully");
-      window.location.href = 'http://localhost:3000';
+        window.location.href = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000' 
+        : 'https://schedulers.app';
     } catch {
       toast.error("Failed to sign out");
     } finally {

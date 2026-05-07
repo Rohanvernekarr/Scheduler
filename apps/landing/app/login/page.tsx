@@ -91,7 +91,11 @@ export default function LoginPage() {
             <div className="w-8 h-8 bg-white rounded-xl flex items-center justify-center">
               <Calendar className="text-black w-4 h-4" />
             </div>
-            <span className="text-2xl font-black uppercase tracking-tighter"><a href="https://localhost:3000">Scheduler</a></span>
+            <span className="text-2xl font-black uppercase tracking-tighter">
+              <a href={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://schedulers.app'}>
+                Scheduler
+              </a>
+            </span>
           </motion.div>
 
           <motion.h2 

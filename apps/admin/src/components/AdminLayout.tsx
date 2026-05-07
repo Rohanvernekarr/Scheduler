@@ -17,7 +17,7 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
   const { data: session } = useSession();
   const handleSignOut = async () => {
     await signOut();
-    window.location.href = import.meta.env.VITE_WEB_URL || "http://localhost:5173/login";
+    window.location.href = import.meta.env.VITE_WEB_URL || "http://localhost:3000/login";
   };
 
   return (

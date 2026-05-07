@@ -35,7 +35,14 @@ export function BookingSuccess({ userName, selectedDate, selectedTime, duration 
           </div>
         </div>
 
-        <Button onClick={() => window.location.href = 'http://localhost:3000'} className="w-full h-12 rounded-xl">
+        <Button 
+          onClick={() => {
+            window.location.href = window.location.hostname === 'localhost' 
+              ? 'http://localhost:3000' 
+              : 'https://schedulers.app';
+          }} 
+          className="w-full h-12 rounded-xl"
+        >
           Done
         </Button>
       </div>

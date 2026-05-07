@@ -9,9 +9,13 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (isPending) return;
     if (!session) {
-      window.location.href = import.meta.env.VITE_WEB_URL || "http://localhost:5173/login";
+      window.location.href = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3000/login' 
+        : 'https://schedulers.app/login';
     } else if (session.user?.role !== "ADMIN") {
-      window.location.href = import.meta.env.VITE_WEB_URL || "http://localhost:5173/";
+      window.location.href = window.location.hostname === 'localhost' 
+        ? 'http://localhost:5173/' 
+        : 'https://dashboard.schedulers.app/';
     }
   }, [isPending, session]);
 
