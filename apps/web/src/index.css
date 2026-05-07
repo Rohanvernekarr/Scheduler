@@ -57,3 +57,22 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 }
+
+/* Fix for mobile rendering glitches (black boxes/tearing) */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Disable heavy optimizations that cause GPU crashes on some mobile devices */
+  [style*="will-change"] {
+    will-change: auto !important;
+  }
+
+  /* Simplify blurs on mobile to prevent "noisy" artifacts or black boxes */
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(10, 10, 10, 0.98) !important;
+  }
+}

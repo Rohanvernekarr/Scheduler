@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/v1/:path*",
+      "destination": "https://api.schedulers.app/api/v1/:path*"
+    },
+    {
+      "source": "/api/auth/:path*",
+      "destination": "https://api.schedulers.app/api/auth/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -72,7 +72,7 @@ export default function ScheduleView() {
   ];
 
   return (
-    <div className="max-w-7xl flex flex-col xl:flex-row gap-8 md:gap-10 [will-change:transform]">
+    <div className="max-w-7xl flex flex-col xl:flex-row gap-8 md:gap-10">
 
       <div className="flex-1 min-w-0">
         <motion.header
