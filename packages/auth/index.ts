@@ -33,21 +33,21 @@ export const auth = betterAuth({
         attributes: {
           sameSite: "lax",
           secure: true,
-          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
+          ...(process.env.NODE_ENV === "production" ? { domain: ".schedulers.app" } : {}),
         }
       },
       state: {
         attributes: {
           sameSite: "lax",
           secure: true,
-          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
+          ...(process.env.NODE_ENV === "production" ? { domain: ".schedulers.app" } : {}),
         }
       },
       callback_url: {
         attributes: {
           sameSite: "lax",
           secure: true,
-          domain: process.env.NODE_ENV === "production" ? ".schedulers.app" : undefined,
+          ...(process.env.NODE_ENV === "production" ? { domain: ".schedulers.app" } : {}),
         }
       }
     }

@@ -25,6 +25,6 @@ export async function authMiddleware(
 
   // Inject userId and userRole into request for use in controllers
   req.userId = session.user.id;
-  req.userRole = session.user.role;
+  req.userRole = (session.user as any).role;
   next();
 }
