@@ -10,11 +10,10 @@ import ScheduleView from './views/ScheduleView';
 // import InviteCreationView from './views/InviteCreationView';
 import GuestInviteView from './views/GuestInviteView';
 import CalendarView from './views/CalendarView';
-import LoginView from './views/LoginView';
 import SettingsView from './views/SettingsView';
 import BookingsView from './views/BookingsView';
 import { useSession } from '@repo/auth/client';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient({
