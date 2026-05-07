@@ -31,6 +31,7 @@ app.use(cors({
     'https://scheduler-9smh.onrender.com',
     'https://scheduler-admin-one.vercel.app',
     'https://schedulers.app',
+    'https://www.schedulers.app',
     'https://dashboard.schedulers.app',
     'https://admin.schedulers.app'
   ],
