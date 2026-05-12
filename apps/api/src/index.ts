@@ -71,9 +71,15 @@ app.use('/api/v1/notifications', notificationRouter);
 // Global Error Handler
 app.use(errorHandler);
 
-// Initialize Cron Jobs & Workers
-initCronJobs();
-initNotificationWorker();
+// Initialize Cron Jobs & Workers (Temporarily disabled to stop Redis terminal spam)
+/*
+try {
+  initCronJobs();
+  initNotificationWorker();
+} catch (error) {
+  console.error('[Startup] Failed to initialize Redis-based background jobs:', error);
+}
+*/
 
 app.listen(Number(port), '0.0.0.0', () => {
   console.log(`🚀 Server is running on port ${port}`);

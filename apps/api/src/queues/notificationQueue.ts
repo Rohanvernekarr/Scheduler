@@ -13,6 +13,9 @@ export const notificationQueue = new Queue('notification-queue', {
       delay: 1000,
     },
     removeOnComplete: true,
+    removeOnFail: {
+      count: 100, // Keep last 100 failed jobs for debugging
+    },
   },
 });
 

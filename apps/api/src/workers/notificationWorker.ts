@@ -34,7 +34,12 @@ export const initNotificationWorker = () => {
         throw error; // Re-throw to trigger BullMQ retry
       }
     },
-    { connection: redisConnection }
+    { 
+      connection: redisConnection,
+      stalledInterval: 300000, // Check for stalled jobs every 5 minutes (default is 30s)
+      lockDuration: 60000,     // Extend lock duration to 1 minute to reduce renewal frequency
+      drainDelay: 10,          // Wait 10s before polling again when queue is empty
+    }
   );
 
   worker.on('completed', (job) => {
