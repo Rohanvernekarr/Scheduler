@@ -63,7 +63,7 @@ export function Hero() {
                 Deploy Now
                 <ChevronRight className="w-4 h-4" />
               </a>
-              <a href="#features" className="tech-border text-white px-8 py-3 rounded-md font-bold text-sm hover:bg-white/5 transition-all">
+              <a href="/docs" className="tech-border text-white px-8 py-3 rounded-md font-bold text-sm hover:bg-white/5 transition-all">
                 Documentation
               </a>
             </motion.div>
