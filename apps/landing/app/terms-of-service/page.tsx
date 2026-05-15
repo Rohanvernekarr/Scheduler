@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
-import { Nav } from "../components/Nav";
-import { Footer } from "../components/Footer";
+import { MinimalNav } from "../components/MinimalNav";
 
 export default function TermsPage(): ReactNode {
   return (
     <main className="min-h-screen bg-background">
-      <Nav />
+      <MinimalNav />
       <section className="pt-40 pb-24 relative overflow-hidden">
         {/*Background Text */}
         <div className="absolute top-[-90px] left-1/2 -translate-x-1/2 select-none pointer-events-none z-0 opacity-[0.01]">
@@ -72,7 +71,6 @@ export default function TermsPage(): ReactNode {
           </div>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }
