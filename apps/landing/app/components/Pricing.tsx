@@ -37,6 +37,7 @@ const plans = [
   {
     name: "Pro Yearly",
     price: "$64",
+    originalPrice: "$96",
     period: "per year",
     description: "Best value for long-term professionals.",
     features: [
@@ -48,7 +49,6 @@ const plans = [
     ],
     buttonText: "Subscribe Yearly",
     buttonVariant: "solid",
-    badge: "$32 OFF",
   },
 ];
 
@@ -80,26 +80,34 @@ export function Pricing() {
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={`relative flex flex-col p-8 rounded-3xl border backdrop-blur-sm ${
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.15, duration: 0.6, ease: "easeOut" }}
+              whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.2 } }}
+              className={`group relative flex flex-col p-8 rounded-3xl border backdrop-blur-md bg-zinc-950/40 transition-colors duration-500 ${
                 plan.popular 
-                  ? ' border-zinc-700' 
-                  : 'border-zinc-800'
+                  ? 'border-zinc-600 shadow-2xl shadow-white/5' 
+                  : 'border-zinc-800 hover:border-zinc-700'
               }`}
             >
+              {/* Subtle background glow on hover */}
+              <div
+                className={`absolute inset-0 z-[-1] rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+                  plan.popular ? 'bg-gradient-to-b from-zinc-800/40 to-transparent' : 'bg-gradient-to-b from-zinc-800/20 to-transparent'
+                }`}
+              />
+
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-xs font-bold rounded-full">
+                <motion.div 
+                  animate={{ y: [-2, 2, -2] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-xs font-bold rounded-full shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                >
                   MOST POPULAR
-                </div>
+                </motion.div>
               )}
-              {plan.badge && (
-                <div className="absolute -top-4 right-8 px-3 py-1 bg-zinc-800 text-white text-xs font-bold rounded-full border border-zinc-700">
-                  {plan.badge}
-                </div>
-              )}
+
               
               <div className="mb-8">
                 <h3 className="text-xl font-medium text-white mb-2">{plan.name}</h3>
@@ -107,28 +115,54 @@ export function Pricing() {
               </div>
 
               <div className="mb-8 flex items-baseline">
-                <span className="text-4xl font-bold text-white">{plan.price}</span>
+                {/* @ts-ignore */}
+                {plan.originalPrice && (
+                  <span className="text-2xl font-medium text-zinc-500 line-through mr-3">
+                    {/* @ts-ignore */}
+                    {plan.originalPrice}
+                  </span>
+                )}
+                <span className="text-4xl font-bold text-white">
+                  {plan.price}
+                </span>
                 <span className="text-zinc-500 ml-2">/{plan.period}</span>
               </div>
 
-              <ul className="flex-1 space-y-4 mb-8">
+              <motion.ul 
+                className="flex-1 space-y-4 mb-8"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.4 + i * 0.15 } }
+                }}
+              >
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start text-sm text-zinc-300">
+                  <motion.li 
+                    key={feature} 
+                    className="flex items-start text-sm text-zinc-300"
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      visible: { opacity: 1, x: 0 }
+                    }}
+                  >
                     <Check className="w-5 h-5 text-white mr-3 shrink-0" />
                     <span>{feature}</span>
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
 
-              <button
-                className={`w-full py-3 px-6 rounded-full font-medium transition-all duration-200 ${
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className={`w-full py-3 px-6 rounded-full font-medium transition-colors duration-200 mt-auto ${
                   plan.buttonVariant === 'solid'
                     ? 'bg-white text-black hover:bg-zinc-200'
                     : 'bg-transparent text-white border border-zinc-700 hover:border-zinc-500 hover:bg-zinc-900'
                 }`}
               >
                 {plan.buttonText}
-              </button>
+              </motion.button>
             </motion.div>
           ))}
         </div>
