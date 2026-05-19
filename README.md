@@ -2,6 +2,8 @@
 
 ### The Technical Standard for Modern Meeting Coordination.
 Built with an **Industrial Noir** aesthetic, engineered for precision, and designed to eliminate scheduling friction.
+ 
+## In Development reach out if you want to contribute!! rohanrv2004@gmail.com
 
 ---
 
