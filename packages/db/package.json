@@ -6,6 +6,8 @@
   "types": "index.ts",
   "type": "module",
   "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy",
     "lint": "eslint .",
     "check-types": "tsc --noEmit",
     "postinstall": "prisma generate",

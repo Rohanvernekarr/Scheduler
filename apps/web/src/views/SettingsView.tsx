@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useSession, updateUser } from '@repo/auth/client';
 import { Check, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 
 // Component Imports
 import { SettingsSidebar } from '../components/settings/SettingsSidebar';
@@ -14,6 +16,7 @@ type Tab = 'profile' | 'preferences' | 'notifications' | 'security' | 'integrati
 
 export default function SettingsView() {
   const { data: session, isPending, refetch } = useSession();
+  const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -30,6 +33,21 @@ export default function SettingsView() {
       }));
     }
   }, [session]);
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'integrations') {
+      setActiveTab('integrations');
+    }
+
+    const googleStatus = searchParams.get('google');
+    if (googleStatus === 'connected') {
+      toast.success('Google Calendar connected');
+    }
+    if (googleStatus === 'error') {
+      toast.error('Google Calendar connection failed. Check API logs.');
+    }
+  }, [searchParams]);
 
   if (isPending && !session) return <LoadingState />;
 

@@ -1,9 +1,24 @@
 import type { Request, Response } from 'express';
 import { bookingService } from '../services/bookings.js';
-import { CreateBookingSchema } from '../schemas/bookings.js';
+import { AvailableSlotsQuerySchema, CreateBookingSchema } from '../schemas/bookings.js';
 import { ZodError } from 'zod';
 
 export class BookingController {
+  async getAvailableSlots(req: Request, res: Response): Promise<void> {
+    try {
+      const payload = AvailableSlotsQuerySchema.parse(req.query);
+      const slots = await bookingService.getAvailableSlots(payload);
+      res.json({ data: slots });
+    } catch (error) {
+      if (error instanceof ZodError) {
+        res.status(400).json({ error: 'Validation Error', issues: error.issues });
+        return;
+      }
+      console.error('[BookingController.getAvailableSlots]', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   async createBooking(req: Request, res: Response): Promise<void> {
     try {
       const payload = CreateBookingSchema.parse(req.body);

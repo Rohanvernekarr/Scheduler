@@ -6,7 +6,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "db:generate": "pnpm --filter @repo/db db:generate",
+    "db:migrate:deploy": "pnpm --filter @repo/db db:migrate:deploy",
+    "prebuild": "pnpm --filter @repo/db db:generate",
     "build": "tsc",
+    "deploy:start": "pnpm run db:migrate:deploy && pnpm run db:generate && pnpm run start",
     "start": "node dist/index.js",
     "lint": "eslint .",
     "check-types": "tsc --noEmit"

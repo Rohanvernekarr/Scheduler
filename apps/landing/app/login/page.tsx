@@ -5,7 +5,7 @@ import { signIn, emailOtp } from "@repo/auth/client";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, Calendar, Clock, CheckCircle2 } from "lucide-react";
-import { WEB_URL } from "../lib/config";
+import { LANDING_URL, WEB_URL } from "../lib/config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -100,7 +100,7 @@ export default function LoginPage() {
               <Calendar className="text-black w-4 h-4" />
             </div>
             <span className="text-2xl font-black uppercase tracking-tighter">
-              <a href={typeof window !== 'undefined' && window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://schedulers.app'}>
+              <a href={LANDING_URL}>
                 Scheduler
               </a>
             </span>

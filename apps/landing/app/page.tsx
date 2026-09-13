@@ -5,10 +5,12 @@ import { HowItWorks } from "./components/HowItWorks";
 import { Pricing } from "./components/Pricing";
 import { Footer } from "./components/Footer";
 import { Background } from "./components/Background";
+import { StructuredData } from "./components/StructuredData";
 
 export default function Home() {
   return (
     <>
+      <StructuredData />
       <Background />
       <Nav />
       <main>
@@ -21,4 +23,3 @@ export default function Home() {
     </>
   );
 }
-

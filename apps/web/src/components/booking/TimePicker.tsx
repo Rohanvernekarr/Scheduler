@@ -1,12 +1,17 @@
 import { Clock, ChevronRight } from 'lucide-react';
 
 interface TimePickerProps {
-  availableSlots: string[];
+  availableSlots: Array<{
+    label: string;
+    startTime: string;
+    endTime: string;
+  }>;
+  isLoading?: boolean;
   selectedTime: string | null;
   onSelectTime: (time: string) => void;
 }
 
-export function TimePicker({ availableSlots, selectedTime, onSelectTime }: TimePickerProps) {
+export function TimePicker({ availableSlots, isLoading, selectedTime, onSelectTime }: TimePickerProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-sm font-semibold text-white/50 uppercase tracking-widest flex items-center gap-2">
@@ -15,21 +20,26 @@ export function TimePicker({ availableSlots, selectedTime, onSelectTime }: TimeP
       </h2>
 
       <div className="max-h-[320px] overflow-y-auto pr-1 space-y-2">
-        {availableSlots.length > 0 ? (
-          availableSlots.map(time => (
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center text-white/20 space-y-3 py-10">
+            <div className="w-8 h-8 border-2 border-zinc-500/30 border-t-zinc-500 rounded-full animate-spin" />
+            <p className="text-sm font-medium">Checking availability</p>
+          </div>
+        ) : availableSlots.length > 0 ? (
+          availableSlots.map(slot => (
             <button
-              key={time}
-              onClick={() => onSelectTime(time)}
+              key={slot.startTime}
+              onClick={() => onSelectTime(slot.startTime)}
               className={`w-full p-3.5 rounded-xl border transition-all flex items-center justify-between group text-sm font-medium ${
-                selectedTime === time
-                  ? 'bg-zinx-300 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
+                selectedTime === slot.startTime
+                  ? 'bg-zinc-300/10 border-zinc-500 text-white shadow-lg shadow-zinc-500/20'
                   : 'bg-white/[0.04] border-white/[0.06] text-white/60 hover:bg-white/[0.07] hover:text-white hover:border-white/10'
               }`}
             >
-              <span>{time}</span>
+              <span>{slot.label}</span>
               <ChevronRight
                 size={15}
-                className={selectedTime === time ? 'text-white/70' : 'text-white/20 group-hover:text-white/40'}
+                className={selectedTime === slot.startTime ? 'text-white/70' : 'text-white/20 group-hover:text-white/40'}
               />
             </button>
           ))

@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-const API_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:8000/api/v1'
-  : 'https://api.schedulers.app/api/v1';
+function getApiUrl() {
+  const configuredUrl = import.meta.env.VITE_API_URL || 'https://api.schedulers.app';
+  const trimmedUrl = configuredUrl.replace(/\/+$/, '');
+
+  return trimmedUrl.endsWith('/api/v1') ? trimmedUrl : `${trimmedUrl}/api/v1`;
+}
+
+const API_URL = getApiUrl();
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -28,6 +33,13 @@ export const getUserProfile = (username: string) =>
 export const createBooking = (data: any) =>
   api.post('/bookings', data).then(res => res.data.data);
 
+export const getAvailableSlots = (params: {
+  hostId: string;
+  date: string;
+  timeZone: string;
+  duration?: number;
+}) => api.get('/bookings/slots', { params }).then(res => res.data.data);
+
 export const getHostBookings = (hostId: string) =>
   api.get(`/bookings/host/${hostId}`).then(res => res.data.data);
 
@@ -51,3 +63,12 @@ export const getNotificationSettings = () =>
 
 export const updateNotificationSettings = (data: any) =>
   api.patch('/notifications/settings', data).then(res => res.data);
+
+export const getIntegrations = () =>
+  api.get('/integrations').then(res => res.data.data);
+
+export const getGoogleCalendarConnectUrl = () =>
+  api.get('/integrations/google/connect').then(res => res.data.data.url);
+
+export const disconnectGoogleCalendar = () =>
+  api.delete('/integrations/google').then(res => res.data);

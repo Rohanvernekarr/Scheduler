@@ -37,6 +37,7 @@ model User {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   notificationSettings NotificationSettings?
+  calendarConnections CalendarConnection[]
   twoFactorEnabled Boolean?       @default(false)
   twoFactor        TwoFactor?
   banned           Boolean?       @default(false)
@@ -152,11 +153,16 @@ model Booking {
   id        String   @id @default(cuid())
   hostId    String
   host      User     @relation("BookingHost", fields: [hostId], references: [id])
+  guestName String?
   guestEmail String
+  title     String?
+  timeZone  String?
+  externalCalendarEventId String?
   startTime DateTime
   endTime   DateTime
   status    BookingStatus @default(CONFIRMED)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum BookingStatus {
@@ -219,6 +225,26 @@ model NotificationSettings {
   newBookingAlerts Boolean  @default(true)
   newsletter       Boolean  @default(false)
   updatedAt        DateTime @updatedAt
+}
+
+model CalendarConnection {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider            String
+  providerAccountId   String?
+  email               String?
+  accessToken         String?
+  refreshToken        String?
+  tokenType           String?
+  scope               String?
+  expiryDate          DateTime?
+  calendarId          String   @default("primary")
+  syncEnabled         Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([userId, provider])
 }
 
 model TwoFactor {

@@ -31,9 +31,17 @@ export default function ScheduleView() {
         hostId: userId,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }),
-    onSuccess: () => {
+    onSuccess: (meeting) => {
       queryClient.invalidateQueries({ queryKey: ['meetings'] });
-      toast.success('Protocol established successfully');
+      if (meeting?.calendarSync?.status === 'synced') {
+        toast.success('Meeting scheduled and synced to Google Calendar');
+      } else if (meeting?.calendarSync?.status === 'failed') {
+        toast.error(`Meeting scheduled, but Google Calendar sync failed: ${meeting.calendarSync.error || 'Unknown error'}`, {
+          duration: 7000,
+        });
+      } else {
+        toast.success('Meeting scheduled');
+      }
       navigate('/');
     },
   });

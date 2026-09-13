@@ -11,13 +11,41 @@ const geist = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Scheduler - Effortless Meeting Booking",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_LANDING_URL || "https://schedulers.app"),
+  title: {
+    default: "Scheduler - Meeting Scheduling Software",
+    template: "%s | Scheduler",
+  },
   description:
-    "Share one link. Let people book. Get instant email invites. No back-and-forth ever again.",
+    "Share one booking link, manage availability, prevent scheduling conflicts, and coordinate meetings across your calendar.",
+  applicationName: "Scheduler",
+  keywords: [
+    "meeting scheduler",
+    "calendar booking",
+    "appointment scheduling",
+    "availability management",
+    "Google Calendar scheduling",
+  ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Scheduler",
-    description: "Effortless meeting booking for everyone.",
+    title: "Scheduler - Meeting Scheduling Software",
+    description:
+      "Share one booking link, manage availability, prevent scheduling conflicts, and coordinate meetings across your calendar.",
+    url: "/",
+    siteName: "Scheduler",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Scheduler - Meeting Scheduling Software",
+    description:
+      "Share one booking link, manage availability, prevent scheduling conflicts, and coordinate meetings across your calendar.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

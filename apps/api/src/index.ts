@@ -10,6 +10,7 @@ import { eventRouter } from './routes/v1/events.js';
 import { interviewRouter } from './routes/v1/interviews.js';
 import { inviteRouter } from './routes/v1/invites.js';
 import { adminRouter } from './routes/v1/admin.js';
+import { integrationRouter } from './routes/v1/integrations.js';
 import notificationRouter from './routes/v1/notifications.js';
 import { initCronJobs } from './services/cron.js';
 import { initNotificationWorker } from './workers/notificationWorker.js';
@@ -54,6 +55,20 @@ app.use('/api/v1/invites', (req, res, next) => {
   return authMiddleware(req, res, next);
 }, inviteRouter);
 
+app.use('/api/v1/bookings', (req, res, next) => {
+  if ((req.method === 'GET' && req.path === '/slots') || (req.method === 'POST' && req.path === '/')) {
+    return next();
+  }
+  return authMiddleware(req, res, next);
+}, bookingRouter);
+
+app.use('/api/v1/integrations', (req, res, next) => {
+  if (req.method === 'GET' && req.path === '/google/callback') {
+    return next();
+  }
+  return authMiddleware(req, res, next);
+}, integrationRouter);
+
 // Apply auth middleware to all other v1 routes
 app.use('/api/v1', authMiddleware);
 
@@ -62,7 +77,6 @@ app.use('/api/v1/meetings', meetingRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/companies', companyRouter);
 app.use('/api/v1/availability', availabilityRouter);
-app.use('/api/v1/bookings', bookingRouter);
 app.use('/api/v1/events', eventRouter);
 app.use('/api/v1/interviews', interviewRouter);
 app.use('/api/v1/admin', adminRouter);
