@@ -1,0 +1,3 @@
+-- This migration exists in the target database history.
+-- The schema already contains Meeting.timeZone from 20260506113240_add_timezone_to_meeting.
+-- Keep this file so local migration history matches the database without resetting data.
