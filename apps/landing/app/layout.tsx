@@ -52,6 +52,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>): Readonly<ReactNode> {
   return (
     <html lang="en" className="dark scroll-smooth">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2562933140972204"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className={`${geist.variable} font-sans`}>
         {children}
         <Toaster 
